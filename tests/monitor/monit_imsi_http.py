@@ -32,6 +32,7 @@ def run(parameter):
                         {
                             "attribute_name": "ATTR_GTP_IMSI",
                             "type": "mobile_identity",
+                            "sub_type": "imsi",
                             "member_type": "item",
                             "name":"monitor_imsi",
                             "items": [

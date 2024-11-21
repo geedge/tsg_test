@@ -62,7 +62,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "tmp_tsg_cookie"
+                                    "expression": "tmp_tsg_cookie"
                                 }
                             ]
                         }

@@ -21,7 +21,6 @@ class CreateRules:
         try:
             self.policy_configuration = policy_configuration
             object_uuids_list = list(self.object_uuids_tuple)
-            profile_uuids_list = list(self.profile_uuids_tuple)
             rule_template = root_path + "/support/api_utils/template/rule_template.json"
             with open(rule_template, 'r', encoding='utf-8') as f:
                 rule_template_json = json.load(f)
@@ -34,137 +33,29 @@ class CreateRules:
             rule_template_json["rule"]["log_option"] = policy_configuration["log_option"]
             # rule_template_json["rule"]["do_log"] = 2
             rule_template_json["rule"]["is_enabled"] = policy_configuration["is_enabled"]
-            source_condition_temp_list, destination_condition_temp_list, application_condition_temp_list = [], [], []
+            source_condition_temp_list, destination_condition_temp_list, application_condition_temp_list, protocol_field_condition_temp_list = [], [], [], []
             for i in range(len(policy_configuration["and_conditions"])):
                 if "attr_source" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower():
                     source_condition_temp_list.append(policy_configuration["and_conditions"][i])
                 if "attr_destination" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower():
                     destination_condition_temp_list.append(policy_configuration["and_conditions"][i])
+                if "attr_http" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower():
+                    protocol_field_condition_temp_list.append(policy_configuration["and_conditions"][i])
                 if "attr_app" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower():
                     application_condition_temp_list.append(policy_configuration["and_conditions"][i])
             rule_template_json["rule"]["and_conditions"] = []
+            pre_intercept_rule_template_source_condition = []
             if len(source_condition_temp_list) > 0:
                 rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, source_condition_temp_list, object_uuids_list, "attr_source"))
+                pre_intercept_rule_template_source_condition.extend(rule_template_json["rule"]["and_conditions"])
             if len(destination_condition_temp_list) > 0:
                 rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, destination_condition_temp_list, object_uuids_list, "attr_destination"))
             if len(application_condition_temp_list) > 0:
                 rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, application_condition_temp_list, object_uuids_list, "attr_app"))
-            if len(policy_configuration["action_parameter"]) > 0:
-                if policy_configuration["type"] == "security" and policy_configuration["action"] == "deny":
-                    rule_template_json["rule"]["action_parameter"]["sub_action"] = policy_configuration["action_parameter"]["sub_action"]
-                    rule_template_json["rule"]["action_parameter"]["packet_capture"] = {}
-                    rule_template_json["rule"]["action_parameter"]["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
-                    rule_template_json["rule"]["action_parameter"]["after_n_packets"] = policy_configuration["action_parameter"]["after_n_packets"]
-                    rule_template_json["rule"]["action_parameter"]["send_icmp_unreachable"] = policy_configuration["action_parameter"]["send_icmp_unreachable"]
-                    rule_template_json["rule"]["action_parameter"]["send_tcp_reset"] = policy_configuration["action_parameter"]["send_tcp_reset"]
-                    if policy_configuration["action_parameter"]["sub_action"] == "block":
-                        rule_template_json["rule"]["action_parameter"]["code"] = policy_configuration["action_parameter"]["code"]
-                        if len(profile_uuids_list) > 0:
-                            rule_template_json["rule"]["action_parameter"]["html_profile"] = str(profile_uuids_list[0]["uuid"])
-                        elif len(profile_uuids_list) == 0:
-                            rule_template_json["rule"]["action_parameter"]["message"] = policy_configuration["action_parameter"]["message"]
-                        rule_template_json["rule"]["action_parameter"]["packet_capture"] = {}
-                        rule_template_json["rule"]["action_parameter"]["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
-                        rule_template_json["rule"]["action_parameter"]["send_icmp_unreachable"] = policy_configuration["action_parameter"]["send_icmp_unreachable"]
-                        rule_template_json["rule"]["action_parameter"]["send_tcp_reset"] = policy_configuration["action_parameter"]["send_tcp_reset"]
-                    elif policy_configuration["action_parameter"]["sub_action"] == "redirect":
-                        # dns redirect
-                        if "resolution" in policy_configuration["action_parameter"].keys() and len(policy_configuration["action_parameter"]["resolution"]) > 0:
-                            rule_template_json["rule"]["action_parameter"]["resolution"] = [
-                                {
-                                    "qtype":policy_configuration["action_parameter"]["resolution"][0]["qtype"],
-                                    "answer":[]
-                                }
-                            ]
-                            for i in range(len(policy_configuration["action_parameter"]["resolution"][0]["answer"])):
-                                answer_dict = {}
-                                answer_dict["atype"] = policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["atype"]
-                                answer_dict["value"] = policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["value"]
-                                answer_dict["ttl"] = {
-                                    "min": policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["ttl"]["min"],
-                                    "max": policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["ttl"]["max"]
-                                }
-                                rule_template_json["rule"]["action_parameter"]["resolution"]["answer"].append(answer_dict) 
-                        # http redirect
-                        else:
-                            rule_template_json["rule"]["action_parameter"]["code"] = policy_configuration["action_parameter"]["code"]
-                            rule_template_json["rule"]["action_parameter"]["to"] = policy_configuration["action_parameter"]["to"]
-                    elif policy_configuration["action_parameter"]["sub_action"] == "alert":
-                        rule_template_json["rule"]["action_parameter"]["code"] = policy_configuration["action_parameter"]["code"]
-                        if policy_configuration["action_parameter"]["code"] == 200 and len(profile_uuids_list) == 0:
-                            rule_template_json["rule"]["action_parameter"]["message"] = policy_configuration["action_parameter"]["message"]
-                        elif policy_configuration["action_parameter"]["code"] == 200 and len(profile_uuids_list) > 0:
-                            rule_template_json["rule"]["action_parameter"]["html_profile"] = str(profile_uuids_list[0]["uuid"])
-                    elif policy_configuration["action_parameter"]["sub_action"] == "rate_limit":
-                        rule_template_json["rule"]["action_parameter"]["bps"] = policy_configuration["action_parameter"]["bps"]
-                        rule_template_json["rule"]["action_parameter"]["limitUnit"] = policy_configuration["action_parameter"]["limitUnit"]
-                    elif policy_configuration["action_parameter"]["sub_action"] == "tamper":
-                        rule_template_json["rule"]["action_parameter"]["tamper_mode"] = policy_configuration["action_parameter"]["tamper_mode"]
-                        if policy_configuration["action_parameter"]["tamper_mode"] == "sample":
-                            rule_template_json["rule"]["action_parameter"]["sampling_method"] = policy_configuration["action_parameter"]["sampling_method"]
-                            rule_template_json["rule"]["action_parameter"]["samples"] = policy_configuration["action_parameter"]["samples"]
-                            rule_template_json["rule"]["action_parameter"]["batch_size"] = policy_configuration["action_parameter"]["batch_size"]
-                elif policy_configuration["type"] == "monitor":
-                    rule_template_json["rule"]["action_parameter"] = {}
-                    rule_template_json["rule"]["action_parameter"]["packet_capture"] = {}
-                    rule_template_json["rule"]["action_parameter"]["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
-                    if rule_template_json["rule"]["action_parameter"]["packet_capture"]["enable"] == 1:
-                        rule_template_json["rule"]["action_parameter"]["packet_capture"]["capture_depth"] = policy_configuration["action_parameter"]["packet_capture"]["capture_depth"]
-                    rule_template_json["rule"]["action_parameter"]["traffic_mirroring"] = {}
-                    rule_template_json["rule"]["action_parameter"]["traffic_mirroring"]["enable"] = policy_configuration["action_parameter"]["traffic_mirroring"]["enable"]
-                    if policy_configuration["action_parameter"]["traffic_mirroring"]["enable"] == 1:
-                        rule_template_json["rule"]["action_parameter"]["traffic_mirroring"]["vlanID"] = policy_configuration["action_parameter"]["traffic_mirroring"]["vlanID"]
-                        rule_template_json["rule"]["action_parameter"]["traffic_mirroring"]["mirroring_profile"] = str(profile_uuids_list[0]["uuid"])
-                elif policy_configuration["type"] == "statistics":   
-                    rule_template_json["rule"]["action_parameter"] = {
-                        "template_profile" : str(profile_uuids_list[0]["uuid"])
-                    }    
-                elif policy_configuration["type"] == "dos_protection" and policy_configuration["action"] == "protect":
-                    rule_template_json["rule"]["action_parameter"] = {}
-                    if policy_configuration["rule"]["action_parameter"]["mitigation"]["behavior"] == "deny":
-                        rule_template_json["rule"]["action_parameter"]["mitigation"] = {
-                            "behavior" : policy_configuration["rule"]["action_parameter"]["mitigation"]["behavior"],
-                            "timeout" : policy_configuration["rule"]["action_parameter"]["mitigation"]["timeout"]
-                        }
-                    elif policy_configuration["rule"]["action_parameter"]["mitigation"]["behavior"] == "none":
-                        rule_template_json["rule"]["action_parameter"]["mitigation"] = {
-                            "behavior" : policy_configuration["rule"]["action_parameter"]["mitigation"]["behavior"]
-                        }
-                    if policy_configuration["rule"]["action_parameter"]["threshold"]["type"] == "concurrency":
-                         rule_template_json["rule"]["action_parameter"]["threshold"] = {
-                             "type" : policy_configuration["rule"]["action_parameter"]["threshold"]["type"],
-                             "concurrency_threshold" :{
-                                 "group_by" : policy_configuration["rule"]["action_parameter"]["threshold"]["concurrency_threshold"]["group_by"],
-                                 "concurrent_sessions" : policy_configuration["rule"]["action_parameter"]["threshold"]["concurrency_threshold"]["concurrent_sessions"],
-                             }
-                        }
-                    elif policy_configuration["rule"]["action_parameter"]["threshold"]["type"] == "rate":
-                        rule_template_json["rule"]["action_parameter"]["threshold"] = {
-                             "type" : policy_configuration["rule"]["action_parameter"]["threshold"]["type"],
-                             "rate_threshold" :{
-                                 "group_by" : policy_configuration["rule"]["action_parameter"]["threshold"]["rate_threshold"]["group_by"],
-                                 "request_per_period" : policy_configuration["rule"]["action_parameter"]["threshold"]["rate_threshold"]["request_per_period"],
-                                 "counting_period" : policy_configuration["rule"]["action_parameter"]["threshold"]["rate_threshold"]["counting_period"],
-                             }
-                        }    
-                elif policy_configuration["type"] == "proxy_intercept":
-                    proxy_intercept_template_path = root_path + "/support/api_utils/template/pre_intercept_template.json"
-                    with open(proxy_intercept_template_path, 'r', encoding='utf-8') as f:
-                        proxy_intercept_template_json = json.load(f)
-                        keyring_for_untrusted = proxy_intercept_template_json["rule"]["action_parameter"]["keyring_for_untrusted"]
-                        keyring_for_trusted = proxy_intercept_template_json["rule"]["action_parameter"]["keyring_for_trusted"]
-                        decryption_profile = proxy_intercept_template_json["rule"]["action_parameter"]["decryption_profile"]
-                        tcp_option_profile = proxy_intercept_template_json["rule"]["action_parameter"]["tcp_option_profile"]
-                        traffic_mirror_enable = proxy_intercept_template_json["rule"]["action_parameter"]["traffic_mirroring"]["enable"]   
-                    if len(profile_uuids_list) > 0 :
-                        for i in range(len(profile_uuids_list)):
-                            print("to be added") 
-                elif policy_configuration["type"] == "service_chaining":
-                    rule_template_json["rule"]["action_parameter"] = {
-                        "targeted_traffic" : policy_configuration["rule"]["action_parameter"]["targeted_traffic"],
-                        "sff_profiles" : []
-                    }
-
+            if len(protocol_field_condition_temp_list) > 0:
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, protocol_field_condition_temp_list, object_uuids_list, "attr_http"))
+            if "action_parameter" in policy_configuration.keys() and len(policy_configuration["action_parameter"]) > 0:
+                rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)        
             rule_type_dict = {
                 "security": "security-rules",
                 "proxy_intercept": "proxy-intercept-rules",
@@ -175,12 +66,15 @@ class CreateRules:
                 "monitor": "monitor-rules",
                 "dos_protection": "dos-protection-rules",
             }
+            if policy_configuration["type"] == "proxy_manipulation" or (policy_configuration["type"] == "service_chaining" and policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted"):
+                pre_intercept_rule_uuid_dict, api_error = self.create_pre_intercept_rule(policy_configuration["type"], pre_intercept_rule_template_source_condition, policy_configuration["is_enabled"])
+                rule_uuids_list.append(pre_intercept_rule_uuid_dict)
             url = api_server + "/v1/policies/{}".format(rule_type_dict[policy_configuration["type"]])
             response = requests.post(url, headers=self.headers, json=rule_template_json, verify=False)
             if response.status_code == 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(policy_configuration["type"].replace("_", " ")), flush=True)
                 response_dict = json.loads(response.text)
-                uuid = self.get_uuids(response_dict, policy_configuration["type"])
+                uuid = self.get_uuids(response_dict)
                 rule_uuids_temp_dict = {}
                 rule_uuids_temp_dict["type"] = policy_configuration["type"]
                 rule_uuids_temp_dict["uuid"] = uuid
@@ -197,7 +91,7 @@ class CreateRules:
             return "", "When creating rule, the exception error: " + str(e)
         
     def generate_rule_condition_list(self, api_server, and_condition, object_uuids_list, condition_type):
-        if condition_type in ["attr_source", "attr_destination"]:
+        if condition_type in ["attr_source", "attr_destination", "attr_http"]:
             condition_list = []
             for i in range(len(and_condition)):
                 negate_option = and_condition[i]["negate_option"]
@@ -206,7 +100,9 @@ class CreateRules:
                 object_uuids_temp_list = []
                 for j in range(len(objects_configuration)):
                     for t in range(len(object_uuids_list)):
-                        if objects_configuration[j]["name"] == object_uuids_list[t]["name"]:
+                        if object_uuids_list[t]["attribute_name"] == "ATTR_APP_ID":
+                            continue
+                        elif objects_configuration[j]["name"] == object_uuids_list[t]["name"]:
                             object_uuids_temp_list.append(object_uuids_list[t]["uuid"])
                 attribute_name = objects_configuration[0]["attribute_name"]
                 object_temp_dict = dict(attribute_name=attribute_name, object_uuids=object_uuids_temp_list)
@@ -233,8 +129,245 @@ class CreateRules:
             application_dict = dict(negate_option=negate_option, or_conditions=application_uuid_list)
             application_list.append(application_dict)
             return application_list
+
+    def generate_rule_action_parameter(self, policy_configuration):
+        action_parameter_dict = {}
+        if policy_configuration["type"] == "security" and policy_configuration["action"] == "deny":
+            action_parameter_dict["sub_action"] = policy_configuration["action_parameter"]["sub_action"]
+            action_parameter_dict["packet_capture"] = {}
+            action_parameter_dict["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
+            action_parameter_dict["after_n_packets"] = policy_configuration["action_parameter"]["after_n_packets"]
+            action_parameter_dict["send_icmp_unreachable"] = policy_configuration["action_parameter"]["send_icmp_unreachable"]
+            action_parameter_dict["send_tcp_reset"] = policy_configuration["action_parameter"]["send_tcp_reset"]
+            if policy_configuration["action_parameter"]["sub_action"] == "block":
+                action_parameter_dict["code"] = policy_configuration["action_parameter"]["code"]
+                if "html_profile" in policy_configuration["action_parameter"].keys():
+                    action_parameter_dict["html_profile"] = policy_configuration["action_parameter"]["html_profile"]
+                elif "message" in policy_configuration["action_parameter"].keys():
+                    action_parameter_dict["message"] = policy_configuration["action_parameter"]["message"]
+                action_parameter_dict["packet_capture"] = {}
+                action_parameter_dict["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
+                action_parameter_dict["send_icmp_unreachable"] = policy_configuration["action_parameter"]["send_icmp_unreachable"]
+                action_parameter_dict["send_tcp_reset"] = policy_configuration["action_parameter"]["send_tcp_reset"]
+            elif policy_configuration["action_parameter"]["sub_action"] == "redirect":
+                # dns redirect
+                if "resolution" in policy_configuration["action_parameter"].keys() and len(policy_configuration["action_parameter"]["resolution"]) > 0:
+                    action_parameter_dict["resolution"] = [
+                        {
+                            "qtype":policy_configuration["action_parameter"]["resolution"][0]["qtype"],
+                            "answer":[]
+                        }
+                    ]
+                    for i in range(len(policy_configuration["action_parameter"]["resolution"][0]["answer"])):
+                        answer_dict = {}
+                        answer_dict["atype"] = policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["atype"]
+                        answer_dict["value"] = policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["value"]
+                        answer_dict["ttl"] = {
+                            "min": policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["ttl"]["min"],
+                            "max": policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["ttl"]["max"]
+                        }
+                        action_parameter_dict["resolution"]["answer"].append(answer_dict) 
+                # http redirect
+                else:
+                    action_parameter_dict["code"] = policy_configuration["action_parameter"]["code"]
+                    action_parameter_dict["to"] = policy_configuration["action_parameter"]["to"]
+            elif policy_configuration["action_parameter"]["sub_action"] == "alert":
+                action_parameter_dict["code"] = policy_configuration["action_parameter"]["code"]
+                if policy_configuration["action_parameter"]["code"] == 200 and "message" in policy_configuration["action_parameter"].keys():
+                    action_parameter_dict["message"] = policy_configuration["action_parameter"]["message"]
+                elif policy_configuration["action_parameter"]["code"] == 200 and "html_profile" in policy_configuration["action_parameter"].keys():
+                    action_parameter_dict["html_profile"] = policy_configuration["action_parameter"]["html_profile"]
+            elif policy_configuration["action_parameter"]["sub_action"] == "rate_limit":
+                action_parameter_dict["bps"] = policy_configuration["action_parameter"]["bps"]
+                action_parameter_dict["limitUnit"] = policy_configuration["action_parameter"]["limitUnit"]
+            elif policy_configuration["action_parameter"]["sub_action"] == "tamper":
+                action_parameter_dict["tamper_mode"] = policy_configuration["action_parameter"]["tamper_mode"]
+                if policy_configuration["action_parameter"]["tamper_mode"] == "sample":
+                    action_parameter_dict["sampling_method"] = policy_configuration["action_parameter"]["sampling_method"]
+                    action_parameter_dict["samples"] = policy_configuration["action_parameter"]["samples"]
+                    action_parameter_dict["batch_size"] = policy_configuration["action_parameter"]["batch_size"]      
+        elif policy_configuration["type"] == "monitor":
+            action_parameter_dict["packet_capture"] = {}
+            action_parameter_dict["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
+            if policy_configuration["action_parameter"]["packet_capture"]["enable"] == 1:
+                action_parameter_dict["packet_capture"]["capture_depth"] = policy_configuration["action_parameter"]["packet_capture"]["capture_depth"]
+            action_parameter_dict["traffic_mirroring"] = {}
+            action_parameter_dict["traffic_mirroring"]["enable"] = policy_configuration["action_parameter"]["traffic_mirroring"]["enable"]
+            if policy_configuration["action_parameter"]["traffic_mirroring"]["enable"] == 1:
+                action_parameter_dict["traffic_mirroring"]["vlanID"] = policy_configuration["action_parameter"]["traffic_mirroring"]["vlanID"]
+                action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]
+        elif policy_configuration["type"] == "statistics":   
+            action_parameter_dict = {
+                "template_profile" : policy_configuration["action_parameter"]["template_profile"]
+            } 
+        elif policy_configuration["type"] == "dos_protection" and policy_configuration["action"] == "protect":
+            if policy_configuration["action_parameter"]["mitigation"]["behavior"] == "deny":
+                action_parameter_dict["mitigation"] = {
+                    "behavior" : policy_configuration["action_parameter"]["mitigation"]["behavior"],
+                    "timeout" : policy_configuration["action_parameter"]["mitigation"]["timeout"]
+                }
+            elif policy_configuration["action_parameter"]["mitigation"]["behavior"] == "none":
+                action_parameter_dict["mitigation"] = {
+                    "behavior" : policy_configuration["action_parameter"]["mitigation"]["behavior"]
+                }
+            if policy_configuration["action_parameter"]["threshold"]["type"] == "concurrency":
+                action_parameter_dict["threshold"] = {
+                    "type" : policy_configuration["action_parameter"]["threshold"]["type"],
+                    "concurrency_threshold" :{
+                        "group_by" : policy_configuration["action_parameter"]["threshold"]["concurrency_threshold"]["group_by"],
+                        "concurrent_sessions" : policy_configuration["action_parameter"]["threshold"]["concurrency_threshold"]["concurrent_sessions"],
+                    }
+                }
+            elif policy_configuration["action_parameter"]["threshold"]["type"] == "rate":
+                action_parameter_dict["threshold"] = {
+                    "type" : policy_configuration["action_parameter"]["threshold"]["type"],
+                    "rate_threshold" :{
+                        "group_by" : policy_configuration["action_parameter"]["threshold"]["rate_threshold"]["group_by"],
+                        "request_per_period" : policy_configuration["action_parameter"]["threshold"]["rate_threshold"]["request_per_period"],
+                        "counting_period" : policy_configuration["action_parameter"]["threshold"]["rate_threshold"]["counting_period"],
+                    }
+                }
+        elif policy_configuration["type"] == "proxy_intercept":
+            proxy_intercept_template_path = self.parameter["root_path"] + "/support/api_utils/template/pre_intercept_template.json"
+            with open(proxy_intercept_template_path, 'r', encoding='utf-8') as f:
+                proxy_intercept_template_json = json.load(f)
+                default_keyring_for_untrusted_uuid = proxy_intercept_template_json["rule"]["action_parameter"]["keyring_for_untrusted"]
+                default_keyring_for_trusted_uuid = proxy_intercept_template_json["rule"]["action_parameter"]["keyring_for_trusted"]
+                default_decryption_profile_uuid = proxy_intercept_template_json["rule"]["action_parameter"]["decryption_profile"]
+                default_tcp_option_profile_uuid = proxy_intercept_template_json["rule"]["action_parameter"]["tcp_option_profile"]
+                traffic_mirror_enable = proxy_intercept_template_json["rule"]["action_parameter"]["traffic_mirroring"]["enable"]
+            action_parameter_dict = {
+                "keyring_for_trusted" : default_keyring_for_trusted_uuid,
+                "keyring_for_untrusted" : default_keyring_for_untrusted_uuid,
+                "tcp_option_profile" : default_tcp_option_profile_uuid,
+                "decryption_profile" : default_decryption_profile_uuid,
+                "traffic_mirroring" : {
+                    "enable" : traffic_mirror_enable
+                }
+            } 
+            for key in policy_configuration["action_parameter"].keys():
+                if key in {"keyring_for_trusted","keyring_for_untrusted","tcp_option_profile","decryption_profile"}:
+                    action_parameter_dict[key] = policy_configuration["action_parameter"][key]
+                elif key == "traffic_mirroring" and policy_configuration["action_parameter"][key]["enable"] == 1:
+                    action_parameter_dict[key]["enable"] = policy_configuration["action_parameter"][key]["enable"]
+                    action_parameter_dict[key]["vlanID"] = policy_configuration["action_parameter"][key]["vlanID"]
+                    action_parameter_dict[key]["mirroring_profile"] = policy_configuration["action_parameter"][key]["mirroring_profile"]
+                else:
+                    continue
+        elif policy_configuration["type"] == "proxy_manipulation":
+            if policy_configuration["action"] == "deny":
+                action_parameter_dict = {
+                    "sub_action" : policy_configuration["action_parameter"]["sub_action"]   
+                }
+                if "manipulation_block" in policy_configuration["action_parameter"].keys():
+                    action_parameter_dict["manipulation_block"] = policy_configuration["action_parameter"]["manipulation_block"]
+                    action_parameter_dict["code"] = policy_configuration["action_parameter"]["code"]
+                    if "message" in policy_configuration["action_parameter"].keys():
+                        action_parameter_dict["message"] = policy_configuration["action_parameter"]["message"]
+                    elif "html_profile" in policy_configuration["action_parameter"].keys():
+                        action_parameter_dict["html_profile"] = policy_configuration["action_parameter"]["html_profile"]
+            elif policy_configuration["action"] == "redirect":
+                action_parameter_dict["code"] = policy_configuration["action_parameter"]["code"]
+                action_parameter_dict["to"] = policy_configuration["action_parameter"]["to"]
+            elif policy_configuration["action"] == "modify":
+                if policy_configuration["action_parameter"]["sub_action"] == "replace_text":
+                    action_parameter_dict = {
+                        "sub_action" : policy_configuration["action_parameter"]["sub_action"],  
+                        "rules" : [] 
+                    }
+                    for i in range(len(policy_configuration["action_parameter"]["rules"])):
+                        rules_dict = {
+                            "regex_enable" : policy_configuration["action_parameter"]["rules"][i]["regex_enable"],
+                            "_id" : policy_configuration["action_parameter"]["rules"][i]["_id"],
+                            "search_in" : policy_configuration["action_parameter"]["rules"][i]["search_in"],
+                            "find" : policy_configuration["action_parameter"]["rules"][i]["find"],
+                            "replace_with" : policy_configuration["action_parameter"]["rules"][i]["replace_with"]
+                        }
+                        action_parameter_dict["rules"].append(rules_dict)
+                elif policy_configuration["action_parameter"]["sub_action"] == "replace_file":
+                    action_parameter_dict = {
+                        "sub_action" : policy_configuration["action_parameter"]["sub_action"],  
+                        "replacement_file" : policy_configuration["action_parameter"]["replacement_file"]
+                    }
+                elif policy_configuration["action_parameter"]["sub_action"] == "inject_javascript":
+                    action_parameter_dict = {
+                        "sub_action" : policy_configuration["action_parameter"]["sub_action"],  
+                        "js_file" : policy_configuration["action_parameter"]["js_file"],
+                        "injection_section" : policy_configuration["action_parameter"]["injection_section"]
+                    } 
+                elif policy_configuration["action_parameter"]["sub_action"] == "inject_css":
+                    action_parameter_dict = {
+                        "sub_action" : policy_configuration["action_parameter"]["sub_action"],  
+                        "css_file" : policy_configuration["action_parameter"]["css_file"]
+                    }
+                elif policy_configuration["action_parameter"]["sub_action"] == "edit_element":
+                    action_parameter_dict = {
+                        "sub_action" : policy_configuration["action_parameter"]["sub_action"],  
+                        "rules" : [] 
+                    }
+                    for i in range(len(policy_configuration["action_parameter"]["rules"])):
+                        rules_dict = {
+                            "anchor_element": {
+                                "contained_keyword" : policy_configuration["action_parameter"]["rules"][i]["anchor_element"]["contained_keyword"],
+                                "search_scope" : policy_configuration["action_parameter"]["rules"][i]["anchor_element"]["search_scope"]
+                            },
+                            "target_element": {
+                                "element_treatment" : policy_configuration["action_parameter"]["rules"][i]["target_element"]["element_treatment"],
+                                "target_distance_from_matching" : policy_configuration["action_parameter"]["rules"][i]["target_element"]["target_distance_from_matching"]
+                            }
+                        }
+                        if policy_configuration["action_parameter"]["rules"][i]["anchor_element"]["search_scope"] == "inside_element":
+                            rules_dict["anchor_element"]["start_indicator"] = policy_configuration["action_parameter"]["rules"][i]["anchor_element"]["start_indicator"]
+                        action_parameter_dict["rules"].append(rules_dict)
+            elif policy_configuration["action"] == "execute":  
+                action_parameter_dict = {
+                    "lua_script" : policy_configuration["action_parameter"]["lua_script"]
+                }
+        elif policy_configuration["type"] == "service_chaining":
+            action_parameter_dict = {
+                "targeted_traffic" : policy_configuration["action_parameter"]["targeted_traffic"],
+                "sff_profiles" : policy_configuration["action_parameter"]["sff_profiles"]
+            }
+
+        return action_parameter_dict
+
+    def create_pre_intercept_rule(self, policy_type, source_condition, enabled):
+        vsys = self.parameter["vsys"]
+        api_server = self.parameter["api_server"]
+        root_path = self.parameter["root_path"]
+        proxy_intercept_template_path = root_path + "/support/api_utils/template/pre_intercept_template.json"
+        try:
+            with open(proxy_intercept_template_path, 'r', encoding='utf-8') as f:
+                proxy_intercept_template_json = json.load(f)
+            and_condition = source_condition[0]
+            proxy_intercept_template_json["vsys"] = vsys
+            if policy_type == "service_chaining":
+                proxy_intercept_template_json["rule"]["name"] = "service_chaining_pre_intercept"
+            elif policy_type == "proxy_manipulation":
+                proxy_intercept_template_json["rule"]["name"] = "manipulation_pre_intercept"
+            proxy_intercept_template_json["return_data"] = 1
+            proxy_intercept_template_json["is_enabled"] = enabled
+            proxy_intercept_template_json["rule"]["and_conditions"].append(and_condition)
+            url = api_server + "/v1/policies/{}".format("proxy-intercept-rules")
+            response = requests.post(url, headers=self.headers, json= proxy_intercept_template_json, verify=False)
+            if response.status_code == 200:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create pre intercept rule successfully.", flush=True)
+                response_dict = json.loads(response.text)
+                uuid = self.get_uuids(response_dict)
+                rule_uuids_temp_dict = {
+                    "type" : "proxy_intercept",
+                    "uuid" : uuid,
+                    "name" : proxy_intercept_template_json["rule"]["name"],
+                    "attribute_name" : "PROXY_INTERCEPT_RULE"
+                }
+                return rule_uuids_temp_dict, ""
+            else:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create pre intercept rule failed.", flush=True)
+                return "", "Create pre intercept rule failed."
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating pre intercept rule, the exception error: ", str(e), flush=True)
+            return "", "When creating pre intercept rule, the exception error: " + str(e)
         
-    def get_uuids(self, response_dict, type):
-        if type == "security":
-            uuid = response_dict["data"]["rule"]["uuid"]
-            return uuid
+    def get_uuids(self, response_dict):
+        uuid = response_dict["data"]["uuid"]
+        return uuid

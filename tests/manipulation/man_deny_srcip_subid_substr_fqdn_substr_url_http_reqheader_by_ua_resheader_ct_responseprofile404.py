@@ -1,184 +1,271 @@
 # -*- coding: UTF-8 -*-
-import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-import traceback
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import time
+import pytz
 from datetime import datetime
-from support.common_utils.create_policy import CreatePolicy
+from support.ui_utils.workpath import workdir
+from support.ui_utils.ui_client import UIClient
+from support.api_utils.api_client import APIClient
+from support.packet_generator.traffic_generator import *
 from support.report_update import ReportUpdate
 
 
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+
         # 参数初始化
-        exception_result = ""
-        result = {}
+        result, exception_result = "", ""
+        test_summary = {}
 
         # 脚本启动时间
         start_time = time.time()
 
-        # 测试数据
-        test_data = {
-            "is_multi_priority": False,
-            "rule_num": 1,
-            "policy_type": "proxy_manipulation",
-            "rule_name": parameter["test_case_name"],
-            "rule_action": "deny",
-            "rule_type": "create",
-            "condition": {
-                "source_ip": [
+        policy_configuration = {
+            "name": "test_name",
+            "type": "proxy_manipulation",
+            "action": "deny",
+            "and_conditions": [
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_SOURCE_IP",
+                    "name": "manipulation_source_ip",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
                     {
-                        "name": "manipulation_source_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
-                            },
-                        ]
-                    }
-                ],
-                "sub_id": [
-                    {
-                        "name": "manipulation_subid",
-                        "object_type": "subscriberid",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "subscriberid",
-                                "item_value": "$" + parameter["test_subcriber_id"],
-                            }
-                        ]
-                    }
-                ],
-                "application": [
-                    {
-                        "name": "http",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
-                "server_fqdn": [
-                    {
-                        "name": "manipulation_fqdn_node",
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "fqdn",
-                                "item_value": "baidu.com",
-                            }
-                        ]
-                    }
-                ],
-                "protocol_filed": [
-                    {
-                        "name": "manipulation_url",
-                        "object_type": "url",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "baidu"
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "request_header",
-                                "item_key": "User-Agent",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "Chrome"
-                                ]
-                            }
-                        ],
-                    },
-                    {
-                        "name": "manipulation_res_header_http_signature",
-                        "object_type": "http_signature",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "statistics": "None",
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "response_header",
-                                "item_key": "Content-Type",
-                                "item_value": "TEXT",
-                                "value": [
-                                    "text/html"
-                                ]
-                            }
-                        ],
-                    },
-                ],
+                        "op": "add",
+                        "ip": "99.99.99.99",
+                        "interval": "0-65535"
+                    }]
+                }]
             },
-            "action_parameter": {
-                "response_page": [
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_SUBSCRIBER_ID",
+                    "name": "manipulation_subid",
+                    "type": "subscriberid",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
                     {
-                        "profile_type": "response_page",
-                        "response_code": 404,
-                        "response_content_type": "Profile",
-                        "profile_file": {
-                            "name": "manipulation_profile_page",
-                            "model": "create",
-                            "file": "testa.html"
-                        },
-                    }
-                ]
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "^test_tmp_subid$"
+                    }]
+                }]
             },
-            "expected_return": "This_is_test",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
-            "traffic": {
-                "protocol": "ssl",
-                "type": "curl",
-                "command": "curl --compressed -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.baidu.com"
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_APP_ID",
+                    "type": "application",
+                    "items": ["http"]
+                }]
             },
-            "token": ""
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_SERVER_FQDN",
+                    "name": "manipulation_fqdn",
+                    "type": "fqdn",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "baidu.com"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_URL",
+                    "name": "manipulation_url",
+                    "type": "url",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "baidu"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_REQ_HDR",
+                    "name": "manipulation_http_reqheader",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "Chrome"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_RES_HDR",
+                    "name": "manipulation_http_resheader",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "text/html"
+                    }]
+                }]
+            }],
+            "is_enabled": 1,
+            "log_option": "metadata",
+            "action_parameter":
+            {
+                "sub_action": "block",
+                "manipulation_block": "warning_page",
+                "code": 404,
+                "html_profile":
+                {
+                    "name": "manipulation_profile_page",
+                    "format": "html",
+                    "file_path": "response_testa.html"
+                }
+            }
         }
 
-        # 测试用例实例化
-        create = CreatePolicy(test_data, parameter)
-        result = create.create_policy()
+        traffic_generation = {
+            "tool": "ssl",  # or trex/http
+            "command": "curl --compressed -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.baidu.com"
+        }
 
-        # 脚本结束时间和耗时
+        verification_result = {
+            "excepted_traffic_result": "This_is_test",
+            "expected_metric": {"hits": 1},
+            "expected_log": [
+                {"query_field_key": "http_host", "query_value": "www.baidu.com"},
+                {"query_field_key": "decoded_as", "query_value": "HTTP"}
+            ]
+        }
+
+        # 创建
+        if parameter["initiation_method"] == "ui":
+            ui_client = UIClient()
+            rules_tuple, ui_error = ui_client.create_rules(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
+        elif parameter["initiation_method"] == "api":
+            api_client = APIClient(parameter)
+            # {uuid, type}, i.e., {"12341-232-a21", "ip"}
+            objects_tuple, api_error = api_client.create_objects(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            libraries_tuple, api_error = api_client.create_libraries(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, libraries_tuple, profiles_tuple)
+            if len(api_error) > 0:
+                return api_error
+
+        # 等待下发配置生效
+        time.sleep(3)
+
+        # 类实例化
+        generator = TrafficGenerator()
+
+        # 获取当前时间
+        utc_tz = pytz.timezone('UTC')
+        current_utc_time = datetime.now(utc_tz)
+        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+        # 触发流量
+        traffic_result = generator.run(policy_configuration, traffic_generation)
+
+        # 验证流量生成器的返回值是否符合策略执行的预期
+        excepted_traffic_result, error = generator.result(verification_result, traffic_result)
+        if excepted_traffic_result == False:
+            return error
+
+        # 验证tsg的日志是否符合策略执行的预期
+        if parameter["initiation_method"] == "ui":
+            log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time, traffic_result)
+        if log_result == True:
+            test_summary["log"] = "Pass."
+        elif log_result == False:
+            test_summary["log"] = "The failure reason: the returned log does not match the expected result."
+        elif log_result == None:
+            test_summary["log"] = "The failure reason: the returned log is empty."
+        elif len(log_result) > 0:
+            test_summary["log"] = log_result
+
+        # 验证tsg的metric是否符合策略执行的预期
+        if parameter["initiation_method"] == "ui":
+            metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
+        if metric_result == True:
+            test_summary["metric"] = "Pass."
+        elif metric_result == False:
+            test_summary["metric"] = "The failure reason: the returned metric does not match the expected result."
+        elif metric_result == None:
+            test_summary["metric"] = "The failure reason: the returned metric is empty."
+        elif len(metric_result) > 0:
+            test_summary["metric"] = metric_result
+
+        return test_summary
+    except Exception as e:
+        exception_result = str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
+        return "When running test case, the exception error: " + str(e)
+    finally:
+        # 删除
+        if parameter["initiation_method"] == "ui":
+            if not rules_tuple:
+                ui_client.delete_rules(parameter, policy_configuration)
+        elif parameter["initiation_method"] == "api":
+            if not rules_tuple:
+                api_client.delete_rules(rules_tuple)
+            if not profiles_tuple:
+                api_client.delete_profiles(profiles_tuple)
+            if not libraries_tuple:
+                api_client.delete_libraries(libraries_tuple)
+            if not objects_tuple:
+                api_client.delete_objects(objects_tuple)
+
+        # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
-        return result
-    except Exception as e:
-        exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
-        traceback.print_exc()
-        return "Error: " + str(e)
-    finally:
-        # 清理环境
-        if isinstance(create, CreatePolicy):
-            create.clean_up()
+
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
@@ -186,7 +273,6 @@ def run(parameter):
 
 if __name__ == '__main__':
     from support.ui_utils.element_position.map_element_position_library import replace_paras
-    from support.ui_utils.workpath import workdir
 
     parameter = {
         "username": "zcw3",
@@ -195,15 +281,13 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "api",  # api  ui  空字符串
-        "is_log": 1,
+        "initiation_method": "api",  # api  ui  空字符串
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys": 1,
         "root_path": workdir,
-        "path": workdir + "/testcase/ui",
+        "path": workdir + "/tests",
         "module_name": "manipulation",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
     parameter = replace_paras(parameter)
     run(parameter)
-    

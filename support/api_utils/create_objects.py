@@ -31,6 +31,7 @@ class CreateObjects:
                                     object_template_json["object"]["sub_type"] = object_temp[j]["sub_type"]
                                 if object_temp[j]["type"] == "tunnel":
                                     object_template_json["object"]["member_type"] = "tunnel"
+                                # elif object_temp[j]["type"] == "tunnel":
                                 else:
                                     object_template_json["object"]["member_type"] = "item"
                                 
@@ -50,15 +51,15 @@ class CreateObjects:
                                         tunnel["and_conditions"][k]["or_conditions"] = []
                                         # tunnel_or_conditions_list = []
                                         for l in range(len(tunnel_or_conditions)):
-                                            ip_object_uuids_list = []
-                                            ip_object_uuids_list = self.create_common_objects(api_server, ip_object_uuids_list, object_template_json, tunnel_or_conditions, l, "ip", "")
-                                            for item in ip_object_uuids_list:
-                                                object_ip_uuid_list = []
-                                                uuid = item["uuid"]
-                                                object_ip_uuid_list.append(uuid)
-                                                attribute_name = item["attribute_name"]
-                                                or_condition_dict = dict(attribute_name = attribute_name, object_uuids = object_ip_uuid_list)
-                                                tunnel["and_conditions"][k]["or_conditions"].append(or_condition_dict)
+                                            object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, tunnel_or_conditions, l, "ip", "")
+                                    for s in range(len(object_uuids_list)): 
+                                        item = object_uuids_list[s]
+                                        object_ip_uuid_list = []
+                                        uuid = item["uuid"]
+                                        object_ip_uuid_list.append(uuid)
+                                        attribute_name = item["attribute_name"]
+                                        or_condition_dict = dict(attribute_name = attribute_name, object_uuids = object_ip_uuid_list)
+                                        tunnel["and_conditions"][s]["or_conditions"].append(or_condition_dict)
 
                                     object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, object_temp, j, "tunnel", tunnel)
                             elif object_temp[j]["type"] in ["ip_protocol", "boolean"] or ("sub_type" not in object_temp[j] and object_temp[j]["type"] == "application"):
@@ -70,7 +71,75 @@ class CreateObjects:
                                 object_uuids_temp_dict["uuid"] = self.query_uuids_by_sql(item_temp, api_server, object_temp[j]["type"])
                                 object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
                                 object_uuids_list.append(object_uuids_temp_dict)
-
+                            elif object_temp[j]["type"] == "application" and "sub_type" in object_temp[j]:
+                                object_template_json["object"]["sub_type"] = object_temp[j]["sub_type"]
+                                object_template_json["object"]["type"] = object_temp[j]["type"]
+                                if "name" in object_template_json["object"]:
+                                    del object_template_json["object"]["name"]
+                                application = {}
+                                app_surrogates = object_temp[j]["application"]["app_surrogates"]
+                                application["app_surrogates"] = []
+                                application["app_properties"] = object_temp[j]["application"]["app_properties"]
+                                application["app_name"] = object_temp[j]["application"]["app_name"]
+                                application["app_longname"] = object_temp[j]["application"]["app_longname"]
+                                for m in range(len(app_surrogates)):
+                                    application["app_surrogates"].append({})
+                                    application["app_surrogates"][m]["group_by"] = app_surrogates[m]["group_by"]
+                                    application["app_surrogates"][m]["ordered_match"] = app_surrogates[m]["ordered_match"]
+                                    application["app_surrogates"][m]["signature_sequence"] = []
+                                    application["app_surrogates"][m]["signature_sequence"].append({})
+                                    signature_sequence = app_surrogates[m]["signature_sequence"]
+                                    # 在signature_sequence中配置signature_uuid
+                                    for n in range(len(signature_sequence)):
+                                        signature = {}
+                                        signature["and_conditions"] = []
+                                        signature["name"] = signature_sequence[n]["signature"]["name"]
+                                        signature["is_enabled"] = signature_sequence[n]["signature"]["is_enabled"]
+                                        signature_and_conditions = signature_sequence[n]["signature"]["and_conditions"]
+                                        for o in range(len(signature_and_conditions)):
+                                            signature["and_conditions"].append({})
+                                            signature["and_conditions"][o]["negate_option"] = signature_and_conditions[o]["negate_option"]
+                                            signature["and_conditions"][o]["or_conditions"] = []
+                                            signature_object_temp = signature_and_conditions[o]["or_conditions"]
+                                            for p in range(len(signature_and_conditions)):
+                                                if signature_object_temp[p]["type"] not in ["library", "ip_protocol", "boolean", "application"]:
+                                                    object_template_json["vsys"] = vsys
+                                                    if "sub_type" in signature_object_temp[p]:
+                                                        object_template_json["object"]["sub_type"] = signature_object_temp[p]["sub_type"]
+                                                    if signature_object_temp[p]["type"] == "tunnel":
+                                                        object_template_json["object"]["member_type"] = "tunnel"
+                                                    # elif object_temp[j]["type"] == "tunnel":
+                                                    else:
+                                                        object_template_json["object"]["member_type"] = "item"
+                                                    
+                                                    if signature_object_temp[p]["type"] != "tunnel":
+                                                        # 创建objects
+                                                        for r in range(len(signature_object_temp)):
+                                                            # signature_object_uuids_list = []
+                                                            object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, signature_object_temp, p, signature_object_temp[p]["type"], "")
+                                                            for item in object_uuids_list:
+                                                                signature_object_uuid_list = []
+                                                                uuid = item["uuid"]
+                                                                signature_object_uuid_list.append(uuid)
+                                                                attribute_name = item["attribute_name"]
+                                                                or_condition_dict = dict(attribute_name = attribute_name, object_uuids = signature_object_uuid_list)
+                                                                signature["and_conditions"][r]["or_conditions"].append(or_condition_dict)
+                                                        # 创建signature
+                                                        signature_dict = dict(vsys = vsys, signature = signature, return_data = 1)
+                                                        object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, signature_object_temp, n, "signature", signature_dict)
+                                        # 提取signature，组织application数据
+                                        for t in range(len(object_uuids_list)):
+                                            if object_uuids_list[t]["type"] == "signature":
+                                                signature_uuid = object_uuids_list[t]["uuid"]
+                                                application["app_surrogates"][m]["signature_sequence"][m]["signature_uuid"] = signature_uuid
+                                                application["app_surrogates"][m]["signature_sequence"][m]["exclude"] = signature_sequence[m]["exclude"]
+                                object_template_json["object"]["application"] = application
+                                if "name" in object_template_json["object"]:
+                                    del object_template_json["object"]["name"]
+                                if "items" in object_template_json["object"]:
+                                    del object_template_json["object"]["items"]
+                                # 请求接口创建application
+                                object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, object_temp, j, "application", "")
             object_uuids_tuple = tuple(object_uuids_list)
             return object_uuids_tuple, ""
         except Exception as e:
@@ -78,7 +147,10 @@ class CreateObjects:
             return "" ,"When creating object, the exception error: " + str(e)
 
     def get_uuids(self, response_dict, type):
-        uuid = response_dict["data"]["object"]["uuid"]
+        if type != "signature":
+            uuid = response_dict["data"]["object"]["uuid"]
+        else:
+            uuid = response_dict["data"]["uuid"]
         return uuid
     def query_uuids_by_sql(self, item_temp, api_server, type):
         mysql_host = api_server[7:]
@@ -133,7 +205,7 @@ class CreateObjects:
                     "ip_protocol": "ip-protocols",
                     "tunnel_level": "tunnel-levels"
                 }
-            if object_type != "tunnel":
+            if object_type not in ["tunnel", "application", "signature"]:
                 item_temp = object_temp[j]["items"]
                 item_list = []
                 if object_type == "ip":
@@ -152,35 +224,109 @@ class CreateObjects:
                         item_dict = {}
                         item_dict = dict(op=item_temp[t]["op"], interval=item_temp[t]["interval"])
                         item_list.append(item_dict)
+                elif object_type == "flag":
+                    for t in range(len(item_temp)):
+                        item_dict = {}
+                        flag, mask = self.compute_flags(item_temp[t]["flag"])
+                        item_dict = dict(op=item_temp[t]["op"], flag = str(flag), mask = str(mask))
+                        item_list.append(item_dict)
                 object_template_json["object"]["items"] = item_list
-
                 object_template_json["object"]["type"] = object_temp[j]["type"]
                 object_template_json["object"]["name"] = object_temp[j]["name"]
-                url = api_server + "/v1/objects/{}".format(object_type_dict[object_temp[j]["type"]])
-                response = requests.post(url, headers=self.headers, json=object_template_json, verify=False)
-                if response.status_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_template_json["object"]["type"].replace("_", " ")), flush=True)
-                    response_dict = json.loads(response.text)
-                    object_uuids = self.get_uuids(response_dict, object_temp[j]["type"])
-                    object_uuids_temp_dict = {}
-                    object_uuids_temp_dict["type"] = object_temp[j]["type"]
-                    object_uuids_temp_dict["uuid"] = object_uuids
-                    object_uuids_temp_dict["name"] = object_temp[j]["name"]
-                    object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
-                    object_uuids_list.append(object_uuids_temp_dict)
-                else:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object failed.".format(object_template_json["object"]["type"].replace("_", " ")), flush=True)
-                    return "", "Create {} object failed.".format(object_template_json["object"]["type"].replace("_", " ")) 
-            if object_type == "tunnel":
+            elif object_type == "tunnel":
                 object_template_json["object"]["type"] = object_temp[j]["type"]
                 object_template_json["object"]["name"] = object_temp[j]["name"]
-                del object_template_json["object"]["items"]
+                if "items" in object_template_json["object"]:
+                    del object_template_json["object"]["items"]
                 object_template_json["object"]["tunnel"] = {}
                 object_template_json["object"]["tunnel"] = item_uuids_list
+            elif object_type == "application":
+                object_template_json["object"]["type"] = object_temp[j]["type"]
+                object_template_json["object"]["member_type"] = "application"
+            if object_type != "signature":
                 url = api_server + "/v1/objects/{}".format(object_type_dict[object_temp[j]["type"]])
                 response = requests.post(url, headers=self.headers, json=object_template_json, verify=False)
+            elif object_type == "signature":
+                # signature_dict = dict(vsys = vsys, signature = item_uuids_list)
+                url = api_server + "/v1/objects//applications/customized-signatures"
+                response = requests.post(url, headers=self.headers, json=item_uuids_list, verify=False)
+            if response.status_code == 200:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
+                response_dict = json.loads(response.text)
+                object_uuids = self.get_uuids(response_dict, object_type)
+                object_uuids_temp_dict = {}
+                if object_type != "signature":
+                    object_uuids_temp_dict["type"] = object_temp[j]["type"]
+                elif object_type == "signature":
+                    object_uuids_temp_dict["type"] = "signature"
+                object_uuids_temp_dict["uuid"] = object_uuids
+                object_uuids_temp_dict["name"] = object_temp[j]["name"]
+                if object_type != "signature":
+                    object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
+                object_uuids_list.append(object_uuids_temp_dict)
+            else:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object failed.".format(object_template_json["object"]["type"].replace("_", " ")), flush=True)
+                return "", "Create {} object failed.".format(object_template_json["object"]["type"].replace("_", " ")) 
             return object_uuids_list
         except Exception as e:
             exception_result = str(e)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
             return "When running test case, the exception error: " + str(e)
+    def compute_flags(self, config):  
+        # 解析 JSON 字符串到字典  
+        # config = json.loads(config_json)  
+        
+        # 初始化 flag 和 mask  
+        flag = 0  
+        mask = 0  
+
+        # 根据输入字典里的值设置 flag 和 mask，第0位不对应任何flag，从第1位开始
+        if 'Bulky' in config:  
+            flag |= (1 << 1) if config['Bulky'] else 0  #   
+            mask |= (1 << 1)   
+        if 'CBR Streaming' in config:  
+            flag |= (1 << 2) if config['cbr_streaming'] else 0  
+            mask |= (1 << 2)  
+        if 'Client is Local' in config:  
+            flag |= (1 << 3) if config['Client is Local'] else 0  
+            mask |= (1 << 3)
+        if 'Server is Local' in config:  
+            flag |= (1 << 4) if config['Server is Local'] else 0  
+            mask |= (1 << 4) 
+        if 'Download' in config:  
+            flag |= (1 << 5) if config['Download'] else 0  
+            mask |= (1 << 5) 
+        if 'Interactive' in config:  
+            flag |= (1 << 6) if config['Interactive'] else 0  
+            mask |= (1 << 6) 
+        if 'Inbound' in config:  
+            flag |= (1 << 7) if config['Inbound'] else 0  
+            mask |= (1 << 7) 
+        if 'Outbound' in config:  
+            flag |= (1 << 8) if config['Outbound'] else 0  
+            mask |= (1 << 8) 
+        if 'Pseudo Unidirectional' in config:  
+            flag |= (1 << 9) if config['Pseudo Unidirectional'] else 0  
+            mask |= (1 << 9) 
+        if 'Streaming' in config:  
+            flag |= (1 << 10) if config['Streaming'] else 0  
+            mask |= (1 << 10) 
+        if 'Unidirectional' in config:  
+            flag |= (1 << 11) if config['Unidirectional'] else 0  
+            mask |= (1 << 11) 
+        if 'Random looking' in config:  
+            flag |= (1 << 12) if config['Random looking'] else 0  
+            mask |= (1 << 12) 
+        if 'C2S' in config:  
+            flag |= (1 << 13) if config['C2S'] else 0  
+            mask |= (1 << 13) 
+        if 'S2C' in config:  
+            flag |= (1 << 14) if config['S2C'] else 0  
+            mask |= (1 << 14) 
+        if 'Bidirectional' in config:  
+            flag |= (1 << 15) if config['Bidirectional'] else 0  
+            mask |= (1 << 15) 
+        if 'Tunneling' in config:  
+            flag |= (1 << 16) if config['Tunneling'] else 0  
+            mask |= (1 << 16)    
+        return flag, mask  

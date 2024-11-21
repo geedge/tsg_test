@@ -62,7 +62,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "baidu.com"
+                                    "expression": "baidu.com"
                                 }
                             ]
                         }
@@ -81,7 +81,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "baidu"
+                                    "expression": "baidu"
                                 }
                             ]
                         }
@@ -100,7 +100,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "Chrome"
+                                    "expression": "Chrome"
                                 }
                             ]
                         }
@@ -119,7 +119,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "interval": "text/html"
+                                    "expression": "text/html"
                                 }
                             ]
                         }

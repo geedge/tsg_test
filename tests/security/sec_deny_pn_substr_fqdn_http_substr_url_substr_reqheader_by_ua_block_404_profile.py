@@ -132,7 +132,7 @@ def run(parameter):
                         "profile_file": {
                             "name": "sec_res",
                             "model": "create",
-                            "file": "testa.html"
+                            "file": "response_testa.html"
                         },
                     }
                 ]

@@ -83,6 +83,40 @@ def run(parameter):
                 "packet_capture": [],
             },
             "multiProfile": True,
+            "action_parameter": {
+                "targeted_traffic": "raw",
+                "sff_profiles": [
+                    {
+                        "name": "autotest",
+                        "type": 2,
+                        "load_balance_method": "hash-int-ip",
+                        "load_balance_localization": "nearby",
+                        "failure_action": "bypass",
+                        "service_func_profiles": [
+                            {
+                                "name": "vlan_none",
+                                "admin_status": 1,
+                                "device_group": {
+                                    "value": "group-xxg-tsgx",
+                                    "tag": "data_center"
+                                },
+                                "connectivity": {
+                                    "method": "layer2_switch",
+                                    "int_vlan_tag": "random",
+                                    "ext_vlan_tag": "random",
+                                    "dest_ip": "110"
+                                },
+                                "health_check": {
+                                    "method": "none",
+                                    "interval_ms": 200,
+                                    "retires": 5
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            """
             "profile": [
                 {
                     "name": "mirror_bypass_vlan_none",
@@ -103,6 +137,7 @@ def run(parameter):
                     ]
                 }
             ],
+            """
             "log_query_param": [{"query_field_key": "sc_rsp_decrypted", "query_value": ""}],
             "traffic":{
                 "protocol": "ssl",

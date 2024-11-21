@@ -17,26 +17,18 @@ def run(parameter):
 
         #测试数据
         policy_configuration =  {
-            "case_type": "single",
             "name": "test",
-            "type": "ip",
-            "sub_type": "ip",
+            "type": "port",
             "member_type": "item",
             "items":[
                 {
                     "op": "add",
-                    "ip": "1.1.1.1",
-                    "interval": "0-65535"
-                },
-                {
-                    "op": "add",
-                    "ip": "192.168.2.1/24",
-                    "interval": "0-65535"
+                    "interval": "1-65535"
                 }
             ],
             "search": {
                 "is_fuzzy": False,
-                "type": "id"
+                "type": "uuid"
             },
             "statistics_option": "",  # random
             "audit_log": False  # system
@@ -57,9 +49,9 @@ def run(parameter):
 
     finally:
         # 删除
-        if parameter["initiation_method"] == "ui":
-            if not objects_tuple:
-                ui_client.delete_rules(parameter, policy_configuration)
+        # if parameter["initiation_method"] == "ui":
+        #     if not objects_tuple:
+        #         ui_client.delete_rules(parameter, policy_configuration)
         # elif parameter["initiation_method"] == "api":
         #
         #     if not rules_tuple:

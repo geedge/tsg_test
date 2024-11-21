@@ -29,7 +29,7 @@ class QueryRuleLog:
                         if len(error) != 0:
                             return error
                         if self.rule_type == "dos_protection":
-                            log_result = self.verify_dos_log(log_dict, verification_result)
+                            log_result = self.verify_dos_log(log_dict, verification_result, start_time, end_time)
                         else:
                             log_result = self.verify_log(log_dict, verification_result)
                     if log_result != None:
@@ -49,6 +49,7 @@ class QueryRuleLog:
         
     def get_log(self, traffic_generation, rule_uuids_tuple, start_time, end_time):
         try:
+            self.traffic_generation = traffic_generation
             rule_uuids_list = list(rule_uuids_tuple)
             rule_uuid = rule_uuids_list["uuid"]
             headers = {'Content-Type': 'application/json', 'Authorization': self.token}
@@ -305,8 +306,6 @@ class QueryRuleLog:
                                     temp_log_result_list.append(True)
                                 else:
                                     temp_log_result_list.append(False)
-                    elif query_field_key in dos_verification_fields:
-                        print("to be added...")
                     else:
                         temp_log_result_list.append(False)
                 if self.rule_type == 'pxy_intercept' and len(temp_log_result_list) < len(log_query):
@@ -352,5 +351,155 @@ class QueryRuleLog:
                     action_parameter_list.append(or_conditions[j]["attribute_name"])
         return action_parameter_list
                     
-    def verify_dos_log(self, log_dict, verification_result):
-        print("to be added...")
+    def verify_dos_log(self, log_dict, verification_result, start_time, end_time):
+        self.verification_result = verification_result
+        log_query = verification_result['expected_log']
+        temp_log_result_list = []
+        if len(log_dict) > 0 and len(log_query) > 0:
+            count = -1
+            for log in log_dict:
+                count += 1
+                for log_query_param in log_query:
+                    query_field_key = log_query_param["query_field_key"]
+                    # query_value = log_query_param["query_value"]
+                    dos_verification_fields = [
+                        "sessions", "session_rate", "packets", "packet_rate", "bytes", "bit_rate", "rule_uuid", "source_ip", "destination_ip"
+                    ]
+                    if query_field_key in dos_verification_fields:
+                        temp_log_result_list = self.verify_value_from_dos_event(log, query_field_key, count, start_time, end_time)
+                if len(temp_log_result_list) < len(log_query):
+                    if True in temp_log_result_list:
+                        log_result = True
+                    else:
+                        log_result = False
+                elif False not in temp_log_result_list:
+                    log_result = True
+                else:
+                    log_result = False
+        elif len(log_dict) == 0 and len(log_query) > 0:
+            log_result = None
+        elif len(log_query) == 0:
+            log_result = True
+        return log_result
+    
+    def verify_value_from_dos_event(self, log, query_field_key, count, start_time, end_time):
+        session_number, total_packets, total_bytes = self.get_value_from_session_record(start_time, end_time)
+        if self.policy_configuration["action_parameter"]["mitigation"]["behavior"] == "deny":
+            expected_session_number = session_number
+        elif self.policy_configuration["action_parameter"]["mitigation"]["behavior"] == "none" and log["sessions"] < session_number:
+            expected_session_number = log["sessions"]
+        else:
+            # log_result_list.append(False)
+            # expected_session_number = -1
+            return [False]
+        log_result_list = []
+        time_diff = log["end_time"] - log["start_time"]
+        expected_packets_count = expected_session_number * total_packets
+        expected_bytes_count = expected_session_number * total_bytes
+        if query_field_key == "sessions":
+            if expected_session_number == log[query_field_key]:
+                log_result_list.append(True)
+                self.verification_result["expected_log"][count]["query_value"] = log[query_field_key]  # count，第几次循环，则给log_query_param中的第几次-1的数赋值
+            else:
+                log_result_list.append(False)
+        elif query_field_key == "packets":
+            if expected_packets_count == log[query_field_key]:
+                log_result_list.append(True)
+                self.verification_result["expected_log"][count]["query_value"] = log[query_field_key]
+            else:
+                log_result_list.append(False)
+        elif query_field_key == "bytes": #大于0且是个整数
+            if log[query_field_key] > 0 and expected_bytes_count == log[query_field_key]:
+                log_result_list.append(True)
+                self.verification_result["expected_log"][count]["query_value"] = log[query_field_key]
+            else:
+                log_result_list.append(False)
+        elif query_field_key == "bit_rate":
+            bits_rate_value = (log["bytes"] * 8) / time_diff
+            if bits_rate_value == log[query_field_key]:
+                log_result_list.append(True)
+                self.verification_result["expected_log"][count]["query_value"] = log[query_field_key]
+            else:
+                log_result_list.append(False)
+        elif query_field_key == "session_rate":
+            session_rate = expected_session_number / time_diff
+            if session_rate == log[query_field_key]:
+                log_result_list.append(True)
+                self.verification_result["expected_log"][count]["query_value"] = log[query_field_key]
+            else:
+                log_result_list.append(False)
+        elif query_field_key == "packet_rate":
+            packet_rate = expected_packets_count / time_diff
+            if packet_rate == log[query_field_key]:
+                log_result_list.append(True)
+                self.verification_result["expected_log"][count]["query_value"] = log[query_field_key]
+            else:
+                log_result_list.append(False)
+        elif query_field_key in ["basic_attack_type", "basic_sessions","basic_session_rate", "basic_packets", "basic_packet_rate","basic_bytes", "basic_bit_rate"]:
+            log_result_list.append(True)
+        elif query_field_key == "rule_uuid":
+            if len(log["rule_uuid"]) > 0:
+                log_result_list.append(True)
+                self.verification_result["expected_log"][count]["query_value"] = log["rule_uuid"]
+            else:
+                log_result_list.append(False)
+        elif query_field_key == "source_ip" :
+            if self.traffic_generation["clients_start_ip"] == log ["source_ip"]:
+                log_result_list.append(True)
+                self.verification_result["expected_log"][count]["query_value"] = log["source_ip"]
+            else:
+                log_result_list.append(False)
+        elif query_field_key == "destination_ip":
+            if self.traffic_generation["servers_start_ip"] == log[query_field_key]:
+                log_result_list.append(True)
+                self.verification_result["expected_log"][count]["query_value"] = log[query_field_key]
+            else:
+                log_result_list.append(False)
+        else:
+            log_result_list.append(False)
+        return log_result_list
+    
+    def get_value_from_session_record(self, start_time, end_time):
+        headers = {'Content-Type': 'application/json', 'Authorization': self.token}
+        log_condition = {
+            "page_no": 1,
+            "page_size": 20,
+            "source": "session_record",
+            "columns": None,
+            "start_time": "",
+            "end_time": "",
+            "filter": "",
+            "vsys": 1
+        }
+        schema_type = "session_record"
+        log_condition_dict = json.loads(json.dumps(log_condition))
+        fields = self.get_log_schema(self.token, schema_type, self.parameter["api_server"], self.parameter["vsys"])
+        log_condition_dict['columns'] = fields
+        log_condition_dict['start_time'] = start_time
+        log_condition_dict['end_time'] = end_time
+        log_condition_dict['vsys'] = self.parameter["vsys"]
+        log_condition_dict['source'] = "session_record"
+        log_condition_dict['identifier_name'] = "session-record-list"
+        log_condition_dict['execution_mode'] = 'oneshot'
+        if self.policy_configuration["action_parameter"]["mitigation"]['behavior']== "none":
+            log_condition_dict['filter'] = f"server_ip='{self.traffic_generation['servers_start_ip']}'"
+        elif self.policy_configuration["action_parameter"]["mitigation"]['behavior'] == "deny":
+            json_str = json.dumps(self.policy_configuration)
+            if self.is_attribute_name_exsit("ATTR_APP_ID") and "dns" in json_str:
+                log_condition_dict['filter'] = f"server_ip='{self.traffic_generation['servers_start_ip']}'AND received_pkts in (0)"
+            else:
+                log_condition_dict['filter'] = f"server_ip='{self.traffic_generation['servers_start_ip']}'AND received_pkts in (0,1)"
+        url = self.parameter["api_server"] + "/v1/logs/query".format(self.parameter["vsys"])
+        response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
+        assert response.status_code == 200
+        log_list = json.loads(response.text)
+        log_list = log_list['data']['list']
+        log_entry= log_list[0]
+        received_pkts = log_entry['received_pkts']
+        sent_pkts = log_entry['sent_pkts']
+        total_packets = received_pkts + sent_pkts
+        received_bytes = log_entry['received_bytes']
+        sent_bytes = log_entry['sent_bytes']
+        total_bytes = received_bytes + sent_bytes
+        session_number = len(log_list)
+        return session_number, total_packets, total_bytes
