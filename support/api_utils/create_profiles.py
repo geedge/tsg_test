@@ -38,9 +38,9 @@ class CreateProfiles:
                     for sf_profile in sff_profile["service_func_profiles"]:
                         if "connectivity" in sf_profile.keys():
                             if "int_vlan_tag" in sf_profile["connectivity"].keys() and "random" == sf_profile["connectivity"]["int_vlan_tag"]:
-                                   sf_profile["connectivity"]["int_vlan_tag"] = self.random_vlan_id
+                                   sf_profile["connectivity"]["int_vlan_tag"] = self.random_vlan_id()
                             if "ext_vlan_tag" in sf_profile["connectivity"].keys() and "random" == sf_profile["connectivity"]["ext_vlan_tag"]:
-                                   sf_profile["connectivity"]["ext_vlan_tag"] = self.random_vlan_id
+                                   sf_profile["connectivity"]["ext_vlan_tag"] = self.random_vlan_id()
                         profile_type = "service-functions"
                         sf_uuids, sf_temp = self.create_text_profile(sf_profile, profile_type)
                         sf_profile_list.append(sf_uuids)

@@ -225,10 +225,8 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
         elif parameter["initiation_method"] == "api":
-            """
             log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time,
                                                    traffic_result)
-            """
             log_result = True
         if log_result == True:
             test_summary["log"] = "Pass."

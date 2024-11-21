@@ -154,7 +154,7 @@ def run(parameter):
         }
 
         verification_result = {
-            "expected_result": "",
+            "expected_result": {"total_bytes": 94679, "total_bytes_received": 93284, "total_bytes_sent": 1395, "total_packets": 87, "total_packets_received": 65, "total_packets_sent": 22, "total_syn_pkt": 1},
             "metric_query": {"hits": 1},
             "log_query": [
                 {"query_field_key": "decoded_as", "query_value": "HTTP"},
@@ -170,7 +170,7 @@ def run(parameter):
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
 
-            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token)
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token,())
             organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
 
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
@@ -248,14 +248,23 @@ def run(parameter):
             if not rules_tuple:
                 ui_client.delete_rules(parameter, policy_configuration)
         elif parameter["initiation_method"] == "api":
+
             if not rules_tuple:
+                print("No Rules to be delete!")
+            else:
                 api_client.delete_rules(rules_tuple)
-            if not profiles_tuple:
-                api_client.delete_profiles(profiles_tuple)
-            if not libraries_tuple:
-                api_client.delete_libraries(libraries_tuple)
             if not objects_tuple:
+                print("No Objects to be delete!")
+            else:
                 api_client.delete_objects(objects_tuple)
+            if not libraries_tuple:
+                print("No Objects to be delete!")
+            else:
+                api_client.delete_libraries(libraries_tuple)
+            if not profiles_tuple:
+                print("No Profiles to be delete!")
+            else:
+                api_client.delete_profiles(profiles_tuple)
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
