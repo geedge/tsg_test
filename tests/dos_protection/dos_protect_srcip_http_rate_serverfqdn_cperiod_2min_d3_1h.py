@@ -81,7 +81,7 @@ def run(parameter):
 
         traffic_generation = {
             "protocol": "",
-            "type": "trex",
+            "tool":"trex",
             "clients_start_ip": "1.1.1.1",
             "clients_end_ip": "1.1.1.1",
             "servers_start_ip": "2.1.2.32",
@@ -224,6 +224,7 @@ if __name__ == '__main__':
         "root_path": workdir,
         "path": workdir + "/tests",
         "module_name": "dos_protection",
-        "test_case_name": os.path.basename(__file__)[:-3]
+        "test_case_name": os.path.basename(__file__)[:-3],
+        "debug_flag":"local"
     }
     run(parameter)
