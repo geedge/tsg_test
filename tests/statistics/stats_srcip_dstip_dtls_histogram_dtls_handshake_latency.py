@@ -163,7 +163,7 @@ def run(parameter):
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
 
-            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token)
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
             organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
 
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
