@@ -30,13 +30,20 @@ class DeleteObjects:
                 "tunnel_level": "tunnel-levels"
             }
             object_uuids_list = list(object_uuids_tuple)
+            object_uuids_list.reverse()
             for i in range(len(object_uuids_list)):
                 type = object_uuids_list[i]["type"]
                 deleted_object_dict = {"type": type, "uuids": [], "vsys": 1}
-                deleted_object_dict["uuids"] = object_uuids_list[i]
+                deleted_object_dict["uuids"].append(object_uuids_list[i]["uuid"])
                 deleted_object_dict["vsys"] = vsys
-                url = api_server + "/v1/objects/{}".format(object_type_dict[type])
-                response = requests.delete(url, headers=self.headers, params=deleted_object_dict, verify=False)
+                if type == "signature":
+                    url = api_server + "/v1/objects/applications/customized-signatures"
+                elif type == "user_defined_attribute":
+                    url = api_server + "/v1/objects/applications/customized-attributes"
+                else:
+                    url = api_server + "/v1/objects/{}".format(object_type_dict[type])
+                
+                response = requests.delete(url, headers=self.headers, json=deleted_object_dict, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} object successfully.".format(type.replace("_", " ")), flush=True)
