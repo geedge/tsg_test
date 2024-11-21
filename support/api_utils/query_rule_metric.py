@@ -62,22 +62,26 @@ class QueryRuleMetric:
                             utc_tz = pytz.timezone('UTC')
                             current_utc_time = datetime.now(utc_tz)
                             end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                            bool_result, metric_str = self.get_livechart_statistics(start_time, end_time, statistics_info)
-                            if bool_result == False:
+                            bool_result, metric_str = self.get_livechart_statistics(self.token, start_time, end_time, statistics_info)
+                            if bool_result == True and len(metric_str) == 0:
+                                continue
+                            elif bool_result == False:
                                 return metric_str
-                            flag, metric_result = self.verify_statistics_metric(start_time, end_time, self.traffic_result, statistics_info, metric_str)
-                            if flag == True:  # 返回结果不等于333，则退出循环查询
-                                break
-                            elif flag == 333 and metric_result == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
-                                flag = True    # 无法断言方向，强制通过
-                                metric_result = ""
-                                break
-                            else:   # 查询验证失败，再验证
-                                flag = False
-                                fail_count += 1
-                                if fail_count >= max_fail_count:
+                            else:
+                                flag, metric_result = self.verify_statistics_metric(start_time, end_time, self.traffic_result["result"], statistics_info, metric_str)
+                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBUG：Case Flag：{}; metric_result:{}".format(flag, metric_result), flush=True)
+                                if flag == True:  # 返回结果不等于333，则退出循环查询
                                     break
-                                time.sleep(query_metric_interval)
+                                elif flag == 333 and metric_result == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
+                                    flag = True    # 无法断言方向，强制通过
+                                    metric_result = ""
+                                    break
+                                else:   # 查询验证失败，再验证
+                                    flag = False
+                                    fail_count += 1
+                                    if fail_count >= max_fail_count:
+                                        break
+                                    time.sleep(query_metric_interval)
                 return metric_result
             elif self.rule_type == "service_chaining":
                 # sc自动化目前只实现了但application、单sf、单sff的用例？？
@@ -222,7 +226,7 @@ class QueryRuleMetric:
         """
         # 请求接口查询statistics metric
         headers = {'Content-Type': 'application/json', 'Authorization': token}
-        url = "{}/v1/log/query".format(self.parameter["api_server"])
+        url = "{}/v1/logs/query".format(self.parameter["api_server"])
         # 24.08重组请求体dsl结构数据,文档见https://docs.geedge.net/display/TSG/DSL+Examples
         post_data_ori_json = """
         {
@@ -260,7 +264,7 @@ class QueryRuleMetric:
         post_data_ori_dict_dsl = post_data_ori_dict["dsl"]
         post_data_ori_dict_dsl["name"] = "customized-statistics" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
         post_data_ori_dict_dsl["data_source"] = "statistics_rule" #该值对Statistics Rule Chart查询来说是固定的所以直接赋值
-        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_uuid = {} and template_uuid = {} and chart_uuid = {} and version = {}".format(self.parameter["vsys"], statistics_info["rule_uuid"], statistics_info["template_uuid"], statistics_info["chart_uuid"], statistics_info["version"])
+        post_data_ori_dict_dsl["filter"] = "vsys_id in ({}) and rule_uuid = '{}' and template_uuid = '{}' and chart_uuid = '{}' and version = {}".format(self.parameter["vsys"], statistics_info["rule_uuid"], statistics_info["template_uuid"], statistics_info["chart_uuid"], statistics_info["version"])
         post_data_ori_dict_dsl["custom.statistics.dimensions"] = statistics_info["dimensions"]
         if statistics_info["chart_type"] == "bar":
             variables_tmp = UtilStatisticsTemplate().time_dif_seconds(start_time,end_time)
@@ -282,7 +286,7 @@ class QueryRuleMetric:
         if statistics_info["topk"] != "" and statistics_info["topk"] != None:
             post_data_ori_dict_dsl["custom.statistics.subquery.topk"] = statistics_info["topk"]
         if "order_by" in statistics_info.keys():
-            post_data_ori_dict_dsl["order_by"] = "'{}' DESC".format(statistics_info["order_by"])
+            post_data_ori_dict_dsl["order_by"] = " '{}' DESC".format(statistics_info["order_by"].strip())
         else:
             post_data_ori_dict_dsl.pop("order_by")  # 不存在，暂时删除key
         if "limit" in statistics_info.keys():
@@ -295,15 +299,12 @@ class QueryRuleMetric:
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
         # 打印获取Metrics相关开始结束时间和Rule ID信息信息，方便后面出错排查问题
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_uuid:{}, template_uuid:{}, chart_uuid:{}, version:{}".format(start_time, end_time, statistics_info["rule_uuid"], statistics_info["template_uuid"], statistics_info["chart_uuid"], statistics_info["version"]))
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "statistics metric:start_time:{}, end_time:{}, rule_uuid:{}, template_uuid:{}, chart_uuid:{}, version:{}".format(start_time, end_time, statistics_info["rule_uuid"], statistics_info["template_uuid"], statistics_info["chart_uuid"], statistics_info["version"]))
         if r_dict["code"] != 200:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],  "Exception when getting Metrics data from the interface.")
-            return False, "The statistics metric API query failed."
+            return False, "The statistics metric API query failed.stat code:{}".format(r_dict["code"])
         else:  # 返回正常结果
-            if r_dict["data"]["result"] == []:  # 为空
-                return False, "statistics metric no result was found."
-            else:
-                return True, r_dict["data"]["result"]
+            return True, r_dict["data"]["list"]
     
     def verify_statistics_metric(self, start_time, end_time, traffic_result, statistics_info, metric_result_dict):
         result_list = []
@@ -580,6 +581,8 @@ class QueryRuleMetric:
                     # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
                     elif source_fields[0] in {"c2s_ip_fragments", "s2c_ip_fragments"} and (stats_value == total_packets_sent or stats_value == total_packets_received or stats_value == 0):
                         metric_result = True
+                    elif stats_value > 0:
+                        metric_result = True
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 2:
@@ -597,12 +600,21 @@ class QueryRuleMetric:
                     elif "new_c2s_flows_for_this_rule" in source_fields and "new_s2c_flows_for_this_rule" in source_fields and stats_value == total_syn_pkt2:
                         metric_result = True
                     # * Fragments处理逻辑:c2s_ip_fragments、s2c_ip_fragments,to do
+                    elif stats_value > 0:
+                        metric_result = True
                     else:
-                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
-                case 3: #如有需定义3个的业务场景需补充相关逻辑
-                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+                        failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields} and Metrics is null"
+                case 3:
+                    if stats_value > 0:
+                        metric_result = True
+                    else:
+                        #如有需定义3个的业务场景需补充相关逻辑
+                        failure_info_2 = f"Meaningless source fields definition: {source_fields}"
                 case 4: #如有需定义4个的业务场景需补充相关逻辑
-                    failure_info_2 = f"Meaningless source fields definition: {source_fields}"
+                    if stats_value > 0:
+                        metric_result = True
+                    else:
+                        failure_info_2 = f"Meaningless source fields definition: {source_fields}"
                 case _:
                     failure_info_2 = f"Meaningless source fields definition: {source_fields}"
             return metric_result,failure_info_2
@@ -701,16 +713,18 @@ class QueryRuleMetric:
                             metric_result = True
                         elif source_fields[0] in uncertain_quantity_unique and (stats_value >= test_traffic_statistics["total_syn_pkt"]):
                             metric_result = True
-                        elif stats_value >= 1:
-                            metric_result = True
+                        else:
+                            failure_info_2 = "Metrics is null"
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 2:
                     if source_fields[0] in all_metrics and source_fields[1] in all_metrics:
                         if "new_c2s_flows_for_this_rule" in source_fields and "new_s2c_flows_for_this_rule" in source_fields and stats_value == test_traffic_statistics["total_syn_pkt"]*2:
                             metric_result = True
-                        elif stats_value >= test_traffic_statistics["total_syn_pkt"]:
+                        elif source_fields[0] in all_metrics and source_fields[1] in all_metrics  and stats_value >= test_traffic_statistics["total_syn_pkt"]:
                             metric_result = True
+                        else:
+                            failure_info_2 = "Metrics is null"
                     else:
                         failure_info_2 = f"Automatic statistics fields are not implemented: {source_fields}"
                 case 3:#如有需定义3个的业务场景需补充相关逻辑

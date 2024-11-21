@@ -14,9 +14,9 @@ class DeleteProfiles:
             profile_uuids_list = list(profile_uuids_tuple)
             for i in range(len(profile_uuids_list)):
                 type = profile_uuids_list[i]["type"]
-                deleted_object_dict = {"uuids": profile_uuids_list[i]["uuid"], "vsys": vsys}
+                deleted_object_dict = {"uuids": [profile_uuids_list[i]["uuid"]], "vsys": vsys}
                 url = api_server + "/v1/profiles/{}".format(type)
-                response = requests.delete(url, headers=self.headers, params=deleted_object_dict, verify=False)
+                response = requests.delete(url, headers=self.headers, json=deleted_object_dict, verify=False)
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                           "Delete {} profile successfully.".format(type.replace("-", " ")), flush=True)

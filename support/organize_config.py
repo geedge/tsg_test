@@ -28,47 +28,47 @@ class OrganizeConfig:
         if self.policy_configuration["type"] == "statistics":
             try:
                 # 从Statistics Rule定义信息中获取流量验证所需数据格式
-                for policy in policy_info:
-                    user_region = policy["action_parameter"]
-                    if user_region != {}:
-                        template_uuid = user_region["template_profile"]
-                        code, template_info = self.get_template_info(template_id, "statistics_template")
-                        if code != 200:
-                            return 400, statistics_sc_info_list
-                        # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
-                        for template in template_info:
-                            for chart in template["dataview"]["charts"]:
-                                statistics_info = {}
-                                statistics_info["rule_uuid"] = self.rule_uuid
-                                statistics_info["template_uuid"] = template_uuid
-                                statistics_info["chart_uuid"] = chart["uuid"]
-                                statistics_info["chart_type"] = chart["display"]["type"]
-                                statistics_info["version"] = chart["version"]
-                                if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:
-                                    code, query_dimensions = self.query_dimensions_from_chart_dimensions(chart["query"]["dimensions"])
-                                    if code != 200:
-                                        return 400, statistics_sc_info_list
-                                    statistics_info["dimensions"] = query_dimensions
-                                else:
-                                    statistics_info["dimensions"] = chart["query"]["dimensions"]
-                                code, query_metrics = self.query_metrics_from_chart_metrics(chart["query"]["metrics"])
+                #for policy in policy_info:
+                user_region = policy_info["action_parameter"]
+                if user_region != {}:
+                    template_uuid = user_region["template_profile"]
+                    code, template_info = self.get_template_info(template_uuid, "statistics_template")
+                    if code != 200:
+                        return 400, statistics_sc_info_list
+                    # 目前TSG仅支持一条Statistics Rule选择一条Template，如果支持多条需重写
+                    for template in template_info:
+                        for chart in template["dataview"]["charts"]:
+                            statistics_info = {}
+                            statistics_info["rule_uuid"] = self.rule_uuid
+                            statistics_info["template_uuid"] = template_uuid
+                            statistics_info["chart_uuid"] = chart["uuid"]
+                            statistics_info["chart_type"] = chart["display"]["type"]
+                            statistics_info["version"] = chart["version"]
+                            if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:
+                                code, query_dimensions = self.query_dimensions_from_chart_dimensions(chart["query"]["dimensions"])
                                 if code != 200:
                                     return 400, statistics_sc_info_list
-                                statistics_info["metrics"] = query_metrics
-                                if "order_by" in chart["query"].keys():
-                                    statistics_info["order_by"] = chart["query"]["order_by"]
-                                #if chart["display"]["type"] == "histogram":
-                                #    statistics_info.pop("order_by")
-                                statistics_info["topk"] = ""
-                                if "series_limit" in chart["query"].keys():
-                                    code, topk_dimensions_tmp = self.query_topk_dimensions_from_chart_dimensions(chart["query"]["dimensions"], chart["query"]["series_limit"], chart["query"]["metrics"][0]["label"])
-                                    if code != 200:
-                                        return 400, statistics_sc_info_list
-                                    statistics_info["topk"] = topk_dimensions_tmp
-                                elif "limit" in chart["query"].keys() and chart["query"]["limit"] != 65535:
-                                    statistics_info["limit"] = chart["query"]["limit"]
-                                self.statistics_template_metrics_dimension_list(statistics_info)
-                                statistics_sc_info_list.append(copy.deepcopy(statistics_info))
+                                statistics_info["dimensions"] = query_dimensions
+                            else:
+                                statistics_info["dimensions"] = chart["query"]["dimensions"]
+                            code, query_metrics = self.query_metrics_from_chart_metrics(chart["query"]["metrics"])
+                            if code != 200:
+                                return 400, statistics_sc_info_list
+                            statistics_info["metrics"] = query_metrics
+                            if "order_by" in chart["query"].keys():
+                                statistics_info["order_by"] = chart["query"]["order_by"]
+                            #if chart["display"]["type"] == "histogram":
+                            #    statistics_info.pop("order_by")
+                            statistics_info["topk"] = ""
+                            if "series_limit" in chart["query"].keys():
+                                code, topk_dimensions_tmp = self.query_topk_dimensions_from_chart_dimensions(chart["query"]["dimensions"], chart["query"]["series_limit"], chart["query"]["metrics"][0]["label"])
+                                if code != 200:
+                                    return 400, statistics_sc_info_list
+                                statistics_info["topk"] = topk_dimensions_tmp
+                            elif "limit" in chart["query"].keys() and chart["query"]["limit"] != 65535:
+                                statistics_info["limit"] = chart["query"]["limit"]
+                            self.statistics_template_metrics_dimension_list(statistics_info)
+                            statistics_sc_info_list.append(copy.deepcopy(statistics_info))
             except Exception as e:
                 #traceback.print_exc()
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Analyze the Template data anomaly of Statistics Rule{}".format(e))
@@ -321,13 +321,14 @@ class OrganizeConfig:
             if rule_type == "statistics":
                 new_rule_type = "statistics-rules"
             headers = {'Content-Type': 'application/json', 'Authorization': self.token}
-            url = (self.api_server + f"/v1/policies/{new_rule_type}?vsys={new_rule_type}&page_size=20&page_no=1&uuid={rule_uuid}&is_enabled=")
+            #http://192.168.44.72/v1/policies/statistics-rules/01934dc9-287c-765f-b52c-eb0d09688f25?vsys=5
+            url = (self.api_server + f"/v1/policies/{new_rule_type}/{rule_uuid}?vsys={int(self.vsys)}")
             response = requests.get(url, headers=headers, verify=False)
             if response.status_code != 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. response.status_code:".format(response.status_code))
                 return 400, []
             response = json.loads(response.text)
-            result = response['data']['list']
+            result = response['data']
         except AssertionError as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Exception when getting Statistics Rule information from the interface. except{}".format(e))
             return 400, []
