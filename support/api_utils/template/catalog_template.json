@@ -1,5 +1,6 @@
 {
     "vsys": 1,
+    "return_data": 1,
     "op": "create",
     "catalog": {
         "category": "",

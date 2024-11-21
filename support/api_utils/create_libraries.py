@@ -49,7 +49,7 @@ class CreateLibraries:
                                         for k in range(len(tag_temp)):
                                             tag_template_json["vsys"] = self.vsys
                                             tag_template_json["tag"]["category"] = tag_temp[k]["category"]
-                                            if tag_temp["parent_uuid"] != 0:
+                                            if tag_temp[k]["parent_uuid"] != 0:
                                                 tag_template_json["tag"]["parent_uuid"] = self.query_tag_uuid(tag_temp[k]["parent_uuid"])
                                             tag_template_json["tag"]["tag_key"] = tag_temp[k]["tag_key"]
                                             tag_template_json["tag"]["tag_value"] = tag_temp[k]["tag_value"]
@@ -62,7 +62,7 @@ class CreateLibraries:
                                                 tag_uuids_temp_dict["type"] = "tag"
                                                 tag_uuids_temp_dict["uuid"] = response_data["data"]["uuid"]
                                                 tag_uuids_temp_dict["name"] = ""
-                                                tag_uuids_temp_dict["attribute_name"] = ""
+                                                tag_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
                                                 tag_uuids_list.append(tag_uuids_temp_dict)
                                             else:
                                                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} tag failed.".format(tag_temp[k]["category"].replace("_", " ")), flush=True)
@@ -104,13 +104,13 @@ class CreateLibraries:
                                 catalog_temp = object_temp[j]["catalog"]
                                 for t in range(len(catalog_temp)):
                                     catalog_template_json["vsys"] = self.vsys
-                                    catalog_template_json["category"] = catalog_temp[t]["category"]
+                                    catalog_template_json["catalog"]["category"] = catalog_temp[t]["category"]
                                     if "ip_entries" in catalog_temp[t].keys() and len(catalog_temp[t]["ip_entries"]) > 0:
                                         catalog_template_json["catalog"]["ip_entries"] = catalog_temp[t]["ip_entries"]
                                     if "fqdn_entries" in catalog_temp[t].keys() and len(catalog_temp[t]["fqdn_entries"]) > 0:
                                         catalog_template_json["catalog"]["fqdn_entries"] = catalog_temp[t]["fqdn_entries"]
                                     if len(tag_uuids_list) == 1:
-                                        catalog_template_json["catalog"]["tag_uuids"] = tag_uuids_list[0]["uuid"]
+                                        catalog_template_json["catalog"]["tag_uuids"].append(tag_uuids_list[0]["uuid"])
                                     elif len(tag_uuids_list) > 1:
                                         for z in range(len(tag_uuids_list)):
                                             catalog_template_json["catalog"]["tag_uuids"].append(tag_uuids_list[z]["uuid"])

@@ -96,16 +96,16 @@ def run(parameter):
                         }
                     ]
                 },
-                # {
-                #     "negate_option": False,
-                #     "or_conditions": [
-                #         {
-                #             "attribute_name": "ATTR_SSL_NO_SNI",
-                #             "type": "boolean",
-                #             "items": "False"
-                #         }
-                #     ]
-                # }
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_SSL_NO_SNI",
+                            "type": "boolean",
+                            "items": ["False"]
+                        }
+                    ]
+                }
             ],
             "action_parameter": {
                 "targeted_traffic": "raw",   
@@ -124,7 +124,7 @@ def run(parameter):
                                 "name":"vlan_none",
                                 "admin_status": 1,
                                 "device_group": {
-                                    "value": "center-xxg-tsgxSfcOs",
+                                    "value": "center-xxg-tsgx",
                                     "tag": "data_center"
                                 },
                                 "connectivity": {
