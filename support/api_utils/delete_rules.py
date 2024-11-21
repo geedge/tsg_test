@@ -24,11 +24,11 @@ class DeleteRules:
             rule_uuids_list = list(rule_uuids_tuple)
             for i in range(len(rule_uuids_list)):
                 type = rule_uuids_list[i]["type"]
-                deleted_rule_dict = {"type": type, "uuids": [], "vsys": 1}
-                deleted_rule_dict["uuids"] = rule_uuids_list[i]["uuid"]
+                deleted_rule_dict = {"uuids": [], "vsys": 1}
+                deleted_rule_dict["uuids"].append(rule_uuids_list[i]["uuid"])
                 deleted_rule_dict["vsys"] = vsys
                 url = api_server + "/v1/policies/{}".format(rule_type_dict[type])
-                response = requests.delete(url, headers=self.headers, params=deleted_rule_dict, verify=False)
+                response = requests.delete(url, headers=self.headers, json=deleted_rule_dict, verify=False)
                 assert response.status_code == 200
                 if response.status_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete {} rule successfully.".format(type.replace("_", " ")), flush=True)

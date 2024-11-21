@@ -77,7 +77,7 @@ def run(parameter):
             ],
             "traffic": {
                 "protocol": "",
-                "type": "trex",
+                "tool":"trex",
                 "clients_start_ip": "1.1.1.1",
                 "clients_end_ip": "1.1.1.1",
                 "servers_start_ip": "2.1.2.30",

@@ -180,8 +180,8 @@ def run(parameter):
                             "type": "application",
                             "sub_type": "application",
                             "application": {
-                                "app_name": "common_server_fqdn",
-                                "app_longname": "common_server_fqdn",
+                                "app_name": "common_server_fqdn1",
+                                "app_longname": "common_server_fqdn1",
                                 "app_properties": {
                                     "tcp_timeout": 0,
                                     "udp_timeout": 0,
@@ -201,6 +201,7 @@ def run(parameter):
                                 "app_surrogates": [
                                     {
                                         "group_by": "session",
+                                        "ordered_match": "no",
                                         "signature_sequence": [
                                             {
                                                 "exclude": 0,
@@ -517,7 +518,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
         "env": "tsgx",
-        "vsys": 5,
+        "vsys": 1,
         "root_path": workdir,
         "path": workdir + "/tests",
         "module_name": "security",

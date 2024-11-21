@@ -31,11 +31,32 @@ class CreateObjects:
                                     object_template_json["object"]["sub_type"] = object_temp[j]["sub_type"]
                                 if object_temp[j]["type"] == "tunnel":
                                     object_template_json["object"]["member_type"] = "tunnel"
-                                # elif object_temp[j]["type"] == "tunnel":
                                 else:
                                     object_template_json["object"]["member_type"] = "item"
-                                
-                                if object_temp[j]["type"] != "tunnel":
+                                if "included_sub_object_uuids" in  object_temp[j]:
+                                    object_template_json["object"]["included_sub_object_uuids"] = []
+                                    include_object_temp = object_temp[j]["included_sub_object_uuids"]
+                                    for u in range(len(include_object_temp)):
+                                        object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, include_object_temp, u, include_object_temp[u]["type"], "")
+                                    filter_object_uuids_list = [item for item in object_uuids_list if "type" in item and item["type"] == object_temp[j]["type"]]  
+                                    object_template_json["object"]["included_sub_object_uuids"].append(filter_object_uuids_list[0]["uuid"])
+                                if "excluded_sub_object_uuids" in  object_temp[j]:
+                                    object_template_json["object"]["excluded_sub_object_uuids"] = []
+                                    excluded_object_temp = object_temp[j]["excluded_sub_object_uuids"]
+                                    for v in range(len(excluded_object_temp)):
+                                        object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, excluded_object_temp, v, excluded_object_temp[v]["type"], "")
+                                    filter_object_uuids_list = [item for item in object_uuids_list if "type" in item and item["type"] == object_temp[j]["type"]] 
+                                    object_template_json["object"]["excluded_sub_object_uuids"].append(filter_object_uuids_list[1]["uuid"])
+                                # 调用接口创建group
+                                if "included_sub_object_uuids" in  object_temp[j]:
+                                    object_template_json["object"]["member_type"] = "subordinate"
+                                    object_template_json["object"]["statistics_option"] = object_temp[j]["statistics_option"]
+                                    if "items" in object_template_json["object"]:
+                                        del object_template_json["object"]["items"]
+                                    if object_temp[j]["type"] not in ["ip", "mobile_identity"]:
+                                        del object_template_json["object"]["sub_type"]
+                                    object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, object_temp, u, object_temp[j]["type"], "")
+                                if object_temp[j]["type"] != "tunnel" and "included_sub_object_uuids" not in  object_temp[j]:
                                     object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, object_temp, j, object_temp[j]["type"], "")
                                 elif object_temp[j]["type"] == "tunnel":
                                     tunnel = {}
@@ -66,22 +87,65 @@ class CreateObjects:
                                 object_template_json["object"]["type"] = object_temp[j]["type"]
                                 if "sub_type" in object_temp[j]:
                                     object_template_json["object"]["sub_type"] = object_temp[j]["sub_type"]
-                                item_temp = object_temp[j]["items"]
-                                object_uuids_temp_dict = {}
-                                object_uuids_temp_dict["uuid"] = self.query_uuids_by_sql(item_temp, api_server, object_temp[j]["type"])
-                                object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
-                                object_uuids_list.append(object_uuids_temp_dict)
+                                if "included_sub_object_uuids" in  object_temp[j]:
+                                    object_uuids_temp_dict = {}
+                                    object_template_json["object"]["included_sub_object_uuids"] = []
+                                    include_object_temp = object_temp[j]["included_sub_object_uuids"]
+                                    for w in range(len(include_object_temp)):
+                                        item_temp = include_object_temp[w]["items"]
+                                        object_uuids_temp_dict["uuid"] = self.query_uuids_by_sql(item_temp, api_server, object_temp[w]["type"])
+                                        object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
+                                        object_uuids_temp_dict["type"] = object_temp[j]["type"]
+                                        object_uuids_list.append(object_uuids_temp_dict)
+                                    filter_object_uuids_list = [item for item in object_uuids_list if "type" in item and item["type"] == object_temp[j]["type"]]  
+                                    object_template_json["object"]["included_sub_object_uuids"]= filter_object_uuids_list[0]["uuid"]
+                                if "excluded_sub_object_uuids" in  object_temp[j]:
+                                    object_template_json["object"]["excluded_sub_object_uuids"] = []
+                                    excluded_object_temp = object_temp[j]["excluded_sub_object_uuids"]
+                                    for x in range(len(excluded_object_temp)):
+                                        item_temp = excluded_object_temp[x]["items"]
+                                        object_uuids_temp_dict["uuid"] = self.query_uuids_by_sql(item_temp, api_server, excluded_object_temp[x]["type"])
+                                        object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
+                                        object_uuids_temp_dict["type"] = object_temp[j]["type"]
+                                        object_uuids_list.append(object_uuids_temp_dict)
+                                    filter_object_uuids_list = [item for item in object_uuids_list if "type" in item and item["type"] == object_temp[j]["type"]] 
+                                    object_template_json["object"]["excluded_sub_object_uuids"] = filter_object_uuids_list[1]["uuid"]
+                                # 调用接口创建group
+                                if "included_sub_object_uuids" in  object_temp[j]:
+                                    object_template_json["object"]["member_type"] = "subordinate"
+                                    object_template_json["object"]["statistics_option"] = object_temp[j]["statistics_option"]
+                                    if "items" in object_template_json["object"]:
+                                        del object_template_json["object"]["items"]
+                                    if "sub_type" in object_template_json["object"]:
+                                        del object_template_json["object"]["sub_type"]
+                                    object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, object_temp, w, object_temp[j]["type"], "")
+                                if "included_sub_object_uuids" not in  object_temp[j]:
+                                    item_temp = object_temp[j]["items"]
+                                    object_uuids_temp_dict = {}
+                                    object_uuids_temp_dict["uuid"] = self.query_uuids_by_sql(item_temp, api_server, object_temp[j]["type"])
+                                    object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
+                                    object_uuids_temp_dict["type"] = object_temp[j]["type"]
+                                    object_uuids_list.append(object_uuids_temp_dict)
                             elif object_temp[j]["type"] == "application" and "sub_type" in object_temp[j]:
+                                object_template_json["object"]["sub_type"] = object_temp[j]["sub_type"]
+                                object_template_json["object"]["type"] = object_temp[j]["type"]
+                                if "name" in object_template_json["object"]:
+                                    del object_template_json["object"]["name"]
                                 application = {}
                                 app_surrogates = object_temp[j]["application"]["app_surrogates"]
                                 application["app_surrogates"] = []
                                 application["app_properties"] = object_temp[j]["application"]["app_properties"]
+                                application["app_name"] = object_temp[j]["application"]["app_name"]
+                                application["app_longname"] = object_temp[j]["application"]["app_longname"]
                                 for m in range(len(app_surrogates)):
                                     application["app_surrogates"].append({})
                                     application["app_surrogates"][m]["group_by"] = app_surrogates[m]["group_by"]
+                                    application["app_surrogates"][m]["ordered_match"] = app_surrogates[m]["ordered_match"]
                                     application["app_surrogates"][m]["signature_sequence"] = []
+                                    application["app_surrogates"][m]["signature_sequence"].append({})
                                     signature_sequence = app_surrogates[m]["signature_sequence"]
-                                    for n in range(len(app_surrogates)):
+                                    # 在signature_sequence中配置signature_uuid
+                                    for n in range(len(signature_sequence)):
                                         signature = {}
                                         signature["and_conditions"] = []
                                         signature["name"] = signature_sequence[n]["signature"]["name"]
@@ -118,10 +182,19 @@ class CreateObjects:
                                                         # 创建signature
                                                         signature_dict = dict(vsys = vsys, signature = signature, return_data = 1)
                                                         object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, signature_object_temp, n, "signature", signature_dict)
-                                    # 提取signature，组织application数据
-                                    # for t in len(object_uuids_list):
-                                    #     print("aaa")
-           
+                                        # 提取signature，组织application数据
+                                        for t in range(len(object_uuids_list)):
+                                            if object_uuids_list[t]["type"] == "signature":
+                                                signature_uuid = object_uuids_list[t]["uuid"]
+                                                application["app_surrogates"][m]["signature_sequence"][m]["signature_uuid"] = signature_uuid
+                                                application["app_surrogates"][m]["signature_sequence"][m]["exclude"] = signature_sequence[m]["exclude"]
+                                object_template_json["object"]["application"] = application
+                                if "name" in object_template_json["object"]:
+                                    del object_template_json["object"]["name"]
+                                if "items" in object_template_json["object"]:
+                                    del object_template_json["object"]["items"]
+                                # 请求接口创建application
+                                object_uuids_list = self.create_common_objects(api_server, object_uuids_list, object_template_json, object_temp, j, "application", "")
             object_uuids_tuple = tuple(object_uuids_list)
             return object_uuids_tuple, ""
         except Exception as e:
@@ -187,7 +260,7 @@ class CreateObjects:
                     "ip_protocol": "ip-protocols",
                     "tunnel_level": "tunnel-levels"
                 }
-            if object_type not in ["tunnel", "application", "signature"]:
+            if object_type not in ["tunnel", "application", "signature"] and "included_sub_object_uuids" not in  object_temp[j]:
                 item_temp = object_temp[j]["items"]
                 item_list = []
                 if object_type == "ip":
@@ -201,14 +274,24 @@ class CreateObjects:
                         item_dict = {}
                         item_dict = dict(op=item_temp[t]["op"],expr_type=item_temp[t]["expr_type"],expression=item_temp[t]["expression"])
                         item_list.append(item_dict)
-                elif object_type == "port":
+                elif object_type in ["port", "interval"]:
                     for t in range(len(item_temp)):
                         item_dict = {}
                         item_dict = dict(op=item_temp[t]["op"], interval=item_temp[t]["interval"])
                         item_list.append(item_dict)
+                elif object_type == "flag":
+                    for t in range(len(item_temp)):
+                        item_dict = {}
+                        flag, mask = self.compute_flags(item_temp[t]["flag"])
+                        item_dict = dict(op=item_temp[t]["op"], flag = str(flag), mask = str(mask))
+                        item_list.append(item_dict)
                 object_template_json["object"]["items"] = item_list
                 object_template_json["object"]["type"] = object_temp[j]["type"]
                 object_template_json["object"]["name"] = object_temp[j]["name"]
+            elif "included_sub_object_uuids" in  object_temp[j]:
+                object_template_json["object"]["type"] = object_temp[j]["type"]
+                object_template_json["object"]["name"] = object_temp[j]["name"]
+                # object_template_json["object"]["member_type"] = "application"
             elif object_type == "tunnel":
                 object_template_json["object"]["type"] = object_temp[j]["type"]
                 object_template_json["object"]["name"] = object_temp[j]["name"]
@@ -216,15 +299,23 @@ class CreateObjects:
                     del object_template_json["object"]["items"]
                 object_template_json["object"]["tunnel"] = {}
                 object_template_json["object"]["tunnel"] = item_uuids_list
+            elif object_type == "application":
+                object_template_json["object"]["type"] = object_temp[j]["type"]
+                object_template_json["object"]["member_type"] = "application"
             if object_type != "signature":
-                url = api_server + "/v1/objects/{}".format(object_type_dict[object_temp[j]["type"]])
+                if object_type == "application" and object_template_json["object"]["member_type"] == "subordinate":
+                    url = api_server + "/v1/objects/application-groups"
+                else:
+                    url = api_server + "/v1/objects/{}".format(object_type_dict[object_temp[j]["type"]])
                 response = requests.post(url, headers=self.headers, json=object_template_json, verify=False)
             elif object_type == "signature":
-                # signature_dict = dict(vsys = vsys, signature = item_uuids_list)
                 url = api_server + "/v1/objects//applications/customized-signatures"
                 response = requests.post(url, headers=self.headers, json=item_uuids_list, verify=False)
             if response.status_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
+                if "included_sub_object_uuids" not in  object_temp[j]:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
+                elif "included_sub_object_uuids" in  object_temp[j]:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object group successfully.".format(object_type), flush=True)
                 response_dict = json.loads(response.text)
                 object_uuids = self.get_uuids(response_dict, object_type)
                 object_uuids_temp_dict = {}
@@ -245,3 +336,58 @@ class CreateObjects:
             exception_result = str(e)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
             return "When running test case, the exception error: " + str(e)
+    def compute_flags(self, config):  
+        # 初始化 flag 和 mask  
+        flag = 0  
+        mask = 0  
+
+        # 根据输入字典里的值设置 flag 和 mask，第0位不对应任何flag，从第1位开始
+        if 'Bulky' in config:  
+            flag |= (1 << 1) if config['Bulky'] else 0  #   
+            mask |= (1 << 1)   
+        if 'CBR Streaming' in config:  
+            flag |= (1 << 2) if config['CBR Streaming'] else 0  
+            mask |= (1 << 2)  
+        if 'Client is Local' in config:  
+            flag |= (1 << 3) if config['Client is Local'] else 0  
+            mask |= (1 << 3)
+        if 'Server is Local' in config:  
+            flag |= (1 << 4) if config['Server is Local'] else 0  
+            mask |= (1 << 4) 
+        if 'Download' in config:  
+            flag |= (1 << 5) if config['Download'] else 0  
+            mask |= (1 << 5) 
+        if 'Interactive' in config:  
+            flag |= (1 << 6) if config['Interactive'] else 0  
+            mask |= (1 << 6) 
+        if 'Inbound' in config:  
+            flag |= (1 << 7) if config['Inbound'] else 0  
+            mask |= (1 << 7) 
+        if 'Outbound' in config:  
+            flag |= (1 << 8) if config['Outbound'] else 0  
+            mask |= (1 << 8) 
+        if 'Pseudo Unidirectional' in config:  
+            flag |= (1 << 9) if config['Pseudo Unidirectional'] else 0  
+            mask |= (1 << 9) 
+        if 'Streaming' in config:  
+            flag |= (1 << 10) if config['Streaming'] else 0  
+            mask |= (1 << 10) 
+        if 'Unidirectional' in config:  
+            flag |= (1 << 11) if config['Unidirectional'] else 0  
+            mask |= (1 << 11) 
+        if 'Random looking' in config:  
+            flag |= (1 << 12) if config['Random looking'] else 0  
+            mask |= (1 << 12) 
+        if 'C2S' in config:  
+            flag |= (1 << 13) if config['C2S'] else 0  
+            mask |= (1 << 13) 
+        if 'S2C' in config:  
+            flag |= (1 << 14) if config['S2C'] else 0  
+            mask |= (1 << 14) 
+        if 'Bidirectional' in config:  
+            flag |= (1 << 15) if config['Bidirectional'] else 0  
+            mask |= (1 << 15) 
+        if 'Tunneling' in config:  
+            flag |= (1 << 16) if config['Tunneling'] else 0  
+            mask |= (1 << 16)    
+        return flag, mask  

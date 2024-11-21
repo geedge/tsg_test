@@ -1,14 +1,12 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
-
-from support.ui_utils.element_position.map_element_position_library import replace_paras
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
 import pytz
-from datetime import datetime
-from support.ui_utils.workpath import workdir
+
+from support.organize_config import OrganizeConfig
+from support.ui_utils.element_position.map_element_position_library import replace_paras
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
@@ -71,8 +69,8 @@ def run(parameter):
                                     "page_y": None,
                                     "height": "",
                                     "width": "",
-                                    "type": "table",
-                                    "table_type": "regular"
+                                    "type": "bar",
+                                    "table_type": ""
                                 },
                                 "uuid": "",
                                 "name": "SUM(Bytes Sent, Bytes Received) Distributed by Application",
@@ -128,18 +126,26 @@ def run(parameter):
                 }
             },
             "is_enabled": 1,
-            "log_option": "metadata",
+            "log_option": "metadata"
         }
 
         traffic_generation = {
-            "tool": "trex/http", # or trex/http
-            "command": "curl -kv --connect-timeout 10 -m 10 http://open.node.com:180"
+            "tool": "trex",  # or trex/http
+            "clients_start_ip": "10.64.224.9",
+            "clients_end_ip": "10.64.224.9",
+            "servers_start_ip": "2.1.1.9",
+            "servers_end_ip": "2.1.1.9",
+            "m": 1,
+            "d": 1,
+            "yaml_name": "test",
+            "pcap_name": "http_87pkts"
         }
 
         verification_result = {
             "expected_result": "",
             "metric_query": {"hits": 1},
             "log_query": [
+                {"query_field_key": "decoded_as", "query_value": "HTTP"},
                 {"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}
             ]
         }
@@ -151,21 +157,24 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token)
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
-            """
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            """
+            libraries_tuple, api_error = api_client.create_libraries(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
             # 处理Profiles
-            profile_tuple, api_error = api_client.create_profiles(policy_configuration)
+            profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            """
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", profiles_tuple)
             if len(api_error) > 0:
                 return api_error
-            """
         # 等待下发配置生效
         time.sleep(3)
 
@@ -229,15 +238,17 @@ def run(parameter):
         elif parameter["initiation_method"] == "api":
             if not rules_tuple:
                 api_client.delete_rules(rules_tuple)
-            """
+            if not profiles_tuple:
+                api_client.delete_profiles(profiles_tuple)
+            if not libraries_tuple:
+                api_client.delete_libraries(libraries_tuple)
             if not objects_tuple:
                 api_client.delete_objects(objects_tuple)
-            """
         # 统计脚本用时
         end_time = time.time()
-        duration = end_time - start_time
+        duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+              "Duration of running the test case: ", "{:.3f}".format(duration/1000), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
 
@@ -249,17 +260,19 @@ if __name__ == '__main__':
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",
-        "test_pc_ip": "192.168.64.87",
-        "test_subcriber_id": "test6776",
+        "test_pc_ip": "192.168.64.73",
         "api_server": "http://192.168.44.72",
-        "debug": "local",
-        "initiation_method": "api",
+        "is_log": 0,
         "env": "tsgx",
-        "vsys": 5,
-        "root_path": workdir,
-        "path": workdir + "/tests",
-        "module_name": "security",
-        "test_case_name": os.path.basename(__file__)[:-3]
+        "vsys": 1,  # 6
+        "root_path": "D:/tsgcode/tsg_test",
+        "path": "tsgcode/tsg_test/testcase/ui",
+        "module_name": "statistics",
+        "test_case_name": os.path.basename(__file__)[:-3],
+        "debug_flag": "local",
+        "test_subcriber_id": "test6489",
+        "initiation_method": "api",
+        "policy_type": "statistics"
     }
     parameter = replace_paras(parameter)
     run(parameter)
@@ -324,7 +337,8 @@ if __name__ == '__main__':
             "sub_action": "replace_file",
             "replacement_file": {
                 "name": "test",
-                "content_name": "hijack_png_1.png",
+                "file_path": "hijack_png_1.png",
+                "content_name": "hijack.png",
                 "content_type": "application / vnd.android.package - archive"
             }
         }
