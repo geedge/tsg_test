@@ -73,9 +73,10 @@ appllicationGroupObjectPage_okButton_warningYes_posXpath = "//div[@class='el-mes
 applicationGroupObjectListPage_deleteButton_posId = id="appDel-_OperateBtns_ElCol_ElRow_Application_appGroups_Home_App_anonymousComponent"
 
 # ip object
+ipObject_navigationBar_logo_posXpath = '//div[contains(@class,"menu-ip-object")]'
 ipObjectListPage_createButton_posXpath= '//span[@class="action-create inline-flex mr-[8px] "]/button' # create按钮id
-ipObjectListPage_dropDown_createButton_posXpath = '//li[@class="MuiMenuItem-root MuiMenuItem-colorNeutral MuiMenuItem-variantPlain ip-item css-1rt9hnn"]'  # 从下拉菜单中选择Address
-ipObjectListPage_dropDown_createGroupButton_posId = "object1-_OperateBtns_ElRow_Objects_ip_Home_App_anonymousComponent"
+ipObjectListPage_dropDown_createButton_posXpath = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[1]"  # 从下拉菜单中选择Address
+ipObjectListPage_dropDown_createGroupButton_posId = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[2]"
 ipObjectListPage_searchLabel_posXpath = '//*[@class="MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5"]/input' # 查询框id
 ipObjectListPage_searchLabel_selectName_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'  # 查询Name
 ipObjectListPage_deleteButton_posXpath = '//*[@class="action-delete inline-flex mr-[8px] "]'
@@ -89,7 +90,6 @@ ipObjectListPage_tableTbody_posXpath = objectListPage_tableTbody_posXpath #'//*[
 ipObjectPage_inputName_posXpath = '//input[@class="MuiInput-input css-fqt4w4"]' # name输入框Xpath
 ipObjectPage_ipType_posXpath = "//*[normalize-space(text())='IP']"
 ipObjectPage_geographyType_posId = "Geographygeo_location"
-ipObjectPage_ipLearningType_posId = "IP Learningip_learning"
 ipObjectPage_addItem_posXpath = '//*[@class="iconfont icon-Create1 font-[700]"]'  # 添加item_id
 ipObjectPage_inputItem_posXpath = '//*[@class="MuiAutocomplete-input css-1lv7pyi"]'
 ipObjectPage_button_saveItem_posXpath = '//i[@class="operate-icon iconfont icon-save"]'  # 保存item按钮
@@ -111,6 +111,17 @@ ipGroupObjectPage_selectExcludeIP_posXpath = "//div[@class='reference-box el-pop
 ipGroupObjectPage_closeExcludeIP_posXpath = "//div[@class='KeywordsList list-box']//button[@class='el-button right-menu-button-close el-button--info el-button--small']"
 ipGroupObjectPage_addExcludeObject_posId = "temporary_form"
 
+#ip learning
+ipObjectPage_ipLearningType_posXpath = "//div[@class='ip-object-sub_type']//button[text()='IP Learning']"
+ipLearningObjectPage_inputItem_posXpath = "//div[@class='ip-object-from_fqdns']//input"
+ipLearningObjectPage_button_saveItem_posXpath = ipObjectPage_button_saveItem_posXpath
+ipLearningObjectPage_button_IP_learn_from_protocols_posXpath = "//div[@class='ip-object-from_protocol']//button[@title='Open']"  # Learn From Protocols选择框
+ipLearningObjectPage_button_IP_learn_from_protocols_Select_HTTP_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-19hxmvv']/li[text()='HTTP']"  # Learn From Protocols选择HTTP
+ipLearningObjectPage_button_IP_learn_from_protocols_Select_SSL_posXpath = "//ul[@class='base-Popper-root MuiAutocomplete-listbox css-19hxmvv']/li[text()='SSL']"  # Learn From Protocols选择SSL
+ipLearningObjectPage_button_IP_learn_from_protocols_Select_DNS_posXpath ="//ul[@class='base-Popper-root MuiAutocomplete-listbox css-19hxmvv']/li[text()='DNS']"
+ipLearningObjectPage_button_Input_Aging_Times_posXpath = "//div[@class='ip-object-aging_time']/div/input"  # Aging Times输入框
+ipLearningObjectPage_button_Input_Vote_Clients_Number_posXpath = "//div[@class='ip-object-vote_client_num']/div/input"  # Vote Clients Number输入框
+ipLearningObjectPage_button_Input_Learned_IP_Limits_posXpath = "//div[@class='ip-object-goal_upper_limit']/div/input"  # Learned IP Limits 输入框
 # imsi object
 imsiObjectPage_imsiType_posXpath = "//*[@class='mobile-identity-object-sub_type']//button[1]"
 imsiobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath  # 添加item_id
@@ -140,6 +151,8 @@ phoneNumberObjectPage_inputItem_posXpath = ipObjectPage_addItem_posXpath
 phoneNumberObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
 phoneNumberObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
 phoneNumberObjectPage_okButton_warningYes_posXpath = ipObjectPage_okButton_warningYes_posXpath
+phoneNumberobjectPage_sameItem_addItem_posXpath = '//*[@class="pl-[40px] pt-[0!important]"]//i[@class="iconfont icon-Create1 font-[700]"]'
+phoneNumberObjectPage_sameItem_inputItem_posXpath = "(//div[@class='form-list-row css-xpbhx9']//div[@class='MuiBox-root css-0']//input[@class='MuiInput-input css-1u0jcuo'])[last()]"
 
 # imei
 imeiObjectPage_imsiType_posXpath = "//*[@class='mobile-identity-object-sub_type']//button[3]"
@@ -157,7 +170,7 @@ portObjectListPage_deleteButton_posXpath = ipObjectListPage_deleteButton_posXpat
 portObjectListPage_deleteButton_warningYes_posXpath = ipObjectListPage_deleteButton_warningYes_posXpath
 portObjectListPage_deleteButton_warningNo_posCss = "//button[@class='el-button delComponents-ok role-disconnect-btn el-button--default el-button--small']"
 # portObjectListPage_dropDown_createButton_posId = "object0-_OperateBtns_ElRow_Objects_port_Home_App_anonymousComponent"
-portObjectListPage_dropDown_createButton_posXpath = "//*[contains(@class, 'MuiMenuItem-root') and contains(@class, 'MuiMenuItem-colorNeutral') and contains(@class, 'MuiMenuItem-variantPlain') and contains(@class, 'port-item') and contains(@class, 'css-1rt9hnn')]"
+portObjectListPage_dropDown_createButton_posXpath = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[1]"
 # portObjectListPage_searchLabel_posId = "select-label"
 portObjectListPage_searchLabel_posXpath = ipObjectListPage_searchLabel_posXpath
 portObjectListPage_searchLabel_selectName_posXpath = "//*[contains(@class, 'dune-search-option-content') and .//*[contains(text(), 'Name')] and .//*[contains(text(), 'contains')]]"
@@ -316,7 +329,7 @@ keywordsObjectPage_okButton_warningYes_posXpath = "//button[@class='el-button el
 # account
 accountObjectListPage_createButton_posXpath = '//span[@class="action-create inline-flex mr-[8px] "]/button'
 accountObjectListPage_deleteButton_warningYes_posXpath = httpSignatureObjectListPage_deleteButton_warningYes_posXpath
-accountObjectListPage_dropDown_createButton_posXpath = '//li[@class="MuiMenuItem-root MuiMenuItem-colorNeutral MuiMenuItem-variantPlain account-item css-1rt9hnn"]'
+accountObjectListPage_dropDown_createButton_posXpath = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[1]"
 accountObjectPage_inputName_posXpath = keywordsObjectPage_inputName_posXpath
 accountobjectPage_addItem_posXpath = keywordsobjectPage_addItem_posXpath
 accountObjectPage_inputItem_posXpath = urlObjectPage_inputItem_posXpath

@@ -59,7 +59,7 @@ def run(parameter):
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_MAIL_ACCOUNT",
-                            "type": "keyword",
+                            "type": "account",
                             "member_type": "item",
                             "name": "monit_mail_account_by_account",
                             "items": [
@@ -89,7 +89,7 @@ def run(parameter):
         }
 
         traffic_generation = {
-            "protocol": "mail",
+            "tool": "mail",  # or trex/http
             "type": "curl",  # client/curl
             "mail_type": "smtp",  # gmail or smtp or smtp_ssl
             "mail_server": "192.168.40.206",  # gmail: smtp.gmail.com

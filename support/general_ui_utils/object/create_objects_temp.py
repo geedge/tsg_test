@@ -29,8 +29,7 @@ class CreateObject:
             time.sleep(1)
             # 输入name
             object_name = data["name"]
-            self.driver.find_element(By.XPATH, create_element_position["objectPage_inputName_posXpath"]).send_keys(
-                object_name)
+            self.driver.find_element(By.XPATH, create_element_position["objectPage_inputName_posXpath"]).send_keys(object_name)
             # 添加item
             """
             if object_type == "http_signature":
@@ -80,17 +79,16 @@ class CreateObject:
             else:
                 object_type = data["type"]
 
-            if object_type in ["keywords", "http_signature"]:
+            if object_type in ["keyword", "http_signature"]:
                 for i in range(len(data["items"])):
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
-                    temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(
-                        replaceValue=data["items"][i]["item_value"])
-                    self.driver.find_element(By.XPATH, temp_element_position).click()
-                    if data["items"][i]["item_operation"] == "add":  # 直接 新增 模式
-                        if "->" in data["items"][i]["value"][0]:  # -> 存在，需要拆分
-                            item_value_str = data["items"][i]["value"][0].split("->")[0].strip()
+                    # temp_element_position = create_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=data["items"][i]["expression"])
+                    # self.driver.find_element(By.XPATH, temp_element_position).click()
+                    if data["items"][i]["op"] == "add":  # 直接 新增 模式
+                        if "->" in data["items"][i]["expression"]:  # -> 存在，需要拆分
+                            item_value_str = data["items"][i]["expression"].split("->")[0].strip()
                         else:  # -> 不存在，直接取值
-                            item_value_str = data["items"][i]["value"][0].strip()
+                            item_value_str = data["items"][i]["expression"].strip()
                         # 匹配多个multiple substrings 类型
                         if "&" in item_value_str:  # & 含有多个 and multiple substrings
                             item_values = item_value_str.split("&")
@@ -98,24 +96,30 @@ class CreateObject:
                             item_values = [item_value_str]
                     else:  # 修改模式，未完成
                         # print("todo modify moudle ...")
-                        item_values = [data["items"][i]["item_value"]]
+                        item_values = [data["items"][i]["expression"]]
                     for j, item_value in enumerate(item_values):  # 遍历添加 multi substr，第一个元素不用点击 + 图标
                         item_value = item_value.strip()
                         temp_element_position = create_element_position["objectPage_inputItem_posXpath"].format(replaceValue=j + 1)
                         if j == 0:
-                            self.driver.find_element(By.XPATH, temp_element_position).send_keys(item_value)
+                            for char in str(item_value):
+                                self.driver.find_element(By.XPATH, temp_element_position).send_keys(char)
+                                time.sleep(0.1)
                         else:
                             self.driver.find_element(By.XPATH, create_element_position["objectPage_item_value_plus_posXpath"]).click()
-                            self.driver.find_element(By.XPATH, temp_element_position).send_keys(item_value)
+                            for char in str(item_value):
+                                self.driver.find_element(By.XPATH, temp_element_position).send_keys(char)
+                                time.sleep(0.1)
                     self.driver.find_element(By.XPATH,create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif object_type in ["url", "account", "phone_number", "fqdn", "subscriberid", "apn"]:
+                if object_type == "phone_number":
+                    self.driver.find_element(By.XPATH,create_element_position["objectPage_phnoeNumberType_posXpath"]).click()
                 for i in range(len(data["items"])):  #
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
-                    if data["items"][i]["item_operation"] == "add":  # 直接 新增 模式
-                        if "->" in data["items"][i]["item_value"]:  # -> 存在，需要拆分
-                            item_value_str = data["items"][i]["item_value"].split("->")[0].strip()
+                    if data["items"][i]["op"] == "add":  # 直接 新增 模式
+                        if "->" in data["items"][i]["expression"]:  # -> 存在，需要拆分
+                            item_value_str = data["items"][i]["expression"].split("->")[0].strip()
                         else:  # -> 不存在，直接取值
-                            item_value_str = data["items"][i]["item_value"].strip()
+                            item_value_str = data["items"][i]["expression"].strip()
                         # 匹配多个multiple substrings 类型
                         if "&" in item_value_str:  # & 含有多个 and multiple substrings
                             item_values = item_value_str.split("&")
@@ -128,56 +132,52 @@ class CreateObject:
                         item_value = item_value.strip()
                         if j == 0:
                             # 适配24.10 版本，需要逐个字符输入
-                            input_field = self.driver.find_element(By.XPATH, create_element_position[
-                                "objectPage_inputItem_posXpath"])
+                            input_field = self.driver.find_element(By.XPATH, create_element_position["objectPage_inputItem_posXpath"])
                             for char in str(item_value):
                                 input_field.send_keys(char)
                                 time.sleep(0.1)
                         else:
-                            self.driver.find_element(By.XPATH, create_element_position[
-                                "ObjectPage_sameItem_addItem_posXpath"]).click()
-                            self.driver.find_element(By.XPATH, create_element_position[
-                                "ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
-                    self.driver.find_element(By.XPATH,
-                                             create_element_position["objectPage_button_saveItem_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, create_element_position["ObjectPage_sameItem_addItem_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, create_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
+                    self.driver.find_element(By.XPATH,create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif object_type == "tunnel":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
                       "to be added...")
             elif object_type == "flag":
                 for i in range(len(data["items"])):  #
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
-                    if data["items"][i]["item_operation"] == "add":  # 直接 新增 模式
-                        if data["items"][i]["item_value"]["flag"] == "2":
+                    if data["items"][i]["op"] == "add":  # 直接 新增 模式
+                        if data["items"][i]["flag"] == "2":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[2]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "4":
+                        elif data["items"][i]["flag"] == "4":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[3]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "8":
+                        elif data["items"][i]["flag"] == "8":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[4]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "16":
+                        elif data["items"][i]["flag"] == "16":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[5]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "32":
+                        elif data["items"][i]["flag"] == "32":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[6]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "64":
+                        elif data["items"][i]["flag"] == "64":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[7]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "128":
+                        elif data["items"][i]["flag"] == "128":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[8]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "256":
+                        elif data["items"][i]["flag"] == "256":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[9]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "512":
+                        elif data["items"][i]["flag"] == "512":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[10]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "1024":
+                        elif data["items"][i]["flag"] == "1024":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[11]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "2048":
+                        elif data["items"][i]["flag"] == "2048":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[12]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "4096":
+                        elif data["items"][i]["flag"] == "4096":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[13]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "8092":
+                        elif data["items"][i]["flag"] == "8092":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[14]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "16384":
+                        elif data["items"][i]["flag"] == "16384":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[15]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "32768":
+                        elif data["items"][i]["flag"] == "32768":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[16]").click()
-                        elif data["items"][i]["item_value"]["flag"] == "65536":
+                        elif data["items"][i]["flag"] == "65536":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
                     self.driver.find_element(By.XPATH,create_element_position["objectPage_button_saveItem_posXpath"]).click()
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"to be added...")
@@ -185,22 +185,54 @@ class CreateObject:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"to be added...")
             elif object_type == "application":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"to be added...")
+            elif object_type == "port":
+                for i in range(len(data["items"])):
+                    if data["items"][i]["op"] == "add":
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
+                        # 适配24.10 版本，需要逐个字符输入
+                        send_data = data["items"][i]["interval"]
+                        input_field = self.driver.find_element(By.XPATH,create_element_position["objectPage_inputItem_posXpath"])
+                        for char in str(send_data):
+                            input_field.send_keys(char)
+                            time.sleep(0.1)
+                        self.driver.find_element(By.XPATH,create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif object_type == "ip_learning":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"to be added...")
+                self.driver.find_element(By.XPATH,create_element_position["objectPage_ipLearningType_posXpath"]).click()
+                if data["op"] == "add":
+                    for i in range(0,len(data["learning_plan"]["fqdn_ip_learning_plan"]["from_fqdns"])):
+                        self.driver.find_element(By.XPATH,create_element_position["objectPage_addItem_posXpath"]).click()
+                        send_data = data["learning_plan"]["fqdn_ip_learning_plan"]["from_fqdns"][i]
+                        input_field = self.driver.find_element(By.XPATH,create_element_position["objectPage_inputItem_posXpath"])
+                        for char in str(send_data):
+                            input_field.send_keys(char)
+                            time.sleep(0.1)
+                        self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
+                self.driver.find_element(By.XPATH, create_element_position["objectPage_learnFromProtocols_up_select_posXpath"]).click()
+                if data["learning_plan"]["fqdn_ip_learning_plan"]["from_protocol"] == "HTTP":
+                    self.driver.find_element(By.XPATH,create_element_position["objectPage_learnFromProtocols_http_posXpath"]).click()
+                elif data["learning_plan"]["fqdn_ip_learning_plan"]["from_protocol"]  == "SSL":
+                    self.driver.find_element(By.XPATH,create_element_position["objectPage_learnFromProtocols_ssl_posXpath"]).click()
+                # self.driver.find_element(By.XPATH, ip_addressObjectPage_button_IP_learn_from_protocols_up_posXpath).click()
+                self.driver.find_element(By.XPATH, create_element_position["objectPage_agingTimes_posXpath"]).send_keys(data["learning_plan"]["fqdn_ip_learning_plan"]["aging_time"] )
+                self.driver.find_element(By.XPATH,create_element_position["objectPage_voteClients_posXpath"]).send_keys(data["learning_plan"]["fqdn_ip_learning_plan"]["vote_client_num"])
+                self.driver.find_element(By.XPATH,create_element_position["objectPage_learnedIPLimits_posXpath"]).send_keys(data["learning_plan"]["fqdn_ip_learning_plan"]["goal_upper_limit"])
             else:
                 for i in range(len(data["items"])):
                     if object_type == "ip":
                         self.driver.find_element(By.XPATH,create_element_position["objectPage_ipType_posXpath"]).click()
+                        send_data = data["items"][i]["ip"]
                     if object_type == "imsi":
                         self.driver.find_element(By.XPATH,create_element_position["objectPage_imsiType_posXpath"]).click()
+                        send_data = data["items"][i]["expression"]
                     elif object_type == "phone_number":
                         self.driver.find_element(By.XPATH,create_element_position["objectPage_phnoeNumberType_posXpath"]).click()
+                        send_data = data["items"][i]["expression"]
                     elif object_type == "imei":
                         self.driver.find_element(By.XPATH,create_element_position["objectPage_imeiType_posXpath"]).click()
+                        send_data = data["items"][i]["expression"]
                     if data["items"][i]["op"] == "add":
                         self.driver.find_element(By.XPATH,create_element_position["objectPage_addItem_posXpath"]).click()
                         # 适配24.10 版本，需要逐个字符输入
-                        send_data = data["items"][i]["ip"]
                         input_field = self.driver.find_element(By.XPATH,create_element_position["objectPage_inputItem_posXpath"])
                         for char in str(send_data):
                             input_field.send_keys(char)
@@ -220,7 +252,15 @@ class CreateObject:
             # 确认创建
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
             # self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
-            return 200
+            # 展示所有列获取uuid
+            column_setting_btn = self.driver.find_element(By.XPATH,mainPage_ObjectSearch_Column_settings_posXpath)  # 列设置按钮
+            self.driver.execute_script("arguments[0].scrollIntoView();", column_setting_btn)
+            column_setting_btn.click()  # 点击列设置
+            self.driver.find_element(By.XPATH, '//span[text()="UUID"]').click()
+            self.driver.find_element(By.XPATH, '//div[text()="Name"]').click()
+            object_uuid = self.driver.find_element(By.XPATH, '//div[@aria-rowindex="2"]//div[@data-field="uuid"]').text
+            description = self.driver.find_element(By.XPATH, '//div[@aria-rowindex="2"]//div[@data-field="description"]').text
+            return 200,object_uuid,description
         except Exception as e:
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             raise

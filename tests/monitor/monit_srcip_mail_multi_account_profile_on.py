@@ -59,7 +59,7 @@ def run(parameter):
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_MAIL_ACCOUNT",
-                            "type": "keyword",
+                            "type": "account",
                             "member_type": "item",
                             "name": "monit_mail_account_by_account",
                             "items": [

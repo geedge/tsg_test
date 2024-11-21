@@ -13,11 +13,11 @@ class PageJump:
         
     def jump_sub_object_page(self, page_jump_element_position, vsys_name=""):
         # 菜单操作
-        btn = self.driver.find_element(By.CSS_SELECTOR, page_jump_element_position["mainPage_navigationBar_logo_posXpath"], find_before_wait_time=0.3)
+        btn = self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_navigationBar_logo_posXpath"], find_before_wait_time=0.3)
         btn = self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
         #self.change_vsys(vsys_name=vsys_name)    # 调整到页面登录时切换vsys
-        self.driver.find_element(By.ID, page_jump_element_position["mainPage_policyFirstLevelMenu_posXpath"]).click()
-        self.driver.find_element(By.ID, page_jump_element_position["mainPage_policySecondLevelMenu_posId"]).click()
+        self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_policyFirstLevelMenu_posXpath"]).click()
+        self.driver.find_element(By.XPATH, page_jump_element_position["mainPage_policySecondLevelMenu_posXpath"]).click()
         
     def change_vsys(self, vsys_name=""):
         current_vsys_name = self.driver.find_element(By.XPATH, mainPage_currentPage_vsysName_posXpath).text.strip().lower()

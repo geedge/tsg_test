@@ -23,12 +23,17 @@ class CreateProfiles:
                 if "vsys" in policy_configuration["action_parameter"]["template_profile"].keys():
                     policy_configuration["action_parameter"]["template_profile"]["vsys"] = vsys
                 template_uuids, template_temp = self.create_text_profile(policy_configuration["action_parameter"]["template_profile"], profile_type)
-                profile_uuids_list.append(template_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = template_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["template_profile"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["template_profile"] = template_uuids
                 #profile_template = root_path + "/support/api_utils/template/profile_statistics_template.json"
             elif "sff_profiles" in policy_configuration["action_parameter"].keys():
                 sff_profile_list = []
                 for sff_profile in policy_configuration["action_parameter"]["sff_profiles"]:
+                    sff_profile_list = []
                     sf_profile_list = []
                     for sf_profile in sff_profile["service_func_profiles"]:
                         if "connectivity" in sf_profile.keys():
@@ -39,11 +44,21 @@ class CreateProfiles:
                         profile_type = "service-functions"
                         sf_uuids, sf_temp = self.create_text_profile(sf_profile, profile_type)
                         sf_profile_list.append(sf_uuids)
+                        sf_uuids_temp_dict = {}
+                        sf_uuids_temp_dict["type"] = profile_type
+                        sf_uuids_temp_dict["uuid"] = sf_uuids
+                        sf_uuids_temp_dict["name"] = sf_profile["name"]
+                        profile_uuids_list.append(sf_uuids_temp_dict)
                     sff_profile["service_func_profiles"] = sf_profile_list
                     profile_type = "service-function-forwarders"
                     sff_uuids, sf_temp = self.create_text_profile(sff_profile, profile_type)
-                    profile_uuids_list.append(sff_uuids)
-                policy_configuration["action_parameter"]["sff_profiles"] = profile_uuids_list
+                    sff_uuids_temp_dict = {}
+                    sff_uuids_temp_dict["type"] = profile_type
+                    sff_uuids_temp_dict["uuid"] = sff_uuids
+                    sff_uuids_temp_dict["name"] = sff_profile["name"]
+                    profile_uuids_list.append(sff_uuids_temp_dict)
+                    sff_profile_list.append(sff_uuids)
+                policy_configuration["action_parameter"]["sff_profiles"] = sff_profile_list
             elif "html_profile" in policy_configuration["action_parameter"].keys():
                 profile_type = "response-pages"
                 #"html_profile": {
@@ -52,7 +67,11 @@ class CreateProfiles:
                 #    "content_name": "Response-Pages_1.html"
                 #}
                 html_uuids, html_temp = self.create_file_upload_profile(policy_configuration["action_parameter"]["html_profile"], profile_type, policy_configuration["action_parameter"]["html_profile"]["file_path"])
-                profile_uuids_list.append(html_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = html_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["html_profile"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["html_profile"] = html_uuids
             elif "resolution" in policy_configuration["action_parameter"].keys():
                 profile_type = "dns-resource-records"
@@ -60,57 +79,91 @@ class CreateProfiles:
                     for record_profile in resolution["answer"]:
                         record_uuids, record_temp = self.create_text_profile(
                             record_profile["record_profile"], profile_type)
+                        profile_uuids_temp_dict = {}
+                        profile_uuids_temp_dict["type"] = profile_type
+                        profile_uuids_temp_dict["uuid"] = record_uuids
+                        profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["record_profile"]["name"]
+                        profile_uuids_list.append(profile_uuids_temp_dict)
                         record_profile["record_profile"] = record_uuids
-                        profile_uuids_list.append(record_uuids)
             elif "traffic_mirroring" in policy_configuration["action_parameter"].keys():
                 profile_type = "traffic-mirroring-profiles"
                 for vlan_tmp in policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]["vlan_array"]:
                     if "random" == vlan_tmp:
                         vlan_tmp = self.mirroring_random_vlan_id()
                 mirroring_uuids, mirroring_temp = self.create_text_profile(policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"], profile_type)
-                profile_uuids_list.append(mirroring_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = mirroring_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"] = mirroring_uuids
             elif "replacement_file" in policy_configuration["action_parameter"].keys():
                 profile_type = "proxy-replacement-files"
                 replacement_uuids, replacement_temp = self.create_file_upload_profile(
                     policy_configuration["action_parameter"]["replacement_file"], profile_type,
                     policy_configuration["action_parameter"]["replacement_file"]["content_name"])
-                profile_uuids_list.append(replacement_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = replacement_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["replacement_file"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["replacement_file"] = replacement_uuids
             elif "js_file" in policy_configuration["action_parameter"].keys() :
                 profile_type = "proxy-js-files"
                 js_uuids, js_temp = self.create_file_upload_profile(
                     policy_configuration["action_parameter"]["js_file"], profile_type,
                     policy_configuration["action_parameter"]["js_file"]["file_path"])
-                profile_uuids_list.append(js_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = js_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["js_file"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["js_file"] = js_uuids
             elif "css_file" in policy_configuration["action_parameter"].keys():
                 profile_type = "proxy-css-files"
                 css_uuids, css_temp = self.create_file_upload_profile(
                     policy_configuration["action_parameter"]["css_file"], profile_type,
                     policy_configuration["action_parameter"]["css_file"]["file_path"])
-                profile_uuids_list.append(css_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = css_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["css_file"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["css_file"] = css_uuids
             elif "lua_script" in policy_configuration["action_parameter"].keys():
                 profile_type = "proxy-lua-scripts"
                 lua_uuids, lua_temp = self.create_file_upload_profile(
                     policy_configuration["action_parameter"]["lua_script"], profile_type,
                     policy_configuration["action_parameter"]["lua_script"]["file_path"])
-                profile_uuids_list.append(lua_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = lua_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["lua_script"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["lua_script"] = lua_uuids
             elif "profile_chain" in policy_configuration["action_parameter"].keys():
                 profile_type = "traffic-shaping-profiles"
+                traffic_shaping_profile_list = []
                 for traffic_shaping_profile in policy_configuration["action_parameter"]["profile_chain"]:
                     traffic_shaping_uuids, traffic_shaping_temp = self.create_text_profile(
                         traffic_shaping_profile, profile_type)
-                    profile_uuids_list.append(traffic_shaping_uuids)
-                policy_configuration["action_parameter"]["profile_chain"] = profile_uuids_list
+                    traffic_shaping_profile_list.append(traffic_shaping_uuids)
+                    profile_uuids_temp_dict = {}
+                    profile_uuids_temp_dict["type"] = profile_type
+                    profile_uuids_temp_dict["uuid"] = traffic_shaping_uuids
+                    profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["profile_chain"]["name"]
+                    profile_uuids_list.append(profile_uuids_temp_dict)
+                policy_configuration["action_parameter"]["profile_chain"] = traffic_shaping_profile_list
 
             if "tcp_option_profile" in policy_configuration["action_parameter"].keys():
                 profile_type = "proxy-tcp-option-profiles"
                 tcp_option_uuids, tcp_option_temp = self.create_text_profile(
                     policy_configuration["action_parameter"]["tcp_option_profile"], profile_type)
-                profile_uuids_list.append(tcp_option_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = tcp_option_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["tcp_option_profile"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["tcp_option_profile"] = tcp_option_uuids
             if "keyring_for_trusted" in policy_configuration["action_parameter"].keys():
                 profile_type = "decryption-keyrings"
@@ -118,7 +171,11 @@ class CreateProfiles:
                     policy_configuration["action_parameter"]["keyring_for_trusted"], profile_type,
                     policy_configuration["action_parameter"]["keyring_for_trusted"]["public_file"],
                     policy_configuration["action_parameter"]["keyring_for_trusted"]["private_file"])
-                profile_uuids_list.append(keyring_for_trusted_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = keyring_for_trusted_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["keyring_for_trusted"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["keyring_for_trusted"] = keyring_for_trusted_uuids
             if "keyring_for_untrusted" in policy_configuration["action_parameter"].keys():
                 profile_type = "decryption-keyrings"
@@ -126,13 +183,21 @@ class CreateProfiles:
                     policy_configuration["action_parameter"]["keyring_for_untrusted"], profile_type,
                     policy_configuration["action_parameter"]["keyring_for_untrusted"]["public_file"],
                     policy_configuration["action_parameter"]["keyring_for_untrusted"]["private_file"])
-                profile_uuids_list.append(keyring_for_untrusted_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = keyring_for_untrusted_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["keyring_for_trusted"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["keyring_for_untrusted"] = keyring_for_untrusted_uuids
             if "decryption_profile" in policy_configuration["action_parameter"].keys():
                 profile_type = "decryption-profiles"
                 decryption_uuids, decryption_temp = self.create_text_profile(
                     policy_configuration["action_parameter"]["decryption_profile"], profile_type)
-                profile_uuids_list.append(decryption_uuids)
+                profile_uuids_temp_dict = {}
+                profile_uuids_temp_dict["type"] = profile_type
+                profile_uuids_temp_dict["uuid"] = decryption_uuids
+                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["keyring_for_trusted"]["name"]
+                profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["decryption_profile"] = decryption_uuids
 
             profile_uuids_tuple = tuple(profile_uuids_list)
