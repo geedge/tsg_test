@@ -16,7 +16,7 @@ class QueryRuleLog:
     def query_rule_log(self, traffic_generation, verification_result, rule_uuids_tuple, start_time):
         try:
             self.rule_type = self.policy_configuration["type"]
-            if self.rule_type == "security" or self.rule_type == "pxy_intercept" or self.rule_type == "pxy_manipulation" or self.rule_type == "monitor" :
+            if self.rule_type == "security" or self.rule_type == "pxy_intercept" or self.rule_type == "pxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" :
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 log_result = None
                 for _ in range(int(90)):
@@ -28,6 +28,8 @@ class QueryRuleLog:
                         log_dict, error = self.get_log(traffic_generation, rule_uuids_tuple, start_time, end_time)
                         if len(error) != 0:
                             return error
+                        elif len(log_dict) == 0:
+                            continue
                         if self.rule_type == "dos_protection":
                             log_result = self.verify_dos_log(log_dict, verification_result, start_time, end_time)
                         else:
@@ -51,7 +53,7 @@ class QueryRuleLog:
         try:
             self.traffic_generation = traffic_generation
             rule_uuids_list = list(rule_uuids_tuple)
-            rule_uuid = rule_uuids_list["uuid"]
+            rule_uuid = rule_uuids_list[0]["uuid"]
             headers = {'Content-Type': 'application/json', 'Authorization': self.token}
             log_condition = {
                 "page_no": 1,
@@ -72,23 +74,23 @@ class QueryRuleLog:
                 if self.rule_type == 'security':
                     schema_type = log_source = 'security_event'
                     identifier_name = 'security-event-list'
-                    log_query_rule_type = 'security_rule_list'
+                    log_query_rule_type = 'security_rule_uuid_list'
                 elif self.rule_type == 'pxy_intercept':
                     schema_type = log_source = 'session_record'
                     identifier_name = 'session-record-list'
-                    log_query_rule_type = 'proxy_rule_list'
+                    log_query_rule_type = 'proxy_rule_uuid_list'
                 elif self.rule_type == 'pxy_manipulation':
                     schema_type = log_source = 'proxy_event'
                     identifier_name = 'proxy-event-manipulation-list'
-                    log_query_rule_type = 'proxy_rule_list'
+                    log_query_rule_type = 'proxy_rule_uuid_list'
                 elif self.rule_type == 'monitor':
                     schema_type = log_source = 'monitor_event'
                     identifier_name = 'monitor-event-list'
-                    log_query_rule_type = 'monitor_rule_list'
+                    log_query_rule_type = 'monitor_rule_uuid_list'
                 elif self.rule_type == 'statistics':
                     schema_type = log_source = 'session_record'
                     identifier_name = 'session-record-list'
-                    log_query_rule_type = 'statistics_rule_list'
+                    log_query_rule_type = 'statistics_rule_uuid_list'
                 elif self.rule_type == "dos_protection":
                     schema_type = log_source = "dos_event"
                     identifier_name = "dos-event-list"
@@ -104,20 +106,25 @@ class QueryRuleLog:
                 
                 if self.rule_type == "dos_protection":
                     attack_type = "Custom Network Attack"
-                    log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='{attack_type}'"
+                    log_condition_dict['filter'] = f"destination_ip='{traffic_generation["servers_start_ip"]}'AND attack_type='{attack_type}'"
                 if self.is_attribute_name_exsit("ATTR_SUBSCRIBER_ID") == True:
-                    log_filter = f"subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, {rule_uuid})"
+                    log_filter = f"subscriber_id='{self.parameter["test_subcriber_id"]}' AND has({log_query_rule_type}, {rule_uuid})"
                     log_condition_dict['filter'] = log_filter
                 else:
-                    log_filter = f"client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, {rule_uuid})"
-                    log_condition_dict['filter'] = log_filter
-                    log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={self.parameter['test_pc_ip']}", f"client_ip='{self.parameter['test_pc_ip']}'")
-                
+                    if self.rule_type == "statistics":
+                        log_filter = f"client_ip={traffic_generation["clients_start_ip"]} AND has({log_query_rule_type}, '{rule_uuid}')"
+                        log_condition_dict['filter'] = log_filter
+                        log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation["clients_start_ip"]}", f"client_ip='{traffic_generation["clients_start_ip"]}'")
+                    else:
+                        log_filter = f"client_ip={self.parameter["test_pc_ip"]} AND has({log_query_rule_type}, '{rule_uuid}')"
+                        log_condition_dict['filter'] = log_filter
+                        log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={self.parameter["test_pc_ip"]}", f"client_ip='{self.parameter["test_pc_ip"]}'")
+
                 url = self.parameter["api_server"] + "/v1/logs/query"
                 response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
                 assert response.status_code == 200
                 log_list = json.loads(response.text)
-                log_list = log_list['data']['result']
+                log_list = log_list['data']['list']
                 return log_list, ""
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When getting log, the exception error: ", e, flush=True)

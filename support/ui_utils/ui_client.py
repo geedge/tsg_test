@@ -40,7 +40,6 @@ class UIClient:
             rules.delete_rules(parameter, policy_configuration, self.driver)
 
     def create_objects(self,policy_configuration):
-        self.policy_configuration = policy_configuration
         objects = CreateObjectsExample()
         objects_uuids_tuple, element_position, result = objects.create_objects(policy_configuration, self.driver)
         self.element_position = element_position

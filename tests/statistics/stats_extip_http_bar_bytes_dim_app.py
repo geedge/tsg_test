@@ -1,14 +1,12 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
-
-from support.ui_utils.element_position.map_element_position_library import replace_paras
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
 import pytz
-from datetime import datetime
-from support.ui_utils.workpath import workdir
+
+from support.organize_config import OrganizeConfig
+from support.ui_utils.element_position.map_element_position_library import replace_paras
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
@@ -42,7 +40,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "ip": "10.64.224.31",
-                                    "interval": "1-65535"
+                                    "interval": "0-65535"
                                 }
                             ]
                         }
@@ -160,8 +158,15 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token)
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            libraries_tuple, api_error = api_client.create_libraries(policy_configuration)
             if len(api_error) > 0:
                 return api_error
             # 处理Profiles
@@ -235,17 +240,17 @@ def run(parameter):
         elif parameter["initiation_method"] == "api":
             if not rules_tuple:
                 api_client.delete_rules(rules_tuple)
-
+            if not profiles_tuple:
+                api_client.delete_profiles(profiles_tuple)
+            if not libraries_tuple:
+                api_client.delete_libraries(libraries_tuple)
             if not objects_tuple:
                 api_client.delete_objects(objects_tuple)
-
-            if not profiles_tuple:
-                api_client.delete_objects(profiles_tuple)
         # 统计脚本用时
         end_time = time.time()
-        duration = end_time - start_time
+        duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+              "Duration of running the test case: ", "{:.3f}".format(duration/1000), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
 

@@ -24,6 +24,7 @@ class TrafficGenerator:
     def run(self, policy_configuration, traffic_generation):
         debug = "local"
         if debug == "local":
+            #traffic_generation["type"]=traffic_generation["tool"]
             traffic_generation_json_str = json.dumps(traffic_generation)
             parse = configparser.ConfigParser()
             parse_dir = os.path.join(workdir, "configuration_file.ini")
@@ -133,7 +134,7 @@ class TrafficGenerator:
                 traffic_result_temp = traffic_result["result"]
             else:
                 traffic_result_temp = traffic_result
-            expected_result_temp = verification["excepted_traffic_result"].split(',')
+            expected_result_temp = verification["excepted_traffic_result"]
             result = all(word in traffic_result_temp for word in expected_result_temp)
             if result == True:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The traffic return traffic result match the expected result.', flush=True)

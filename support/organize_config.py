@@ -16,7 +16,8 @@ class OrganizeConfig:
         self.policy_configuration = policy_configuration
         self.token = token
         rule_uuids_list = list(rule_uuids_tuple)
-        self.rule_uuid = rule_uuids_list["uuid"]
+        if len(rule_uuids_list) > 0:
+            self.rule_uuid = rule_uuids_list[0]["uuid"]
     
     def organize_statistics_rule_cfg(self):
         # 变量初始化
@@ -30,7 +31,7 @@ class OrganizeConfig:
                 for policy in policy_info:
                     user_region = policy["action_parameter"]
                     if user_region != {}:
-                        template_id = user_region["template_profile"]
+                        template_uuid = user_region["template_profile"]
                         code, template_info = self.get_template_info(template_id, "statistics_template")
                         if code != 200:
                             return 400, statistics_sc_info_list
@@ -38,9 +39,9 @@ class OrganizeConfig:
                         for template in template_info:
                             for chart in template["dataview"]["charts"]:
                                 statistics_info = {}
-                                statistics_info["rule_id"] = self.rule_uuid
-                                statistics_info["template_id"] = template_id
-                                statistics_info["chart_id"] = chart["uuid"]
+                                statistics_info["rule_uuid"] = self.rule_uuid
+                                statistics_info["template_uuid"] = template_uuid
+                                statistics_info["chart_uuid"] = chart["uuid"]
                                 statistics_info["chart_type"] = chart["display"]["type"]
                                 statistics_info["version"] = chart["version"]
                                 if chart["display"]["type"] != "histogram" and chart["query"]["dimensions"] != []:
