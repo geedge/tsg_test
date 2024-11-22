@@ -970,7 +970,7 @@ if __name__ == '__main__':
 
     # 替换test_data
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
-    name = "man_run_script_srcip_http_pre_url.py"
+    name = "man_redirect_srcip_http_substr_url_suff_reqheader_by_ua_301.py"
     #name = "{}.py".format(name1)
     replace_test_data_from_py_2(case_directory_path=case_directory_path, name=name)
 
