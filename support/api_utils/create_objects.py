@@ -213,6 +213,7 @@ class CreateObjects:
         else:
             uuid = response_dict["data"]["uuid"]
         return uuid
+    
     def query_uuids_by_sql(self, item_temp, api_server, type):
         mysql_host = api_server[7:]
         if "https" in api_server:
@@ -288,7 +289,7 @@ class CreateObjects:
                 elif object_type == "flag":
                     for t in range(len(item_temp)):
                         item_dict = {}
-                        flag, mask = self.compute_flags(item_temp[t]["flag"])
+                        flag, mask = self.escape_flags_data(item_temp[t]["flag"])
                         item_dict = dict(op=item_temp[t]["op"], flag = str(flag), mask = str(mask))
                         item_list.append(item_dict)
                 object_template_json["object"]["items"] = item_list
@@ -362,58 +363,58 @@ class CreateObjects:
             exception_result = str(e)
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
             return "When running test case, the exception error: " + str(e)
-    def compute_flags(self, config):  
-        # 初始化 flag 和 mask  
-        flag = 0  
-        mask = 0  
-
+    
+    def escape_flags_data(self, config):
+        # 初始化 flag 和 mask
+        flag = 0
+        mask = 0
         # 根据输入字典里的值设置 flag 和 mask，第0位不对应任何flag，从第1位开始
-        if 'Bulky' in config:  
-            flag |= (1 << 1) if config['Bulky'] else 0  #   
-            mask |= (1 << 1)   
-        if 'CBR Streaming' in config:  
-            flag |= (1 << 2) if config['CBR Streaming'] else 0  
-            mask |= (1 << 2)  
-        if 'Client is Local' in config:  
-            flag |= (1 << 3) if config['Client is Local'] else 0  
+        if 'Bulky' in config:
+            flag |= (1 << 1) if config['Bulky'] else 0
+            mask |= (1 << 1)
+        if 'CBR Streaming' in config:
+            flag |= (1 << 2) if config['CBR Streaming'] else 0
+            mask |= (1 << 2)
+        if 'Client is Local' in config:
+            flag |= (1 << 3) if config['Client is Local'] else 0
             mask |= (1 << 3)
-        if 'Server is Local' in config:  
-            flag |= (1 << 4) if config['Server is Local'] else 0  
-            mask |= (1 << 4) 
+        if 'Server is Local' in config:
+            flag |= (1 << 4) if config['Server is Local'] else 0
+            mask |= (1 << 4)
         if 'Download' in config:  
-            flag |= (1 << 5) if config['Download'] else 0  
-            mask |= (1 << 5) 
-        if 'Interactive' in config:  
-            flag |= (1 << 6) if config['Interactive'] else 0  
-            mask |= (1 << 6) 
-        if 'Inbound' in config:  
-            flag |= (1 << 7) if config['Inbound'] else 0  
-            mask |= (1 << 7) 
-        if 'Outbound' in config:  
-            flag |= (1 << 8) if config['Outbound'] else 0  
-            mask |= (1 << 8) 
-        if 'Pseudo Unidirectional' in config:  
-            flag |= (1 << 9) if config['Pseudo Unidirectional'] else 0  
-            mask |= (1 << 9) 
-        if 'Streaming' in config:  
-            flag |= (1 << 10) if config['Streaming'] else 0  
-            mask |= (1 << 10) 
-        if 'Unidirectional' in config:  
-            flag |= (1 << 11) if config['Unidirectional'] else 0  
-            mask |= (1 << 11) 
-        if 'Random looking' in config:  
-            flag |= (1 << 12) if config['Random looking'] else 0  
-            mask |= (1 << 12) 
-        if 'C2S' in config:  
-            flag |= (1 << 13) if config['C2S'] else 0  
-            mask |= (1 << 13) 
-        if 'S2C' in config:  
-            flag |= (1 << 14) if config['S2C'] else 0  
-            mask |= (1 << 14) 
-        if 'Bidirectional' in config:  
-            flag |= (1 << 15) if config['Bidirectional'] else 0  
-            mask |= (1 << 15) 
-        if 'Tunneling' in config:  
-            flag |= (1 << 16) if config['Tunneling'] else 0  
-            mask |= (1 << 16)    
-        return flag, mask  
+            flag |= (1 << 5) if config['Download'] else 0
+            mask |= (1 << 5)
+        if 'Interactive' in config:
+            flag |= (1 << 6) if config['Interactive'] else 0
+            mask |= (1 << 6)
+        if 'Inbound' in config:
+            flag |= (1 << 7) if config['Inbound'] else 0
+            mask |= (1 << 7)
+        if 'Outbound' in config:
+            flag |= (1 << 8) if config['Outbound'] else 0
+            mask |= (1 << 8)
+        if 'Pseudo Unidirectional' in config:
+            flag |= (1 << 9) if config['Pseudo Unidirectional'] else 0
+            mask |= (1 << 9)
+        if 'Streaming' in config:
+            flag |= (1 << 10) if config['Streaming'] else 0
+            mask |= (1 << 10)
+        if 'Unidirectional' in config:
+            flag |= (1 << 11) if config['Unidirectional'] else 0
+            mask |= (1 << 11)
+        if 'Random looking' in config:
+            flag |= (1 << 12) if config['Random looking'] else 0
+            mask |= (1 << 12)
+        if 'C2S' in config:
+            flag |= (1 << 13) if config['C2S'] else 0
+            mask |= (1 << 13)
+        if 'S2C' in config:
+            flag |= (1 << 14) if config['S2C'] else 0
+            mask |= (1 << 14)
+        if 'Bidirectional' in config:
+            flag |= (1 << 15) if config['Bidirectional'] else 0
+            mask |= (1 << 15)
+        if 'Tunneling' in config:
+            flag |= (1 << 16) if config['Tunneling'] else 0
+            mask |= (1 << 16)
+        return flag, mask
