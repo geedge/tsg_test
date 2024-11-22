@@ -110,7 +110,7 @@ def run(parameter):
                                             "metric_type": "count",
                                             "metric_name": "count_1",
                                             "label": "SUM(Closed Sessions)",
-                                            "unit": "bytes"
+                                            "unit": "sessions"
                                         }
                                     ],
                                     "order_by": "SUM(Closed Sessions)",
