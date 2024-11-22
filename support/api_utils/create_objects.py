@@ -44,7 +44,7 @@ class CreateObjects:
                                     object_template_json["object"]["included_sub_object_uuids"] = []
                                     include_object_temp = object_temp[j]["included_sub_object_uuids"]
                                     for u in range(len(include_object_temp)):
-                                        object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, include_object_temp, u, include_object_temp[u]["type"], "")
+                                        object_uuids_list.append(self.create_common_objects(object_template_json, include_object_temp[u], ""))
                                     filter_object_uuids_list = [item for item in object_uuids_list if "type" in item and item["type"] == object_temp[j]["type"]]  
                                     object_template_json["object"]["included_sub_object_uuids"].append(filter_object_uuids_list[1]["uuid"])
                                     # included_sub_object_uuids 在group 中必定会存在
@@ -54,9 +54,9 @@ class CreateObjects:
                                         del object_template_json["object"]["items"]
                                     if object_temp[j]["type"] not in ["ip", "mobile_identity"]:
                                         del object_template_json["object"]["sub_type"]
-                                    object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, object_temp, u, object_temp[j]["type"], "")
+                                    object_uuids_list.append(self.create_common_objects(object_template_json, object_temp[u], ""))
                                 if object_temp[j]["type"] != "tunnel" and "included_sub_object_uuids" not in object_temp[j]:
-                                    object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, object_temp, j, object_temp[j]["type"], "")
+                                    object_uuids_list.append(self.create_common_objects(object_template_json, object_temp[j], ""))
                                 elif object_temp[j]["type"] == "tunnel":
                                     tunnel = {}
                                     tunnel["action_parameter"] = object_temp[j]["tunnel"]["action_parameter"]                                     
@@ -68,7 +68,7 @@ class CreateObjects:
                                         tunnel_or_conditions = tunnel_and_conditions[k]["or_conditions"]
                                         tunnel["and_conditions"][k]["or_conditions"] = []
                                         for l in range(len(tunnel_or_conditions)):
-                                            object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, tunnel_or_conditions, l, "ip", "")
+                                            object_uuids_list.append(self.create_common_objects(object_template_json, tunnel_or_conditions[l], ""))
                                     for s in range(len(object_uuids_list)): 
                                         item = object_uuids_list[s]
                                         object_ip_uuid_list = []
@@ -77,7 +77,7 @@ class CreateObjects:
                                         attribute_name = item["attribute_name"]
                                         or_condition_dict = dict(attribute_name = attribute_name, object_uuids = object_ip_uuid_list)
                                         tunnel["and_conditions"][s]["or_conditions"].append(or_condition_dict)
-                                    object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, object_temp, j, "tunnel", tunnel)
+                                    object_uuids_list.append(self.create_common_objects(object_template_json, object_temp[j], tunnel))
                             elif object_temp[j]["type"] in ["ip_protocol", "boolean"] or ("sub_type" not in object_temp[j] and object_temp[j]["type"] == "application"):
                                 object_template_json["object"]["type"] = object_temp[j]["type"]
                                 if "sub_type" in object_temp[j]:
@@ -112,7 +112,7 @@ class CreateObjects:
                                         del object_template_json["object"]["items"]
                                     if "sub_type" in object_template_json["object"]:
                                         del object_template_json["object"]["sub_type"]
-                                    object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, object_temp, w, object_temp[j]["type"], "")
+                                    object_uuids_list.append(self.create_common_objects(object_template_json, object_temp[j], ""))
                                 if "included_sub_object_uuids" not in object_temp[j]:
                                     item_temp = object_temp[j]["items"]
                                     object_uuids_temp_dict = {}
@@ -162,11 +162,14 @@ class CreateObjects:
                                                     if signature_object_temp[p]["type"] != "tunnel":
                                                         # 创建objects
                                                         for r in range(len(signature_object_temp)):
-                                                            # 此时代表自定义attrbute
+                                                            # 此时代表自定义attribute
                                                             if "user_defined_attribute" in signature_object_temp[r]:
                                                                 user_defined_attribute_temp = signature_object_temp[r]["user_defined_attribute"]
-                                                                object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, object_temp, p, "user_defined_attribute", user_defined_attribute_temp)
-                                                            object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, signature_object_temp, p, signature_object_temp[p]["type"], "")
+                                                                user_defined_attribute_temp["type"] = "user_defined_attribute"
+                                                                # user_defined_attribute_temp[""]
+                                                                object_uuids_list.append(self.create_common_objects(object_template_json, user_defined_attribute_temp, ""))
+                                                            # 创建自定义attribute引用的object
+                                                            object_uuids_list.append(self.create_common_objects(object_template_json, signature_object_temp[p], ""))
                                                             signature_object_list = [item for item in object_uuids_list if "type" in item and item["type"] != "user_defined_attribute"] 
                                                             for item in signature_object_list:
                                                                 signature_object_uuid_list = []
@@ -178,9 +181,10 @@ class CreateObjects:
                                                                     attribute_name = item["attribute_name"]
                                                                 or_condition_dict = dict(attribute_name = attribute_name, object_uuids = signature_object_uuid_list)
                                                                 signature["and_conditions"][r]["or_conditions"].append(or_condition_dict)
+                                                                signature["type"] = "signature"
                                                         # 创建signature
                                                         signature_dict = dict(vsys = vsys, signature = signature, return_data = 1)
-                                                        object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, signature_object_temp, n, "signature", signature_dict)
+                                                        object_uuids_list.append(self.create_common_objects(object_template_json, signature, signature_dict))
                                         # 提取signature，组织application数据
                                         for t in range(len(object_uuids_list)):
                                             if object_uuids_list[t]["type"] == "signature":
@@ -193,7 +197,7 @@ class CreateObjects:
                                 if "items" in object_template_json["object"]:
                                     del object_template_json["object"]["items"]
                                 # 请求接口创建application
-                                object_uuids_list = self.create_common_objects(object_uuids_list, object_template_json, object_temp, j, "application", "")
+                                object_uuids_list.append(self.create_common_objects(object_template_json, object_temp[j], ""))
             object_uuids_tuple = tuple(object_uuids_list)
             return object_uuids_tuple, ""
         except Exception as e:
@@ -260,8 +264,9 @@ class CreateObjects:
                     "ip_protocol": "ip-protocols",
                     "tunnel_level": "tunnel-levels",
                 }
-            if object_type not in ["tunnel", "application", "signature", "user_defined_attribute"] and "included_sub_object_uuids" not in object_temp[j]:
-                item_temp = object_temp[j]["items"]
+            object_type = object_temp["type"]
+            if object_type not in ["tunnel", "application", "signature", "user_defined_attribute"] and "included_sub_object_uuids" not in object_temp:
+                item_temp = object_temp["items"]
                 item_list = []
                 if object_type == "ip":
                     for t in range(len(item_temp)):
@@ -286,37 +291,37 @@ class CreateObjects:
                         item_dict = dict(op=item_temp[t]["op"], flag = str(flag), mask = str(mask))
                         item_list.append(item_dict)
                 object_template_json["object"]["items"] = item_list
-                object_template_json["object"]["type"] = object_temp[j]["type"]
-                object_template_json["object"]["name"] = object_temp[j]["name"]
-            elif "included_sub_object_uuids" in object_temp[j]:
-                object_template_json["object"]["type"] = object_temp[j]["type"]
-                object_template_json["object"]["name"] = object_temp[j]["name"]
+                object_template_json["object"]["type"] = object_temp["type"]
+                object_template_json["object"]["name"] = object_temp["name"]
+            elif "included_sub_object_uuids" in object_temp:
+                object_template_json["object"]["type"] = object_temp["type"]
+                object_template_json["object"]["name"] = object_temp["name"]
                 # object_template_json["object"]["member_type"] = "application"
             elif object_type == "tunnel":
-                object_template_json["object"]["type"] = object_temp[j]["type"]
-                object_template_json["object"]["name"] = object_temp[j]["name"]
+                object_template_json["object"]["type"] = object_temp["type"]
+                object_template_json["object"]["name"] = object_temp["name"]
                 if "items" in object_template_json["object"]:
                     del object_template_json["object"]["items"]
                 object_template_json["object"]["tunnel"] = {}
-                object_template_json["object"]["tunnel"] = item_uuids_list
+                object_template_json["object"]["tunnel"] = object_temp_dict
             elif object_type == "application":
-                object_template_json["object"]["type"] = object_temp[j]["type"]
+                object_template_json["object"]["type"] = object_temp["type"]
                 object_template_json["object"]["member_type"] = "application"
             if object_type != "signature" and object_type != "user_defined_attribute":
                 if object_type == "application" and object_template_json["object"]["member_type"] == "subordinate":
                     url = self.api_server + "/v1/objects/application-groups"
                 else:
-                    url = self.api_server + "/v1/objects/{}".format(object_type_dict[object_temp[j]["type"]])
+                    url = self.api_server + "/v1/objects/{}".format(object_type_dict[object_temp["type"]])
                 response = requests.post(url, headers=self.headers, json=object_template_json, verify=False)
             elif object_type == "signature":
                 url = self.api_server + "/v1/objects//applications/customized-signatures"
-                response = requests.post(url, headers=self.headers, json=item_uuids_list, verify=False)
+                response = requests.post(url, headers=self.headers, json=object_temp_dict, verify=False)
             elif object_type == "user_defined_attribute":
                 url = self.api_server + "/v1/objects/applications/customized-attributes"
-                file_path = item_uuids_list["file_path"]
-                del item_uuids_list["file_path"]
+                file_path = object_temp["file_path"]
+                del object_temp["file_path"]
                 root_path = self.parameter["root_path"].replace("\\","/")
-                user_defined_attribute_data = item_uuids_list
+                user_defined_attribute_data = object_temp
                 user_defined_attribute_data["vsys"] = self.parameter["vsys"]
                 user_defined_attribute_data["return_data"] = 1
                 files = {"file": (
@@ -325,15 +330,15 @@ class CreateObjects:
                 del temp_headers["Content-Type"]
                 response = requests.post(url=url, data=user_defined_attribute_data, headers=self.headers, files=files, verify=False)
             if response.status_code == 200:
-                if "included_sub_object_uuids" not in object_temp[j]:
+                if "included_sub_object_uuids" not in object_temp:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
-                elif "included_sub_object_uuids" in object_temp[j]:
+                elif "included_sub_object_uuids" in object_temp:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object group successfully.".format(object_type), flush=True)
                 response_dict = json.loads(response.text)
                 object_uuids = self.get_uuids(response_dict, object_type)
                 object_uuids_temp_dict = {}
                 if object_type not in ["signature", "user_defined_attribute"]:
-                    object_uuids_temp_dict["type"] = object_temp[j]["type"]
+                    object_uuids_temp_dict["type"] = object_temp["type"]
                 elif object_type == "signature":
                     object_uuids_temp_dict["type"] = "signature"
                 elif object_type == "user_defined_attribute":
@@ -342,11 +347,11 @@ class CreateObjects:
                 if object_type == "user_defined_attribute":
                     object_uuids_temp_dict["name"] = user_defined_attribute_data["name"]
                 elif object_type == "application":
-                    object_uuids_temp_dict["name"] = object_temp[j]["application"]["app_name"]
+                    object_uuids_temp_dict["name"] = object_temp["application"]["app_name"]
                 else:
-                    object_uuids_temp_dict["name"] = object_temp[j]["name"]
-                if object_type != "signature":
-                    object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
+                    object_uuids_temp_dict["name"] = object_temp["name"]
+                if object_type != "signature" and object_type != "user_defined_attribute":
+                    object_uuids_temp_dict["attribute_name"] = object_temp["attribute_name"]
                 return object_uuids_temp_dict
             else:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When calling nested function to create {} object failed.".format(object_template_json["object"]["type"].replace("_", " ")), flush=True)
