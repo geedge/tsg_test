@@ -171,7 +171,8 @@ class QueryRuleMetric:
                     "interval": 1
                 }
                 rule_uuids_list = list(rule_uuids_tuple)
-                hit_query_condition['rule_uuid'] = rule_uuids_list["uuid"]
+                # hit_query_condition['rule_uuid'] = rule_uuids_list["uuid"]
+                hit_query_condition['rule_uuid'] = rule_uuids_list[0]["uuid"]
                 hit_query_condition['start_time'] = start_time
                 hit_query_condition['end_time'] = end_time
                 hit_query_condition['vsys'] = self.parameter["vsys"]
@@ -185,10 +186,10 @@ class QueryRuleMetric:
         
     def verify_metric(self, metric_dict, verification_result):
         metric_query = verification_result['expected_metric']
-        if 'hits' in metric_query and metric_query['hits'] == 0 and len(metric_dict['data']['result']) == 0:
+        if 'hits' in metric_query and metric_query['hits'] == 0 and len(metric_dict['data']['list']) == 0:
             metric_result = True
-        elif 'hits' in metric_query and len(metric_dict['data']['result']) > 0:
-            metric = metric_dict['data']['result'][0]
+        elif 'hits' in metric_query and len(metric_dict['data']['list']) > 0:
+            metric = metric_dict['data']['list'][0]
             if metric_query['hits'] == 1:
                 for key, value in metric_query.items():
                     if key not in metric or metric[key] != value:
