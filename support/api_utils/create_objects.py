@@ -356,13 +356,12 @@ class CreateObjects:
                     object_uuids_temp_dict["attribute_name"] = object_temp[j]["attribute_name"]
                 object_uuids_list.append(object_uuids_temp_dict)
             else:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object failed.".format(object_template_json["object"]["type"].replace("_", " ")), flush=True)
-                return "", "Create {} object failed.".format(object_template_json["object"]["type"].replace("_", " ")) 
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When calling nested function to create {} object failed.".format(object_template_json["object"]["type"].replace("_", " ")), flush=True)
+                return "", "When calling nested function to create {} object failed.".format(object_template_json["object"]["type"].replace("_", " ")) 
             return object_uuids_list
         except Exception as e:
-            exception_result = str(e)
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
-            return "When running test case, the exception error: " + str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When calling nested function to create object, the exception error: ", str(e), flush=True)
+            return "When calling nested function to create object, the exception error: " + str(e)
     
     def escape_flags_data(self, config):
         # 初始化 flag 和 mask
