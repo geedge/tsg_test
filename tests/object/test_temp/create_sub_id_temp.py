@@ -17,21 +17,26 @@ def run(parameter):
 
         #测试数据
         policy_configuration =  {
-            "name": "test",
-            "type": "subscriberid",
-            "member_type": "item",
-            "items":[
+            "or_conditions": [
                 {
-                    "op": "add",
-                    "expr_type": "and",
-                    "expression": "^test_subid$"
-                },
+                    "name": "test",
+                    "type": "subscriberid",
+                    "member_type": "item",
+                    "statistics_option": "",  # random
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "^test_subid$"
+                        },
+                    ]
+                }
             ],
             "search": {
                 "is_fuzzy": False,
                 "type": "uuid"
             },
-            "statistics_option": "",  # random
+
             "audit_log": False  # system
         }
 

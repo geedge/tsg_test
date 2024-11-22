@@ -127,7 +127,7 @@ ipLearningObjectPage_button_Input_Vote_Clients_Number_posXpath = "//div[@class='
 ipLearningObjectPage_button_Input_Learned_IP_Limits_posXpath = "//div[@class='ip-object-goal_upper_limit']/div/input"  # Learned IP Limits 输入框
 # imsi object
 imsiObjectPage_imsiType_posXpath = "//*[@class='mobile-identity-object-sub_type']//button[1]"
-imsiobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath  # 添加item_id
+imsiobjectPage_addItem_posXpath = "//i[@class='iconfont icon-Create1 font-[700]']"  # 添加item_id
 #imsiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
 imsiObjectPage_inputItem_posXpath = "//div[@class='scrollbar']//input"
 imsiObjectPage_button_saveItem_posXpath = "//div[@class='scrollbar']//i[@class='operate-icon iconfont icon-save']"  # 保存item按钮
@@ -144,12 +144,12 @@ imsiObjectListPage_search_input_posXpath = objectListPage_search_input_posXpath
 imsiObjectListPage_search_dropDown_item_posXpath = objectListPage_search_dropDown_item_posXpath
 imsiObjectListPage_search_button_posXpath = objectListPage_search_button_posXpath
 imsiObjectListPage_tableTbody_posXpath = objectListPage_tableTbody_posXpath
-mobile_identitiesObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath # name输入框Xpath
+mobile_identitiesObjectPage_inputName_posXpath = "//div[@class='mobile-identity-object-name']//input" # name输入框Xpath
 
 
 # phone number
 phoneNumberObjectPage_phoneNumberType_posXpath = "//*[@class='mobile-identity-object-sub_type']//button[2]"
-phoneNumberobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath  # 添加item_id
+phoneNumberobjectPage_addItem_posXpath = "//i[@class='iconfont icon-Create1 font-[700]']"  # 添加item_id
 phoneNumberObjectPage_inputItem_posXpath = ipObjectPage_addItem_posXpath
 phoneNumberObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
 phoneNumberObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
@@ -159,7 +159,7 @@ phoneNumberObjectPage_sameItem_inputItem_posXpath = "(//div[@class='form-list-ro
 
 # imei
 imeiObjectPage_imsiType_posXpath = "//*[@class='mobile-identity-object-sub_type']//button[3]"
-imeiobjectPage_addItem_posXpath = ipObjectPage_addItem_posXpath  # 添加item_id
+imeiobjectPage_addItem_posXpath = "//i[@class='iconfont icon-Create1 font-[700]']"  # 添加item_id
 imeiObjectPage_inputItem_posXpath = '//div[@class="rel-input el-input el-input--small"]//input'
 imeiObjectPage_button_saveItem_posXpath = '//div/i[@class="operate-icon iconfont icon-save save-color"]'  # 保存item按钮
 imeiObjectPage_okButton_posId = "OK-_mobileIdDetail_Home_App_anonymousComponent"  # OK按钮
@@ -182,7 +182,7 @@ portObjectListPage_tableTbody_posXpath = objectListPage_tableTbody_posXpath
 portObjectListPage_search_input_posXpath = objectListPage_search_input_posXpath
 portObjectListPage_search_dropDown_item_posXpath = objectListPage_search_dropDown_item_posXpath
 portObjectListPage_search_button_posXpath = objectListPage_search_button_posXpath
-portObjectPage_inputName_posXpath = ipObjectPage_inputName_posXpath
+portObjectPage_inputName_posXpath = "//div[@class='port-object-name']//input"
 portObjectPage_addItem_posXpath = objectPage_addItem_button_posXpath
 portObjectPage_inputItem_posXpath = '//*[@class="port-object-interval"]//input'
 portObjectPage_button_saveItem_posXpath = ipObjectPage_button_saveItem_posXpath

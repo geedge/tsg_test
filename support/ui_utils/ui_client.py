@@ -8,6 +8,7 @@ from support.ui_utils.query_rule_metric import QueryRuleMetric
 from support.ui_utils.query_rule_log import QueryRuleLog
 from support.ui_utils.delete_security_rules_example import DeleteSecurityRulesExample
 from support.ui_utils.create_objects_example import CreateObjectsExample
+from support.ui_utils.delete_objects_example import DeleteObjectsExample
 
 
 class UIClient:
@@ -44,3 +45,7 @@ class UIClient:
         objects_uuids_tuple, element_position, result = objects.create_objects(policy_configuration, self.driver)
         self.element_position = element_position
         return objects_uuids_tuple, result
+
+    def delete_objects(self, parameter,objects_tuple,search_type):
+        objects = DeleteObjectsExample()
+        objects.delete_objects(parameter,objects_tuple,search_type,self.driver)

@@ -16,17 +16,16 @@ class SearchObjects:
         self.driver.implicitly_wait(5)
         self.my_random = RandomName()
 
-    def search(self,object_info,data,object_element_position):
+    def search(self,object_info,search,object_element_position):
         try:
             page_jump_element_position = object_element_position["page_jump"]
-
             # 打开该列表
             page_jump = PageJump(self.driver)
             time.sleep(0.5)
             page_jump.jump_sub_object_page(page_jump_element_position)
-            search_types = data["search"]["type"].split('&')
+            search_types = search["type"].split('&')
             for search_type in search_types:
-                search_value = self.get_search_value(object_info,search_type,data["search"]["is_fuzzy"])
+                search_value = self.get_search_value(object_info,search_type,search["is_fuzzy"])
                 if search_type == "uuid":
                     self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
                     self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
@@ -61,12 +60,11 @@ class SearchObjects:
                     self.driver.find_element(By.XPATH,listPage_objectSearch_ip_address_select_Search_posXpath).click()
             self.driver.find_element(By.XPATH, mainPage_objectSearch_buttonSearch_posXpath).click()
             time.sleep(0.5)
-            # row = self.driver.find_elements(By.XPATH, "//div[contains(@class,'ly-table1')]//tbody/tr")
-            # if len(row) != 0:
-            #     first_row = row[0]
-            #     first_row_checkBox_element = first_row.find_element(By.XPATH, "//span[@class='el-checkbox__input']")
-            #     return 200, first_row_checkBox_element
-            return 200
+            row = self.driver.find_elements(By.XPATH, "//div[@class='MuiDataGrid-virtualScrollerContent css-0']/div/div")
+            if len(row) != 0:
+                first_row = row[0]
+                first_row_checkBox_element = first_row.find_element(By.XPATH, '//input[@aria-label="Select row"]')
+                return 200, first_row_checkBox_element
         except Exception as e:
             raise
 
@@ -104,6 +102,30 @@ class SearchObjects:
 
         return search_value
 
+    def get_object_uuid(self,name,object_element_position):
+        try:
+            page_jump_element_position = object_element_position["page_jump"]
+            # 打开该列表
+            page_jump = PageJump(self.driver)
+            time.sleep(0.5)
+            page_jump.jump_sub_object_page(page_jump_element_position)
+            time.sleep(3)
+            self.driver.find_element(By.XPATH, ipObjectListPage_searchLabel_posXpath).click()
+            self.driver.find_element(By.XPATH, ipObjectListPage_searchLabel_posXpath).send_keys(name)
+            self.driver.find_element(By.XPATH, objectListPage_search_select_Name_posXpath).click()
+            self.driver.find_element(By.XPATH, mainPage_objectSearch_buttonSearch_posXpath).click()
+            time.sleep(2)
+            # 展示所有列获取uuid
+            column_setting_btn = self.driver.find_element(By.XPATH, mainPage_ObjectSearch_Column_settings_posXpath)  # 列设置按钮
+            self.driver.execute_script("arguments[0].scrollIntoView();", column_setting_btn)
+            column_setting_btn.click()  # 点击列设置
+            self.driver.find_element(By.XPATH, '//span[text()="UUID"]').click()
+            self.driver.find_element(By.XPATH, '//div[text()="Name"]').click()
+            object_uuid = self.driver.find_element(By.XPATH, '//div[@aria-rowindex="2"]//div[@data-field="uuid"]').text
+            description = self.driver.find_element(By.XPATH,'//div[@aria-rowindex="2"]//div[@data-field="description"]').text
+            return 200,object_uuid, description
+        except Exception as e:
+            raise
     # def main_page_item_search(self,object_info):
     #     try:
     #         self.driver.find_element(By.XPATH,listPage_item_search_details_first_posXpath).click()

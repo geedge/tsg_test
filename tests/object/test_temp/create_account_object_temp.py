@@ -17,21 +17,25 @@ def run(parameter):
 
         #测试数据
         policy_configuration =  {
-            "name": "test",
-            "type": "account",
-            "member_type": "item",
-            "items":[
+            "or_conditions": [
                 {
-                    "op": "add",
-                    "expr_type": "and",
-                    "expression": "autotest@163.com&abcd"
+                    "name": "test",
+                    "type": "account",
+                    "member_type": "item",
+                    "statistics_option": "",  # random
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "autotest@163.com&abcd"
+                        }
+                    ]
                 }
             ],
             "search": {
                 "is_fuzzy": False,
                 "type": "uuid"
             },
-            "statistics_option": "",  # random
             "audit_log": False  # system
         }
 

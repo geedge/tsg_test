@@ -17,68 +17,73 @@ def run(parameter):
 
         #测试数据
         policy_configuration =  {
-            "name": "common_server_fqdn",
-            "type": "application",
-            "sub_type": "application",
-            "member_type": "item",
-            "application": {
-                "app_name": "common_server_fqdn",
-                "app_longname": "common_server_fqdn",
-                "app_properties": {
-                    "tcp_timeout": 0,
-                    "udp_timeout": 0,
-                    "action_parameter": {
-                        "sub_action": "drop",
-                        "after_n_packets": 0,
-                        "send_tcp_reset": 1,
-                        "send_icmp_unreachable": 1
-                    },
-                    "continue_scanning": 0,
-                    "category": "business-systems",
-                    "subcategory": "auth-service",
-                    "content": "voice-call",
-                    "risk": 1,
-                    "characteristics": "evasive"
-                }
-            },
-            "app_surrogates": [
+            "or_conditions": [
                 {
-                    "group_by": "session",
-                    "signature_sequence": [
+                    "name": "common_server_fqdn",
+                    "type": "application",
+                    "sub_type": "application",
+                    "member_type": "item",
+                    "statistics_option": "",  # random
+                    "application": {
+                        "app_name": "common_server_fqdn",
+                        "app_longname": "common_server_fqdn",
+                        "app_properties": {
+                            "tcp_timeout": 0,
+                            "udp_timeout": 0,
+                            "action_parameter": {
+                                "sub_action": "drop",
+                                "after_n_packets": 0,
+                                "send_tcp_reset": 1,
+                                "send_icmp_unreachable": 1
+                            },
+                            "continue_scanning": 0,
+                            "category": "business-systems",
+                            "subcategory": "auth-service",
+                            "content": "voice-call",
+                            "risk": 1,
+                            "characteristics": "evasive"
+                        }
+                    },
+                    "app_surrogates": [
                         {
-                            "exclude": 0,
-                            "signature":{
-                                "name": "common_server_fqdn1",
-                                "is_enabled": True,
-                                "and_conditions": [
-                                    {
-                                        "negate_option": False,
-                                        "or_conditions": [
+                            "group_by": "session",
+                            "signature_sequence": [
+                                {
+                                    "exclude": 0,
+                                    "signature": {
+                                        "name": "common_server_fqdn1",
+                                        "is_enabled": True,
+                                        "and_conditions": [
                                             {
-                                                "attribute_name": "common.server_fqdn",
-                                                "type": "fqdn",
-                                                "name": "sec_fqdn",
-                                                "items": [
+                                                "negate_option": False,
+                                                "or_conditions": [
                                                     {
-                                                        "op": "add",
-                                                        "expr_type": "and",
-                                                        "expression": "youtube.com"
+                                                        "attribute_name": "common.server_fqdn",
+                                                        "type": "fqdn",
+                                                        "name": "sec_fqdn",
+                                                        "items": [
+                                                            {
+                                                                "op": "add",
+                                                                "expr_type": "and",
+                                                                "expression": "youtube.com"
+                                                            }
+                                                        ]
                                                     }
                                                 ]
                                             }
                                         ]
                                     }
-                                ]
-                            }
+                                }
+                            ]
                         }
-                    ]
+                    ],
                 }
             ],
             "search": {
                 "is_fuzzy": False,
                 "type": "uuid"
             },
-            "statistics_option": "",  # random
+
             "audit_log": False  # system
         }
 

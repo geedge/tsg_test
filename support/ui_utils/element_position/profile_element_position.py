@@ -1,7 +1,7 @@
 #login page 登录页面
 loginPage_userName_posXpath = "//div[@class='loginTitle']//input[@placeholder='User name']"
 loginPage_passwd_posXpath = "//div[@class='loginTitle']//input[@placeholder='Password']"
-loginPage_signIn_posXpath = "//div[@class='loginTitle']//button"
+loginPage_signIn_posXpath = "//div[@class='loginTitle']//button[text()='Login']"
 loginPage_error_posXpath = "//p[@class='el-message__content']"
 
 #main页面

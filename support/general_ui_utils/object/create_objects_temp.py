@@ -258,6 +258,8 @@ class CreateObject:
 
                     for i in range(len(tunnel_endition_b["or_conditions"])):
                         self.create_common_objects(tunnel_endition_b["or_conditions"][i], common_object_element_position)
+                        self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_posXpath"] + "[2]").click()
+                        self.driver.find_element(By.XPATH,create_element_position["ObjectPage_side_slic_Cancel_posXpath"]).click()
 
 
 
@@ -300,9 +302,6 @@ class CreateObject:
                     if object_type == "imsi":
                         self.driver.find_element(By.XPATH,create_element_position["objectPage_imsiType_posXpath"]).click()
                         send_data = data["items"][i]["expression"]
-                    elif object_type == "phone_number":
-                        self.driver.find_element(By.XPATH,create_element_position["objectPage_phnoeNumberType_posXpath"]).click()
-                        send_data = data["items"][i]["expression"]
                     elif object_type == "imei":
                         self.driver.find_element(By.XPATH,create_element_position["objectPage_imeiType_posXpath"]).click()
                         send_data = data["items"][i]["expression"]
@@ -328,15 +327,7 @@ class CreateObject:
             # 确认创建
             self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_posXpath"]).click()
             # self.driver.find_element(By.XPATH, create_element_position["objectPage_okButton_warningYes_posXpath"]).click()
-            # 展示所有列获取uuid
-            column_setting_btn = self.driver.find_element(By.XPATH,mainPage_ObjectSearch_Column_settings_posXpath)  # 列设置按钮
-            self.driver.execute_script("arguments[0].scrollIntoView();", column_setting_btn)
-            column_setting_btn.click()  # 点击列设置
-            self.driver.find_element(By.XPATH, '//span[text()="UUID"]').click()
-            self.driver.find_element(By.XPATH, '//div[text()="Name"]').click()
-            object_uuid = self.driver.find_element(By.XPATH, '//div[@aria-rowindex="2"]//div[@data-field="uuid"]').text
-            description = self.driver.find_element(By.XPATH, '//div[@aria-rowindex="2"]//div[@data-field="description"]').text
-            return 200,object_uuid,description
+            return 200
         except Exception as e:
             # print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
             raise
