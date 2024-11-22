@@ -1,5 +1,6 @@
 import os
 import sys
+from support.ui_utils.element_position.map_element_position_library import replace_paras
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
@@ -164,7 +165,7 @@ def run(parameter):
 
         # 统计脚本用时
         end_time = time.time()
-        duration = end_time - start_time
+        duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
@@ -190,4 +191,5 @@ if __name__ == '__main__':
         "module_name": "monitor",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
+    parameter = replace_paras(parameter)
     run(parameter)
