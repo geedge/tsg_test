@@ -4,9 +4,9 @@ from datetime import datetime
 
 def update_tsg_ca():
     try:
-        subprocess.check_call(["cp", "tango-ca-v3-trust-ca.cer", "/etc/pki/ca-trust/source/anchors/"])
+        subprocess.check_call(["cp", "tango_ca_v3_trust_ca.cer", "/etc/pki/ca-trust/source/anchors/"])
         subprocess.check_call(["update-ca-trust"])
-        subprocess.check_call(["chmod", "777", "/etc/pki/ca-trust/source/anchors/tango-ca-v3-trust-ca.cer"])
+        subprocess.check_call(["chmod", "777", "/etc/pki/ca-trust/source/anchors/tango_ca_v3_trust_ca.cer"])
         # with open('/etc/pki/tls/certs/ca-bundle.crt', 'r', encoding='utf-8') as file:
         #     content = file.read()
         # if "TSG CA" not in content:

@@ -1,112 +1,203 @@
 # -*- coding: UTF-8 -*-
-import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-import traceback
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import time
+import pytz
 from datetime import datetime
-from support.common_utils.create_policy import CreatePolicy
+from support.ui_utils.workpath import workdir
+from support.ui_utils.ui_client import UIClient
+from support.api_utils.api_client import APIClient
+from support.packet_generator.traffic_generator import *
 from support.report_update import ReportUpdate
 
 
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+
         # 参数初始化
-        exception_result = ""
-        result = {}
+        result, exception_result = "", ""
+        test_summary = {}
 
         # 脚本启动时间
         start_time = time.time()
 
-        # 测试数据
-        test_data = {
-            "is_multi_priority": False,
-            "rule_num": 1,
-            "policy_type": "proxy_intercept",
-            "rule_name": parameter["test_case_name"],
-            "rule_action": "intercept",
-            "rule_type": "create",
-            "condition": {
-                "source_ip": [
+        policy_configuration = {
+            "name": "test_name",
+            "type": "proxy_intercept",
+            "action": "intercept",
+            "and_conditions": [
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_SOURCE_IP",
+                    "name": "intercept_source_ip",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
                     {
-                        "name": "intercept_source_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
-                            },
-                        ]
-                    }
-                ],
-                "application": [
-                    {
-                        "name": "ssl",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
+                        "op": "add",
+                        "ip": "99.99.99.99",
+                        "interval": "0-65535"
+                    }]
+                }]
             },
-            "action_parameter": {
-                "ssl_decryption_profile": [
-                    {
-                        "profile_type": "ssl_decryption",
-                        "profile_file": {
-                            "name": "intercept_ssl_decryption_profile",
-                            "model": "create",
-                            "common_name": "off",
-                            "issuer": "on",
-                            "self_signed": "off",
-                            "expiry_date": "off",
-                            "fail_action": "Pass-through",
-                            "ev_certificate": "off",
-                            "certificate_transparency": "off",
-                            "mutual_authentication": "on",
-                            "protocol_errors": "on",
-                            "certificate_pinning": "on",
-                            "certificate_not_installed": "off",
-                            "mirror_client_versions": "on",
-                            "min_client_version": "TLSv1.0",
-                            "max_client_version": "TLSv1.2",
-                            "allow_HTTP2": "on"
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_APP_ID",
+                    "type": "application",
+                    "items": ["ssl"]
+                }]
+            }],
+            "is_enabled": 1,
+            "log_option": "metadata",
+            "action_parameter":
+            {
+                "decryption_profile": {
+                    "name": "intercept_ssl_decryption_profile",
+                    "decryption": {
+                        "certificate_checks": {
+                            "approach": {
+                                "cn": 0,
+                                "issuer": 1,
+                                "self-signed": 0,
+                                "expiration": 0
+                            },
+                            "fail_action": "pass-through"
+                        },
+                        "dynamic_bypass": {
+                            "ev_cert": 0,
+                            "cert_transparency": 0,
+                            "mutual_authentication": 1,
+                            "protocol_errors": 1,
+                            "cert_pinning": 1,
+                            "trusted_root_cert_is_not_installed_on_client": 0
+                        },
+                        "protocol_version": {
+                            "mirror_client": 0,
+                            "allow_http2": 1
                         }
                     }
-                ],
-            },
-            "expected_return": "issuer: CN=TSG CA Untrusted",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "untrusted-root.badssl.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
-            "traffic": {
-                "protocol": "ssl",
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://untrusted-root.badssl.com/",
-            },
-            "token": ""
+                }
+            }
         }
 
-        # 测试用例实例化
-        create = CreatePolicy(test_data, parameter)
-        result = create.create_policy()
+        traffic_generation = {
+            "tool": "ssl",  # or trex/http
+            "command": "curl -kv --connect-timeout 30 --max-time 60 https://untrusted-root.badssl.com/",
+        }
 
-        # 脚本结束时间和耗时
+        verification_result = {
+            "excepted_traffic_result": "issuer: CN=TSG CA Untrusted",
+            "expected_metric": {"hits": 1},
+            "expected_log": [
+                {"query_field_key": "ssl_sni", "query_value": "untrusted-root.badssl.com"},
+                {"query_field_key": "decoded_as", "query_value": "SSL"}
+            ]
+        }
+
+        # 创建
+        if parameter["initiation_method"] == "ui":
+            ui_client = UIClient()
+            rules_tuple, ui_error = ui_client.create_rules(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
+        elif parameter["initiation_method"] == "api":
+            api_client = APIClient(parameter)
+            # {uuid, type}, i.e., {"12341-232-a21", "ip"}
+            objects_tuple, api_error = api_client.create_objects(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            libraries_tuple, api_error = api_client.create_libraries(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, libraries_tuple, profiles_tuple)
+            if len(api_error) > 0:
+                return api_error
+
+        # 等待下发配置生效
+        time.sleep(3)
+
+        # 类实例化
+        generator = TrafficGenerator()
+
+        # 获取当前时间
+        utc_tz = pytz.timezone('UTC')
+        current_utc_time = datetime.now(utc_tz)
+        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+        # 触发流量
+        traffic_result = generator.run(policy_configuration, traffic_generation)
+
+        # 验证流量生成器的返回值是否符合策略执行的预期
+        excepted_traffic_result, error = generator.result(verification_result, traffic_result)
+        if excepted_traffic_result == False:
+            return error
+
+        # 验证tsg的日志是否符合策略执行的预期
+        if parameter["initiation_method"] == "ui":
+            log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time, traffic_result)
+        if log_result == True:
+            test_summary["log"] = "Pass."
+        elif log_result == False:
+            test_summary["log"] = "The failure reason: the returned log does not match the expected result."
+        elif log_result == None:
+            test_summary["log"] = "The failure reason: the returned log is empty."
+        elif len(log_result) > 0:
+            test_summary["log"] = log_result
+
+        # 验证tsg的metric是否符合策略执行的预期
+        if parameter["initiation_method"] == "ui":
+            metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
+        if metric_result == True:
+            test_summary["metric"] = "Pass."
+        elif metric_result == False:
+            test_summary["metric"] = "The failure reason: the returned metric does not match the expected result."
+        elif metric_result == None:
+            test_summary["metric"] = "The failure reason: the returned metric is empty."
+        elif len(metric_result) > 0:
+            test_summary["metric"] = metric_result
+
+        return test_summary
+    except Exception as e:
+        exception_result = str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
+        return "When running test case, the exception error: " + str(e)
+    finally:
+        # 删除
+        if parameter["initiation_method"] == "ui":
+            if rules_tuple:
+                ui_client.delete_rules(parameter, policy_configuration)
+        elif parameter["initiation_method"] == "api":
+            if rules_tuple:
+                api_client.delete_rules(rules_tuple)
+            if profiles_tuple:
+                api_client.delete_profiles(profiles_tuple)
+            if libraries_tuple:
+                api_client.delete_libraries(libraries_tuple)
+            if objects_tuple:
+                api_client.delete_objects(objects_tuple)
+
+        # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
-        return result
-    except Exception as e:
-        exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
-        traceback.print_exc()
-        return "Error: " + str(e)
-    finally:
-        # 清理环境
-        if isinstance(create, CreatePolicy):
-            create.clean_up()
+
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
@@ -114,7 +205,6 @@ def run(parameter):
 
 if __name__ == '__main__':
     from support.ui_utils.element_position.map_element_position_library import replace_paras
-    from support.ui_utils.workpath import workdir
 
     parameter = {
         "username": "zcw3",
@@ -123,12 +213,11 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "api",  # api  ui  空字符串
-        "is_log": 1,
+        "initiation_method": "api",  # api  ui  空字符串
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys": 1,
         "root_path": workdir,
-        "path": workdir + "/testcase/ui",
+        "path": workdir + "/tests",
         "module_name": "intercept",
         "test_case_name": os.path.basename(__file__)[:-3]
     }

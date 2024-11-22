@@ -375,8 +375,8 @@ if __name__ == '__main__':
         "action_parameter": {
             "keyring_for_trusted": {
                 "name": "autotestTrust",
-                "public_file": "tango-ca-v3-trust-ca.cer",
-                "private_file": "tango-ca-v3-trust-ca.key",
+                "public_file": "tango_ca_v3_trust_ca.cer",
+                "private_file": "tango_ca_v3_trust_ca.key",
                 "reissue_expiry_hour": 24,
                 "keyring_type": "root",
                 "public_key_algo": "rsa2048",
@@ -384,8 +384,8 @@ if __name__ == '__main__':
             },
             "keyring_for_untrusted": {
                 "name": "autotestUNTrust",
-                "public_file": "tango-ca-v3-untrust-ca.cer",
-                "private_file": "tango-ca-v3-untrust-ca.key",
+                "public_file": "tango_ca_v3_untrust_ca.cer",
+                "private_file": "tango_ca_v3_untrust_ca.key",
                 "reissue_expiry_hour": 24,
                 "keyring_type": "root",
                 "public_key_algo": "rsa1024",

@@ -933,12 +933,14 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
         policy_configuration["action"] = "monitor"
     elif match_dict["rule_action"] in ["redirect"]:
         policy_configuration["action"] = "redirect"
+    elif match_dict["rule_action"] in ["run_script"]:
+        policy_configuration["action"] = "execute"
 
     print()
     print(str(policy_configuration).replace("'", "\""))
 
-    print()
-    repr(print(str(traffic_generation).replace("'", "\"")))
+    # print()
+    # repr(print(str(traffic_generation).replace("'", "\"")))
     # print()
     # print(str(verification_result).replace("'", "\""))
     print()
@@ -970,7 +972,7 @@ if __name__ == '__main__':
 
     # 替换test_data
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
-    name = "man_redirect_srcip_http_substr_url_suff_reqheader_by_ua_301.py"
+    name = "man_run_script_srcip_dstport_http_substr_url.py"
     #name = "{}.py".format(name1)
     replace_test_data_from_py_2(case_directory_path=case_directory_path, name=name)
 

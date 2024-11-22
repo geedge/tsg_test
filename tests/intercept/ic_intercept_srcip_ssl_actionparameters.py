@@ -1,194 +1,272 @@
 # -*- coding: UTF-8 -*-
-import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-import traceback
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import time
+import pytz
 from datetime import datetime
-from support.common_utils.create_policy import CreatePolicy
+from support.ui_utils.workpath import workdir
+from support.ui_utils.ui_client import UIClient
+from support.api_utils.api_client import APIClient
+from support.packet_generator.traffic_generator import *
 from support.report_update import ReportUpdate
 
 
 def run(parameter):
     try:
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+
         # 参数初始化
-        exception_result = ""
-        result = {}
+        result, exception_result = "", ""
+        test_summary = {}
 
         # 脚本启动时间
         start_time = time.time()
 
-        # 测试数据
-        test_data = {
-            "is_multi_priority": False,
-            "rule_num": 1,
-            "policy_type": "proxy_intercept",
-            "rule_name": parameter["test_case_name"],
-            "rule_action": "intercept",
-            "rule_type": "create",
-            "condition": {
-                "source_ip": [
+        policy_configuration = {
+            "name": "test_name",
+            "type": "proxy_intercept",
+            "action": "intercept",
+            "and_conditions": [
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_SOURCE_IP",
+                    "name": "intercept_source_ip",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
                     {
-                        "name": "intercept_source_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": parameter["test_pc_ip"],
-                            },
-                        ]
-                    }
-                ],
-                "application": [
-                    {
-                        "name": "ssl",  #
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
+                        "op": "add",
+                        "ip": "99.99.99.99",
+                        "interval": "0-65535"
+                    }]
+                }]
             },
-            "action_parameter": {
-                "ssl_decryption_keyring": [
-                    {
-                        "profile_type": "ssl_keyring",
-                        "decryption_keying_type": "trusted",
-                        "profile_file": {
-                            "name": "intercept_trusted_page",
-                            "model": "create",
-                            "file_certificate": "test_root_cert_catest.cer",
-                            "file_private_key": "test_root_key_catest.key",
-                            "certificate_type": "Root-Certificate",
-                            "private_key_format": "true",
-                            "is_match": "match",
-                            "reissue_expiry_hours": "C-120",
-                            "type": "Root-Certificate",
-                            "public_key_algorithm": "RSA-2048",
-                            "certificate_revocation_list": "",
-                            "include_root": "on"
+            {
+                "negate_option": False,
+                "or_conditions": [
+                {
+                    "attribute_name": "ATTR_APP_ID",
+                    "type": "application",
+                    "items": ["ssl"]
+                }]
+            }],
+            "is_enabled": 1,
+            "log_option": "metadata",
+            "action_parameter":
+            {
+                "keyring_for_trusted": {
+                    "name": "intercept_trusted",
+                    "public_file": "tango_ca_v3_trust_ca.cer",
+                    "private_file": "tango_ca_v3_trust_ca.key",
+                    "reissue_expiry_hour": 24,
+                    "keyring_type": "root",
+                    "public_key_algo": "rsa2048",
+                    "include_root": 1
+                },
+                "keyring_for_untrusted": {
+                    "name": "intercept_untrusted",
+                    "public_file": "tango_ca_v3_untrust_ca.cer",
+                    "private_file": "tango_ca_v3_untrust_ca.key",
+                    "reissue_expiry_hour": 24,
+                    "keyring_type": "root",
+                    "public_key_algo": "rsa1024",
+                    "include_root": 0
+                },
+                "tcp_option_profile": {
+                    "name": "intercept_tcp_proxy_profile",
+                    "tcp_passthrough": 0,
+                    "bypass_duplicated_packet": 0,
+                    "client_side_conn_param": {
+                        "tcp_maxseg": {
+                            "enable": 1,
+                            "maxseg": 1460
+                        },
+                        "nodelay": 0,
+                        "ttl": 70,
+                        "keep_alive": {
+                            "enable": 1,
+                            "tcp_keepcnt": 222,
+                            "tcp_keepidle": 7200,
+                            "tcp_keepintvl": 75
+                        },
+                        "user_timeout": {
+                            "enable": 1,
+                            "timeout_ms": 5000
                         }
                     },
-                    {
-                        "profile_type": "ssl_keyring",
-                        "decryption_keying_type": "untrusted",
-                        "profile_file": {
-                            "name": "intercept_untrusted_page",
-                            "model": "create",
-                            "file_certificate": "test_root_cert_catest.cer",
-                            "file_private_key": "test_root_key_catest.key",
-                            "certificate_type": "Root-Certificate",
-                            "private_key_format": "true",
-                            "is_match": "match",
-                            "reissue_expiry_hours": "C-120",
-                            "type": "Root-Certificate",
-                            "public_key_algorithm": "RSA-2048",
-                            "certificate_revocation_list": "",
-                            "include_root": "on"
+                    "server_side_conn_param": {
+                        "tcp_maxseg": {
+                            "enable": 1,
+                            "maxseg": 1460
+                        },
+                        "nodelay": 0,
+                        "ttl": 75,
+                        "keep_alive": {
+                            "enable": 1,
+                            "tcp_keepcnt": 200,
+                            "tcp_keepidle": 7000,
+                            "tcp_keepintvl": 69
+                        },
+                        "user_timeout": {
+                            "enable": 1,
+                            "timeout_ms": 5000
                         }
                     }
-                ],
-                "ssl_decryption_profile": [
-                    {
-                        "profile_type": "ssl_decryption",
-                        "profile_file": {
-                            "name": "intercept_ssl_decryption_profile",
-                            "model": "create",
-                            "common_name": "on",
-                            "issuer": "on",
-                            "self_signed": "on",
-                            "expiry_date": "on",
-                            "fail_action": "Pass-through",
-                            "ev_certificate": "off",
-                            "certificate_transparency": "off",
-                            "mutual_authentication": "on",
-                            "protocol_errors": "on",
-                            "certificate_pinning": "on",
-                            "certificate_not_installed": "off",
-                            "mirror_client_versions": "on",
-                            "min_client_version": "TLSv1.0",
-                            "max_client_version": "TLSv1.2",
-                            "allow_HTTP2": "on"
+                },
+                "decryption_profile": {
+                    "name": "intercept_ssl_decryption_profile",
+                    "decryption": {
+                        "certificate_checks": {
+                            "approach": {
+                                "cn": 1,
+                                "issuer": 1,
+                                "self-signed": 1,
+                                "expiration": 1
+                            },
+                            "fail_action": "pass-through"  #fail-close
+                        },
+                        "dynamic_bypass": {
+                            "ev_cert": 0,
+                            "cert_transparency": 0,
+                            "mutual_authentication": 1,
+                            "protocol_errors": 1,
+                            "cert_pinning": 1,
+                            "trusted_root_cert_is_not_installed_on_client": 0
+                        },
+                        "protocol_version": {
+                            "mirror_client": 1,
+                            "allow_http2": 1,
+                            "min": "tls12",
+                            "max": "tls13"
                         }
                     }
-                ],
-                "tcp_proxy_profile": [
-                    {
-                        "profile_type": "tcp_option",
-                        "profile_file": {
-                            "name": "intercept_tcp_proxy_profile",
-                            "model": "create",
-                            "enable_TCP_passthrough": "off",
-                            "c_override_MSS": "off",
-                            "c_overrideMSS": "536",
-                            "c_no_delay": "on",
-                            "c_ttl": "70",
-                            "c_keepalive": "on",
-                            "c_probe_number": "8",
-                            "c_idle_time": "30",
-                            "c_interval": "15",
-                            "c_UserTimeout_switch": "on",
-                            "c_userTimeout": "600",
-                            "s_override_MSS": "off",
-                            "s_overrideMSS": "1460",
-                            "s_no_delay": "on",
-                            "s_ttl": "75",
-                            "s_keepalive": "on",
-                            "s_probe_number": "8",
-                            "s_idle_time": "30",
-                            "s_interval": "15",
-                            "s_UserTimeout_switch": "on",
-                            "s_userTimeout": "600"
-                        }
+                },
+                "traffic_mirroring": {
+                    "enable": 1,
+                    "vlanID": 1,
+                    "mirroring_profile": {
+                        "name": "intercept_traffic_mirroring",
+                        "vlan_array": ["65", "66"]
                     }
-                ],
-                "traffic_mirroring_profile": [
-                    {
-                        "profile_type": "traffic_mirror",
-                        "vlan_id": "no_default",
-                        "profile_file": {
-                            "name": "intercept_traffic_mirroring_profile",
-                            "model": "create",
-                            "vlan_id":
-                                [
-                                    "16"
-                                ]
-                        }
-                    }
-                ]
-            },
-            "expected_return": "关于百度",
-            "counters": {"hits": 1},
-            "log_query_param": [{"query_field_key": "ssl_sni", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "SSL"}],
-            "traffic": {
-                "protocol": "ssl",
-                "type": "curl",
-                "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
-            },
-            "token": ""
+                }
+            }
         }
 
-        # 测试用例实例化
-        create = CreatePolicy(test_data, parameter)
-        result = create.create_policy()
+        traffic_generation = {
+            "tool": "ssl",  # or trex/http
+            "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
+        }
 
-        # 脚本结束时间和耗时
+        verification_result = {
+            "excepted_traffic_result": "关于百度",
+            "expected_metric": {"hits": 1},
+            "expected_log": [
+                {"query_field_key": "ssl_sni", "query_value": "www.baidu.com"},
+                {"query_field_key": "decoded_as", "query_value": "SSL"}
+            ]
+        }
+
+        # 创建
+        if parameter["initiation_method"] == "ui":
+            ui_client = UIClient()
+            rules_tuple, ui_error = ui_client.create_rules(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
+        elif parameter["initiation_method"] == "api":
+            api_client = APIClient(parameter)
+            # {uuid, type}, i.e., {"12341-232-a21", "ip"}
+            objects_tuple, api_error = api_client.create_objects(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            libraries_tuple, api_error = api_client.create_libraries(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, libraries_tuple, profiles_tuple)
+            if len(api_error) > 0:
+                return api_error
+
+        # 等待下发配置生效
+        time.sleep(3)
+
+        # 类实例化
+        generator = TrafficGenerator()
+
+        # 获取当前时间
+        utc_tz = pytz.timezone('UTC')
+        current_utc_time = datetime.now(utc_tz)
+        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+        # 触发流量
+        traffic_result = generator.run(policy_configuration, traffic_generation)
+
+        # 验证流量生成器的返回值是否符合策略执行的预期
+        excepted_traffic_result, error = generator.result(verification_result, traffic_result)
+        if excepted_traffic_result == False:
+            return error
+
+        # 验证tsg的日志是否符合策略执行的预期
+        if parameter["initiation_method"] == "ui":
+            log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time, traffic_result)
+        if log_result == True:
+            test_summary["log"] = "Pass."
+        elif log_result == False:
+            test_summary["log"] = "The failure reason: the returned log does not match the expected result."
+        elif log_result == None:
+            test_summary["log"] = "The failure reason: the returned log is empty."
+        elif len(log_result) > 0:
+            test_summary["log"] = log_result
+
+        # 验证tsg的metric是否符合策略执行的预期
+        if parameter["initiation_method"] == "ui":
+            metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
+        if metric_result == True:
+            test_summary["metric"] = "Pass."
+        elif metric_result == False:
+            test_summary["metric"] = "The failure reason: the returned metric does not match the expected result."
+        elif metric_result == None:
+            test_summary["metric"] = "The failure reason: the returned metric is empty."
+        elif len(metric_result) > 0:
+            test_summary["metric"] = metric_result
+
+        return test_summary
+    except Exception as e:
+        exception_result = str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
+        return "When running test case, the exception error: " + str(e)
+    finally:
+        # 删除
+        if parameter["initiation_method"] == "ui":
+            if rules_tuple:
+                ui_client.delete_rules(parameter, policy_configuration)
+        elif parameter["initiation_method"] == "api":
+            if rules_tuple:
+                api_client.delete_rules(rules_tuple)
+            if profiles_tuple:
+                api_client.delete_profiles(profiles_tuple)
+            if libraries_tuple:
+                api_client.delete_libraries(libraries_tuple)
+            if objects_tuple:
+                api_client.delete_objects(objects_tuple)
+
+        # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
-        return result
-    except Exception as e:
-        exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e, flush=True)
-        traceback.print_exc()
-        return "Error: " + str(e)
-    finally:
-        # 清理环境
-        if isinstance(create, CreatePolicy):
-            create.clean_up()
+
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
@@ -196,7 +274,6 @@ def run(parameter):
 
 if __name__ == '__main__':
     from support.ui_utils.element_position.map_element_position_library import replace_paras
-    from support.ui_utils.workpath import workdir
 
     parameter = {
         "username": "zcw3",
@@ -205,12 +282,11 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6491",
         "api_server": "http://192.168.44.72",
         "debug_flag": "local",
-        "script_type": "api",  # api  ui  空字符串
-        "is_log": 1,
+        "initiation_method": "api",  # api  ui  空字符串
         "env": "tsgx",
-        "vsys_id": 1,
+        "vsys": 1,
         "root_path": workdir,
-        "path": workdir + "/testcase/ui",
+        "path": workdir + "/tests",
         "module_name": "intercept",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
