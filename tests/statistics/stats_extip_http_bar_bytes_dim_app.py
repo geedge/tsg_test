@@ -143,7 +143,7 @@ def run(parameter):
         }
 
         verification_result = {
-            "expected_result": {"total_bytes": 94679, "total_bytes_received": 93284, "total_bytes_sent": 1395, "total_packets": 87, "total_packets_received": 65, "total_packets_sent": 22, "total_syn_pkt": 1},
+            "excepted_traffic_result": {"total_bytes": 94679, "total_bytes_received": 93284, "total_bytes_sent": 1395, "total_packets": 87, "total_packets_received": 65, "total_packets_sent": 22, "total_syn_pkt": 1},
             "metric_query": {"hits": 1},
             "log_query": [
                 {"query_field_key": "decoded_as", "query_value": "HTTP"},
@@ -173,7 +173,7 @@ def run(parameter):
             profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", profiles_tuple)
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, libraries_tuple, profiles_tuple)
             if len(api_error) > 0:
                 return api_error
         # 等待下发配置生效
