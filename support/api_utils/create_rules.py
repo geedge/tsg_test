@@ -9,14 +9,8 @@ class CreateRules:
         self.parameter = parameter
         self.headers = headers
         self.object_uuids_tuple = object_uuids_tuple
-        if len(library_uuids_tuple) > 0:
-            self.library_uuids_tuple = library_uuids_tuple
-        if len(profile_uuids_tuple) > 0:
-            self.profile_uuids_tuple = profile_uuids_tuple
-        if len(library_uuids_tuple) > 0:
-            self.library_uuids_tuple = library_uuids_tuple
-        else:
-            self.library_uuids_tuple = []
+        self.library_uuids_tuple = library_uuids_tuple
+        self.profile_uuids_tuple = profile_uuids_tuple
     
     def create_rules(self, policy_configuration):
         api_server = self.parameter["api_server"]
@@ -25,7 +19,7 @@ class CreateRules:
         try:
             self.policy_configuration = policy_configuration
             object_uuids_list = list(self.object_uuids_tuple)
-            if self.library_uuids_tuple != []:
+            if len(self.library_uuids_tuple) > 0:
                 library_uuids_list = list(self.library_uuids_tuple)
                 for i in range(len(library_uuids_list)):
                     library_list = list(library_uuids_list[i])
@@ -74,24 +68,24 @@ class CreateRules:
             rule_template_json["rule"]["and_conditions"] = []
             pre_intercept_rule_template_source_condition = []
             if len(tunnel_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, source_condition_temp_list, object_uuids_list, "attr_tunnel"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(tunnel_condition_temp_list, object_uuids_list, "attr_tunnel"))
             if len(source_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, source_condition_temp_list, object_uuids_list, "attr_source"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(source_condition_temp_list, object_uuids_list, "attr_source"))
                 pre_intercept_rule_template_source_condition.extend(rule_template_json["rule"]["and_conditions"])
             if len(destination_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, destination_condition_temp_list, object_uuids_list, "attr_destination"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(destination_condition_temp_list, object_uuids_list, "attr_destination"))
             if len(internal_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, internal_condition_temp_list, object_uuids_list, "attr_inter"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(internal_condition_temp_list, object_uuids_list, "attr_inter"))
             if len(external_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, external_condition_temp_list, object_uuids_list, "attr_ext"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(external_condition_temp_list, object_uuids_list, "attr_ext"))
             if len(flag_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, flag_condition_temp_list, object_uuids_list, "attr_flag"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(flag_condition_temp_list, object_uuids_list, "attr_flag"))
             if len(ip_protocol_condition_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, ip_protocol_condition_list, object_uuids_list, "attr_ip"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(ip_protocol_condition_list, object_uuids_list, "attr_ip"))
             if len(application_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, application_condition_temp_list, object_uuids_list, "attr_app"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(application_condition_temp_list, object_uuids_list, "attr_app"))
             if len(protocol_field_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(api_server, protocol_field_condition_temp_list, object_uuids_list, "protocol_field"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(protocol_field_condition_temp_list, object_uuids_list, "protocol_field"))
             if "action_parameter" in policy_configuration.keys() and len(policy_configuration["action_parameter"]) > 0:
                 rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)        
             rule_type_dict = {
@@ -128,8 +122,8 @@ class CreateRules:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating rule, the exception error: ", str(e), flush=True)
             return "", "When creating rule, the exception error: " + str(e)
         
-    def generate_rule_condition_list(self, api_server, and_condition, object_uuids_list, condition_type):
-        if condition_type in ["attr_tunnel", "attr_source", "attr_destination", "attr_flag", "attr_ip","attr_http", "protocol_field", "attr_inter", "attr_ext"] and len(object_uuids_list) > 0:
+    def generate_rule_condition_list(self, and_condition, object_uuids_list, condition_type):
+        if condition_type in ["attr_tunnel", "attr_source", "attr_destination", "attr_flag", "attr_ip","attr_app", "protocol_field", "attr_inter", "attr_ext"] and len(object_uuids_list) > 0:
             condition_list = []
             for i in range(len(and_condition)):
                 negate_option = and_condition[i]["negate_option"]
@@ -138,8 +132,10 @@ class CreateRules:
                 object_uuids_temp_list = []
                 for j in range(len(objects_configuration)):
                     for t in range(len(object_uuids_list)):
-                        if object_uuids_list[t]["attribute_name"] == objects_configuration[j]["attribute_name"]:
+                        if "attribute_name" in object_uuids_list[t].keys() and (object_uuids_list[t]["attribute_name"] == objects_configuration[j]["attribute_name"]):
                             if objects_configuration[j]["type"] in ["boolean", "ip_protocol"]:
+                                object_uuids_temp_list = object_uuids_list[t]["uuid"]
+                            elif objects_configuration[j]["type"] == "application" and "application" not in objects_configuration[j].keys():
                                 object_uuids_temp_list = object_uuids_list[t]["uuid"]
                             else:
                                 object_uuids_temp_list.append(object_uuids_list[t]["uuid"])
@@ -149,25 +145,6 @@ class CreateRules:
                 temp_dict = dict(negate_option=negate_option, or_conditions=object_list)
                 condition_list.append(temp_dict)
             return condition_list
-        if condition_type == "attr_app":
-            application_list = []
-            negate_option = and_condition[0]["negate_option"]
-            application_name_list = []
-            application_uuid_list = []
-            application_configuration = and_condition[0]["or_conditions"]
-            for i in range(len(application_configuration)):
-                application_name = application_configuration[i]["items"]
-                application_uuid_temp_list = []
-                for j in range(len(application_name)):
-                    application_name_list.append(application_name[j])
-                    application_uuid = get_group_id(str(application_name_list), api_server)
-                    application_uuid_temp_list.append(application_uuid)
-                attribute_name = application_configuration[i]["attribute_name"]
-                application_uuid_dict = dict(attribute_name=attribute_name, object_uuids=application_uuid_temp_list[len(application_uuid_temp_list)-1])
-                application_uuid_list.append(application_uuid_dict)
-            application_dict = dict(negate_option=negate_option, or_conditions=application_uuid_list)
-            application_list.append(application_dict)
-            return application_list
 
     def generate_rule_action_parameter(self, policy_configuration):
         action_parameter_dict = {}
