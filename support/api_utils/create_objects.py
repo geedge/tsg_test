@@ -346,7 +346,7 @@ class CreateObjects:
                 object_uuids_temp_dict["uuid"] = object_uuids
                 if object_type == "user_defined_attribute":
                     object_uuids_temp_dict["name"] = user_defined_attribute_data["name"]
-                elif object_type == "application":
+                elif object_type == "application" and "included_sub_object_uuids" not in object_temp:
                     object_uuids_temp_dict["name"] = object_temp["application"]["app_name"]
                 else:
                     object_uuids_temp_dict["name"] = object_temp["name"]
