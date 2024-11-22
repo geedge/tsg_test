@@ -235,26 +235,17 @@ def run(parameter):
     finally:
         # 删除
         if parameter["initiation_method"] == "ui":
-            if not rules_tuple:
+            if rules_tuple:
                 ui_client.delete_rules(parameter, policy_configuration)
         elif parameter["initiation_method"] == "api":
-
-            if not rules_tuple:
-                print("No Rules to be delete!")
-            else:
+            if rules_tuple:
                 api_client.delete_rules(rules_tuple)
-            if not objects_tuple:
-                print("No Objects to be delete!")
-            else:
-                api_client.delete_objects(objects_tuple)
-            if not libraries_tuple:
-                print("No Objects to be delete!")
-            else:
-                api_client.delete_libraries(libraries_tuple)
-            if not profiles_tuple:
-                print("No Profiles to be delete!")
-            else:
+            if profiles_tuple:
                 api_client.delete_profiles(profiles_tuple)
+            if libraries_tuple:
+                api_client.delete_libraries(libraries_tuple)
+            if objects_tuple:
+                api_client.delete_objects(objects_tuple)
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()

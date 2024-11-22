@@ -149,12 +149,12 @@ def run(parameter):
     finally:
         # 删除
         if parameter["initiation_method"] == "ui":
-            if not rules_tuple:
+            if rules_tuple:
                 ui_client.delete_rules(parameter, policy_configuration)
         elif parameter["initiation_method"] == "api":
-            if not rules_tuple:
+            if rules_tuple:
                 api_client.delete_rules(rules_tuple)
-            if not objects_tuple:
+            if objects_tuple:
                 api_client.delete_objects(objects_tuple)
 
         # 统计脚本用时
