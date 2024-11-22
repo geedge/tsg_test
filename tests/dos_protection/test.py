@@ -4,12 +4,12 @@ import time
 from datetime import datetime, timedelta
 import pytz
 from support.api_utils.log_in import LogIn
-from support.packet_generator.ui_verification import *
+from support.packet_generator.ui_verification_deprecated import *
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from support.common_utils.data_translation import DataTranslation
 
-import support.api_utils.get_log
+import support.api_utils.get_log_deprecated
 import support.api_utils.policy_verify
 import support.ui_utils.env
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -19,7 +19,7 @@ from support.ui_utils.object.search_object import SearchObject
 from support.ui_utils.object.delete_object import DeleteObject
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
-from support.packet_generator.verify import Verify
+from support.packet_generator.verify_deprecated import Verify
 from support.api_utils.analyse_result import Analyse
 from support.common_utils.data_translation import DataTranslation
 import support.ui_utils.env
@@ -218,7 +218,7 @@ def main():
 
     #如进行Log验证，需在api中添加test_data打印语句，;在get_log中打印temp_log_result
     # 调用 GetLog 的 get_log_by_condition 函数
-    log = support.api_utils.get_log.GetLog()
+    log = support.api_utils.get_log_deprecated.GetLog()
 
     log_result = log.get_log_by_condition(
         token,
