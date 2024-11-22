@@ -14,7 +14,7 @@ class DeleteObjects:
         delete_element_position = object_element_position["delete"]
         try:
             first_row_checkbox_element.click()
-            self.driver.find_element(By.ID, delete_element_position["objectListPage_deleteButton_posId"]).click()
+            self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_posXpath"]).click()
             self.driver.find_element(By.XPATH,delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(3)
             return 200

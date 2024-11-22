@@ -17,21 +17,25 @@ def run(parameter):
 
         #测试数据
         policy_configuration =  {
-            "name": "test",
-            "type": "fqdn",
-            "member_type": "item",
-            "items":[
+            "or_conditions": [
                 {
-                    "op": "add",
-                    "expr_type": "and",
-                    "expression": "open.node.com"
-                },
+                    "name": "test",
+                    "type": "fqdn",
+                    "member_type": "item",
+                    "statistics_option": "",  # random
+                    "items": [
+                        {
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "open.node.com"
+                        },
+                    ],
+                }
             ],
             "search": {
                 "is_fuzzy": False,
                 "type": "uuid"
             },
-            "statistics_option": "",  # random
             "audit_log": False  # system
         }
 

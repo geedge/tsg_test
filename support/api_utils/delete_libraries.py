@@ -15,20 +15,17 @@ class DeleteLibraries:
     
     def delete_catalogs(self, library_uuids_tuple):
         try:
-            catalog_uuids_list = self.extract_uuids(library_uuids_tuple, "catalog")
-            deleted_catalog_dict = {"uuids": "", "vsys":1}
+            library_uuids_list = list(library_uuids_tuple)
+            catalog_uuids_list = self.extract_uuids(library_uuids_list, "catalog")
+            deleted_catalog_dict = {"uuids": [], "vsys":1}
             deleted_catalog_dict["vsys"] = self.vsys
-            if len(catalog_uuids_list) == 1:
-                deleted_catalog_dict["uuids"] = catalog_uuids_list[0]["uuid"]
+            deleted_catalog_dict["uuids"] = catalog_uuids_list
+            url = self.api_server + "/v1/library/catalogs"
+            response = requests.delete(url, headers=self.headers, json=deleted_catalog_dict, verify=False)
+            if response.status_code == 200:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete catalog successfully.", flush=True)
             else:
-                for i in range(len(catalog_uuids_list)):
-                    deleted_catalog_dict["uuids"] = catalog_uuids_list[i]["uuid"]
-                    url = self.api_server + "/v1/library/catalogs"
-                    response = requests.delete(url, headers=self.headers, json=deleted_catalog_dict, verify=False)
-                    if response.status_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete catalog successfully.", flush=True)
-                    else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete catalog failed.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete catalog failed.", flush=True)
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When deleting catalog, the exception error: ", str(e), flush=True)
             return "" ,"When deleting catalog, the exception error: " + str(e)
@@ -36,28 +33,26 @@ class DeleteLibraries:
     def delete_tags(self, library_uuids_tuple):
         try:
             tag_uuids_list = self.extract_uuids(library_uuids_tuple, "tag")
-            delete_tag_dict = {"uuids": "", "vsys":1}
+            delete_tag_dict = {"uuids": [], "vsys":1}
             delete_tag_dict["vsys"] = self.vsys
-            if len(tag_uuids_list) == 1:
-                delete_tag_dict["uuid"] = tag_uuids_list[0]["uuid"]
+            delete_tag_dict["uuids"] =tag_uuids_list
+            url = self.api_server + "/v1/library/tags"
+            response = requests.delete(url, headers=self.headers, json=delete_tag_dict, verify=False)
+            if response.status_code == 200:
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete tag successfully.", flush=True)
             else:
-                for i in range(len(tag_uuids_list)):
-                    delete_tag_dict["uuids"] = tag_uuids_list[i]["uuid"]
-                    url = self.api_server + "/v1/library/tags"
-                    response = requests.delete(url, headers=self.headers, json=delete_tag_dict, verify=False)
-                    if response.status_code == 200:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete tag successfully.", flush=True)
-                    else:
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete tag failed.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete tag failed.", flush=True)
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When deleting tag, the exception error: ", str(e), flush=True)
             return "" ,"When deleting tag, the exception error: " + str(e)
 
     def extract_uuids(self, library_uuids_list, type):
         temp_uuids_list = []
-        for library_uuids in library_uuids_list:
-            if library_uuids["type"] == type:
-                temp_uuids_list.append(library_uuids)
+        for library_uuids_tuple in library_uuids_list:
+            library_uuids = list(library_uuids_tuple)
+            for library_uuid in library_uuids:
+                if library_uuid["type"] == type:
+                    temp_uuids_list.append(library_uuid["uuid"])
         return temp_uuids_list
 
 if __name__ == "__main__":

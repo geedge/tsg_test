@@ -40,10 +40,12 @@ class DeleteObjects:
                     url = api_server + "/v1/objects/applications/customized-signatures"
                 elif type == "user_defined_attribute":
                     url = api_server + "/v1/objects/applications/customized-attributes"
+                elif type == "application" and "name" in object_uuids_list[i] and "group" in object_uuids_list[i]["name"]:
+                    url = api_server + "/v1/objects/application-groups"
                 else:
                     url = api_server + "/v1/objects/{}".format(object_type_dict[type])
                 if type == "boolean" or type == "ip_protocol" or type == "tunnel_level" or (type == "application" and "name" not in object_uuids_list[i]):
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} object is built in, no need to be deleted.".format(type.replace("_", " ")).capitalize(), flush=True)
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The {} object is built in, no need to be deleted.".format(type.replace("_", " ")).capitalize(), flush=True)
                     continue
                 response = requests.delete(url, headers=self.headers, json=deleted_object_dict, verify=False)
                 assert response.status_code == 200

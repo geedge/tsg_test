@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 class CreateObjectsExample:
-    def create_objects(self, policy_configuration, driver):
+    def create_objects(self, object_configuration, driver):
         try:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Begin to run ui test case", flush=True)
 
@@ -49,36 +49,37 @@ class CreateObjectsExample:
             #
             # # 创建rule
             # if cond_code == 200:
+
             create_objects = CreateObject(driver)
-            #获取当前所需的element
-            if "sub_type" in policy_configuration.keys():
-                key_name = policy_configuration["sub_type"]
-            else: key_name = policy_configuration["type"]
-            element_position_map = get_element_position(key_name)
-            #执行创建操作
-            create_object_code,object_uuid,description = create_objects.create(policy_configuration, element_position_map)
-            object_uuids_temp_dict["type"] = policy_configuration["type"]
-            object_uuids_temp_dict["uuid"] = object_uuid
-            object_uuids_temp_dict["name"] = policy_configuration["name"]
-            object_uuids_temp_dict["description"] = description
-            if create_object_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create {} object successfully.".format(policy_configuration["type"], flush=True))
-            elif create_object_code != 200:
-                result = "Fail to create {} rule.".format(policy_configuration["type"])
-                return "", "", result
+            for object in object_configuration["or_conditions"]:
+                #获取当前所需的element
+                if "sub_type" in object.keys():
+                    key_name = object["sub_type"]
+                else: key_name = object["type"]
+                element_position_map = get_element_position(key_name)
+                #执行创建操作
+                create_object_code = create_objects.create(object, element_position_map)
+                if create_object_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create {} object successfully.".format(object["type"], flush=True))
+                elif create_object_code != 200:
+                    result = "Fail to create {} rule.".format(object_configuration["type"])
+                    return "", "", result
 
-            search_objects = SearchObjects(driver)
-            # element_position_map = get_element_position(policy_configuration["type"])
-            search_object_code= search_objects.search(object_uuids_temp_dict,policy_configuration,element_position_map)
-            if search_object_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search {} object successfully.".format(policy_configuration["type"], flush=True))
-            elif search_object_code == 200:
-                result = "Fail to search {} rule uuid.".format(policy_configuration["type"])
-                return "", "", result
+                search_objects = SearchObjects(driver)
+                element_position_map = get_element_position(key_name)
+                search_object_code,object_uuid,object_description= search_objects.get_object_uuid(object["name"],element_position_map)
+                if search_object_code == 200:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search {} object successfully.".format(object["type"], flush=True))
+                elif search_object_code == 200:
+                    result = "Fail to search {} rule uuid.".format(object_configuration["type"])
+                    return "", "", result
 
-
-            object_uuids_list.append(object_uuids_temp_dict)
-            rule_uuids_tuple = tuple(object_uuids_list)
+                object_uuids_temp_dict["type"] = object["type"]
+                object_uuids_temp_dict["uuid"] = object_uuid
+                object_uuids_temp_dict["name"] = object["name"]
+                object_uuids_temp_dict["description"] = object_description
+                object_uuids_list.append(object_uuids_temp_dict)
+                rule_uuids_tuple = tuple(object_uuids_list)
 
             return rule_uuids_tuple,element_position_map,result
         except Exception as e:

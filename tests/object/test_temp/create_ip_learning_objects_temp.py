@@ -17,28 +17,33 @@ def run(parameter):
 
         #测试数据
         policy_configuration =  {
-            "name": "test",
-            "type": "ip",
-            "op": "add",
-            "sub_type": "ip_learning",
-            "member_type": "item",
-            "learning_plan":{
-                "fqdn_ip_learning_plan":{
-                    "learning_depth":"1",
-                    "from_protocol": "SSL",
-                    "aging_time": 10,
-                    "vote_client_num": 10,
-                    "goal_upper_limit": 10,
-                    "from_fqdns": [
-                        "^www.example.com$"
-                    ]
+            "or_conditions": [
+                {
+                    "name": "test",
+                    "type": "ip",
+                    "op": "add",
+                    "sub_type": "ip_learning",
+                    "member_type": "item",
+                    "statistics_option": "",  # random
+                    "learning_plan": {
+                        "fqdn_ip_learning_plan": {
+                            "learning_depth": "1",
+                            "from_protocol": "SSL",
+                            "aging_time": 10,
+                            "vote_client_num": 10,
+                            "goal_upper_limit": 10,
+                            "from_fqdns": [
+                                "^www.example.com$"
+                            ]
+                        }
+                    }
                 }
-            },
+            ],
             "search": {
                 "is_fuzzy": False,
                 "type": "uuid"
             },
-            "statistics_option": "",  # random
+
             "audit_log": False  # system
         }
 

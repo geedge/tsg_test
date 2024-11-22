@@ -1640,6 +1640,7 @@ object_interval_object_element_position = {
     },
     "create": {
         "objectListPage_createButton_posXpath": intObjectListPage_createButton_posXpath,
+        "objectListPage_dropDown_createButton_posXpath":intObjectListPage_dropDown_createButton_posXpath,
         "objectPage_inputName_posXpath": intObjectPage_inputName_posXpath,
         "objectPage_addItem_posXpath": intObjectPage_addItem_posXpath,
         "objectPage_inputItem_lowBoundary_posXpath": intObjectDetailPage_itemValueInput_lowBoundary_poXpath,

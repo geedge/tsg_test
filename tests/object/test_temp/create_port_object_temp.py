@@ -17,20 +17,24 @@ def run(parameter):
 
         #测试数据
         policy_configuration =  {
-            "name": "test",
-            "type": "port",
-            "member_type": "item",
-            "items":[
+            "or_conditions": [
                 {
-                    "op": "add",
-                    "interval": "1-65535"
+                    "name": "test",
+                    "type": "port",
+                    "member_type": "item",
+                    "statistics_option": "",  # random
+                    "items": [
+                        {
+                            "op": "add",
+                            "interval": "1-65535"
+                        }
+                    ],
                 }
             ],
             "search": {
                 "is_fuzzy": False,
                 "type": "uuid"
             },
-            "statistics_option": "",  # random
             "audit_log": False  # system
         }
 

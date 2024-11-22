@@ -17,56 +17,60 @@ def run(parameter):
 
         #测试数据
         policy_configuration =  {
-            "name": "test",
-            "type": "tunnel",
-            "tunnel": {
-                "action_parameter": {
-                    "type": "GTP"
-                },
-                "and_conditions": [
-                    {
-                        "negate_option": False,
-                        "or_conditions": [
+            "or_conditions":[
+                {
+                    "name": "test",
+                    "type": "tunnel",
+                    "statistics_option": "",  # random
+                    "tunnel": {
+                        "action_parameter": {
+                            "type": "GTP"
+                        },
+                        "and_conditions": [
                             {
-                                "attribute_name": "ATTR_TUNNEL_GTP_ENDPOINT",
-                                "type": "ip",
-                                "sub_type": "ip",
-                                "name": "sec_srcipA",
-                                "items": [
+                                "negate_option": False,
+                                "or_conditions": [
                                     {
-                                        "op": "add",
-                                        "ip": "1.1.1.1",
-                                        "interval": "0-65535"
+                                        "attribute_name": "ATTR_TUNNEL_GTP_ENDPOINT",
+                                        "type": "ip",
+                                        "sub_type": "ip",
+                                        "name": "sec_srcipA",
+                                        "items": [
+                                            {
+                                                "op": "add",
+                                                "ip": "1.1.1.1",
+                                                "interval": "0-65535"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "negate_option": False,
+                                "or_conditions": [
+                                    {
+                                        "attribute_name": "ATTR_TUNNEL_GTP_ENDPOINT",
+                                        "type": "ip",
+                                        "sub_type": "ip",
+                                        "name": "sec_srcipB",
+                                        "items": [
+                                            {
+                                                "op": "add",
+                                                "ip": "1.1.1.2",
+                                                "interval": "0-65535"
+                                            }
+                                        ]
                                     }
                                 ]
                             }
                         ]
                     },
-                    {
-                        "negate_option": False,
-                        "or_conditions": [
-                            {
-                                "attribute_name": "ATTR_TUNNEL_GTP_ENDPOINT",
-                                "type": "ip",
-                                "sub_type": "ip",
-                                "name": "sec_srcipB",
-                                "items": [
-                                    {
-                                        "op": "add",
-                                        "ip": "1.1.1.2",
-                                        "interval": "0-65535"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
+                }
+            ],
             "search": {
                 "is_fuzzy": False,
                 "type": "uuid"
             },
-            "statistics_option": "",  # random
             "audit_log": False  # system
         }
 

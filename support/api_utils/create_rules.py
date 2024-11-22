@@ -99,7 +99,9 @@ class CreateRules:
                 "dos_protection": "dos-protection-rules",
             }
             if policy_configuration["type"] == "proxy_manipulation" or (policy_configuration["type"] == "service_chaining" and policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted"):
-                pre_intercept_rule_uuid_dict, api_error = self.create_pre_intercept_rule(policy_configuration["type"], pre_intercept_rule_template_source_condition, policy_configuration["is_enabled"])
+                pre_intercept_rule_uuid_dict, api_error = self.create_preset_intercept_rules(policy_configuration["type"], pre_intercept_rule_template_source_condition, policy_configuration["is_enabled"])
+                if len(api_error) > 0:
+                    return "", api_error
                 rule_uuids_list.append(pre_intercept_rule_uuid_dict)
             url = api_server + "/v1/policies/{}".format(rule_type_dict[policy_configuration["type"]])
             response = requests.post(url, headers=self.headers, json=rule_template_json, verify=False)
@@ -123,7 +125,7 @@ class CreateRules:
             return "", "When creating rule, the exception error: " + str(e)
         
     def generate_rule_condition_list(self, and_condition, object_uuids_list, condition_type):
-        if condition_type in ["attr_tunnel", "attr_source", "attr_destination", "attr_flag", "attr_ip","attr_app", "protocol_field", "attr_inter", "attr_ext"] and len(object_uuids_list) > 0:
+        if condition_type in ["attr_tunnel", "attr_source", "attr_destination", "attr_flag", "attr_ip", "attr_app", "protocol_field", "attr_inter", "attr_ext"] and len(object_uuids_list) > 0:
             condition_list = []
             for i in range(len(and_condition)):
                 negate_option = and_condition[i]["negate_option"]
@@ -347,7 +349,7 @@ class CreateRules:
 
         return action_parameter_dict
 
-    def create_pre_intercept_rule(self, policy_type, source_condition, enabled):
+    def create_preset_intercept_rules(self, policy_type, source_condition, enabled):
         vsys = self.parameter["vsys"]
         api_server = self.parameter["api_server"]
         root_path = self.parameter["root_path"]
@@ -365,9 +367,9 @@ class CreateRules:
             proxy_intercept_template_json["is_enabled"] = enabled
             proxy_intercept_template_json["rule"]["and_conditions"].append(and_condition)
             url = api_server + "/v1/policies/{}".format("proxy-intercept-rules")
-            response = requests.post(url, headers=self.headers, json= proxy_intercept_template_json, verify=False)
+            response = requests.post(url, headers=self.headers, json=proxy_intercept_template_json, verify=False)
             if response.status_code == 200:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create pre intercept rule successfully.", flush=True)
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create preset intercept rule successfully.", flush=True)
                 response_dict = json.loads(response.text)
                 uuid = self.get_uuids(response_dict)
                 rule_uuids_temp_dict = {
@@ -378,11 +380,11 @@ class CreateRules:
                 }
                 return rule_uuids_temp_dict, ""
             else:
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create pre intercept rule failed.", flush=True)
-                return "", "Create pre intercept rule failed."
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create preset intercept rule failed.", flush=True)
+                return "", "Create preset intercept rule failed."
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating pre intercept rule, the exception error: ", str(e), flush=True)
-            return "", "When creating pre intercept rule, the exception error: " + str(e)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating preset intercept rule, the exception error: ", str(e), flush=True)
+            return "", "When creating preset intercept rule, the exception error: " + str(e)
         
     def get_uuids(self, response_dict):
         uuid = response_dict["data"]["uuid"]
