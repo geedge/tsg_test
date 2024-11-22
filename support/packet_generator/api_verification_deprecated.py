@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import requests
-import support.api_utils.get_log
+import support.api_utils.get_log_deprecated
 import support.api_utils.policy_verify
 import support.ui_utils.env
 import subprocess
@@ -61,7 +61,7 @@ class ApiVerification:
         for i in range(len(create_policies_ids)):
             policy_id_list.append(list(create_policies_ids[i].values())[0])
         
-        log = support.api_utils.get_log.GetLog()
+        log = support.api_utils.get_log_deprecated.GetLog()
         if policy_type == "security" or policy_type == "proxy_intercept" or policy_type == "proxy_manipulation" or policy_type == "monitor" :
             #如果是通过trex回放，需要替换src ip
             if test_data["policy_type"] == "monitor" and test_data["traffic"]["type"] == "trex":

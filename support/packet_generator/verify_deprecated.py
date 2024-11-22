@@ -4,8 +4,8 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from support.packet_generator.capture_packet import *
 from support.packet_generator.traffic_generator import *
-from support.packet_generator.api_verification import *
-from support.packet_generator.ui_verification import *
+from support.packet_generator.api_verification_deprecated import *
+from support.packet_generator.ui_verification_deprecated import *
 from support.packet_generator.workpath import workdir
 from datetime import datetime
 from threading import Thread

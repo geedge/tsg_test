@@ -18,7 +18,7 @@ from support.ui_utils.policy.delete_rule import DeleteRule
 from support.ui_utils.policy.edit_rule import EditRule
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
-from support.packet_generator.verify import Verify
+from support.packet_generator.verify_deprecated import Verify
 from support.ui_utils.element_position.map_element_position_library import *
 from support.api_utils.analyse_result import *
 from support.api_utils.log_in import *
