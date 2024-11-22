@@ -100,6 +100,8 @@ class CreateRules:
             }
             if policy_configuration["type"] == "proxy_manipulation" or (policy_configuration["type"] == "service_chaining" and policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted"):
                 pre_intercept_rule_uuid_dict, api_error = self.create_preset_intercept_rules(policy_configuration["type"], pre_intercept_rule_template_source_condition, policy_configuration["is_enabled"])
+                if len(api_error) > 0:
+                    return "", api_error
                 rule_uuids_list.append(pre_intercept_rule_uuid_dict)
             url = api_server + "/v1/policies/{}".format(rule_type_dict[policy_configuration["type"]])
             response = requests.post(url, headers=self.headers, json=rule_template_json, verify=False)
