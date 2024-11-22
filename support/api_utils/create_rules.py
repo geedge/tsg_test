@@ -15,6 +15,8 @@ class CreateRules:
             self.profile_uuids_tuple = profile_uuids_tuple
         if len(library_uuids_tuple) > 0:
             self.library_uuids_tuple = library_uuids_tuple
+        else:
+            self.library_uuids_tuple = []
     
     def create_rules(self, policy_configuration):
         api_server = self.parameter["api_server"]
@@ -23,12 +25,13 @@ class CreateRules:
         try:
             self.policy_configuration = policy_configuration
             object_uuids_list = list(self.object_uuids_tuple)
-            library_uuids_list = list(self.library_uuids_tuple)
-            for i in range(len(library_uuids_list)):
-                library_list = list(library_uuids_list[i])
-                for j in range(len(library_list)):
-                    if library_list[j]["type"] == "tag":
-                        object_uuids_list.append(library_list[j])
+            if self.library_uuids_tuple != []:
+                library_uuids_list = list(self.library_uuids_tuple)
+                for i in range(len(library_uuids_list)):
+                    library_list = list(library_uuids_list[i])
+                    for j in range(len(library_list)):
+                        if library_list[j]["type"] == "tag":
+                            object_uuids_list.append(library_list[j])
             rule_template = root_path + "/support/api_utils/template/rule_template.json"
             with open(rule_template, 'r', encoding='utf-8') as f:
                 rule_template_json = json.load(f)
