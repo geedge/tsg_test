@@ -2,7 +2,6 @@
 import json
 import requests
 from datetime import datetime
-from support.api_utils.get_application_id import get_group_id
 
 class CreateRules:
     def __init__(self, parameter, headers, object_uuids_tuple, library_uuids_tuple, profile_uuids_tuple):
@@ -43,7 +42,9 @@ class CreateRules:
             for i in range(len(policy_configuration["and_conditions"])):
                 if "attr_tunnel" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower():
                     tunnel_condition_temp_list.append(policy_configuration["and_conditions"][i])
-                if "attr_source" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower():
+                if "attr_source" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower() or \
+                    "attr_gtp" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower() or \
+                    "attr_subscriber" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower()  :
                     source_condition_temp_list.append(policy_configuration["and_conditions"][i])
                 if "attr_destination" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower() or \
                    "attr_server" in policy_configuration["and_conditions"][i]["or_conditions"][0]["attribute_name"].lower() :
@@ -68,24 +69,24 @@ class CreateRules:
             rule_template_json["rule"]["and_conditions"] = []
             pre_intercept_rule_template_source_condition = []
             if len(tunnel_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(tunnel_condition_temp_list, object_uuids_list, "attr_tunnel"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(tunnel_condition_temp_list, object_uuids_list))
             if len(source_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(source_condition_temp_list, object_uuids_list, "attr_source"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(source_condition_temp_list, object_uuids_list))
                 pre_intercept_rule_template_source_condition.extend(rule_template_json["rule"]["and_conditions"])
             if len(destination_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(destination_condition_temp_list, object_uuids_list, "attr_destination"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(destination_condition_temp_list, object_uuids_list))
             if len(internal_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(internal_condition_temp_list, object_uuids_list, "attr_inter"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(internal_condition_temp_list, object_uuids_list))
             if len(external_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(external_condition_temp_list, object_uuids_list, "attr_ext"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(external_condition_temp_list, object_uuids_list))
             if len(flag_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(flag_condition_temp_list, object_uuids_list, "attr_flag"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(flag_condition_temp_list, object_uuids_list))
             if len(ip_protocol_condition_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(ip_protocol_condition_list, object_uuids_list, "attr_ip"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(ip_protocol_condition_list, object_uuids_list))
             if len(application_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(application_condition_temp_list, object_uuids_list, "attr_app"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(application_condition_temp_list, object_uuids_list))
             if len(protocol_field_condition_temp_list) > 0:
-                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(protocol_field_condition_temp_list, object_uuids_list, "protocol_field"))
+                rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(protocol_field_condition_temp_list, object_uuids_list))
             if "action_parameter" in policy_configuration.keys() and len(policy_configuration["action_parameter"]) > 0:
                 rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)        
             rule_type_dict = {
@@ -124,8 +125,8 @@ class CreateRules:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating rule, the exception error: ", str(e), flush=True)
             return "", "When creating rule, the exception error: " + str(e)
         
-    def generate_rule_condition_list(self, and_condition, object_uuids_list, condition_type):
-        if condition_type in ["attr_tunnel", "attr_source", "attr_destination", "attr_flag", "attr_ip", "attr_app", "protocol_field", "attr_inter", "attr_ext"] and len(object_uuids_list) > 0:
+    def generate_rule_condition_list(self, and_condition, object_uuids_list):
+        if len(object_uuids_list) > 0:
             condition_list = []
             for i in range(len(and_condition)):
                 negate_option = and_condition[i]["negate_option"]
