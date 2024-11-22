@@ -67,7 +67,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "expression": "example.com&",
+                                    "expression": "example.com$",
                                 }
                             ]
                         }
