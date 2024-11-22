@@ -99,7 +99,7 @@ class CreateRules:
                 "dos_protection": "dos-protection-rules",
             }
             if policy_configuration["type"] == "proxy_manipulation" or (policy_configuration["type"] == "service_chaining" and policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted"):
-                pre_intercept_rule_uuid_dict, api_error = self.create_pre_intercept_rule(policy_configuration["type"], pre_intercept_rule_template_source_condition, policy_configuration["is_enabled"])
+                pre_intercept_rule_uuid_dict, api_error = self.create_preset_intercept_rules(policy_configuration["type"], pre_intercept_rule_template_source_condition, policy_configuration["is_enabled"])
                 rule_uuids_list.append(pre_intercept_rule_uuid_dict)
             url = api_server + "/v1/policies/{}".format(rule_type_dict[policy_configuration["type"]])
             response = requests.post(url, headers=self.headers, json=rule_template_json, verify=False)
@@ -347,7 +347,7 @@ class CreateRules:
 
         return action_parameter_dict
 
-    def create_pre_intercept_rule(self, policy_type, source_condition, enabled):
+    def create_preset_intercept_rules(self, policy_type, source_condition, enabled):
         vsys = self.parameter["vsys"]
         api_server = self.parameter["api_server"]
         root_path = self.parameter["root_path"]
