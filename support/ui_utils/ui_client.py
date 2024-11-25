@@ -46,10 +46,10 @@ class UIClient:
         log_result = query.query_rule_log()
         return log_result
     
-    def delete_rules(self, parameter, policy_configuration):
+    def delete_rules(self, parameter, policy_configuration, rule_uuids_tuple):
         if "type" in policy_configuration.keys() and policy_configuration["type"] == "security":
             rules = DeleteSecurityRulesExample()
-            rules.delete_rules(parameter, policy_configuration, self.driver)
+            rules.delete_rules(parameter, policy_configuration, self.driver, rule_uuids_tuple)
 
     def delete_objects(self, parameter, objects_tuple):
         objects = DeleteObjectsExample()

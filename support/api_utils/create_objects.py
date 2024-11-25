@@ -324,8 +324,7 @@ class CreateObjects:
                 user_defined_attribute_data = object_temp
                 user_defined_attribute_data["vsys"] = self.parameter["vsys"]
                 user_defined_attribute_data["return_data"] = 1
-                files = {"file": (
-                file_path, open("{}/support/configuration_management/profile/{}".format(root_path, file_path), 'rb'), "text/plain")}
+                files = {"file": (file_path, open("{}/support/configuration_management/profile/{}".format(root_path, file_path), 'rb'), "text/plain")}
                 temp_headers = self.headers
                 del temp_headers["Content-Type"]
                 response = requests.post(url=url, data=user_defined_attribute_data, headers=self.headers, files=files, verify=False)

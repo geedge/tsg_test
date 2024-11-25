@@ -158,7 +158,7 @@ def run(parameter):
         # 删除
         if parameter["initiation_method"] == "ui":
             if rules_tuple:
-                ui_client.delete_rules(parameter, policy_configuration)
+                ui_client.delete_rules(parameter, policy_configuration, rules_tuple)
         elif parameter["initiation_method"] == "api":
             if rules_tuple:
                 api_client.delete_rules(rules_tuple)
