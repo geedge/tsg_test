@@ -159,11 +159,18 @@ def run(parameter):
         if excepted_traffic_result == False:
             return error
 
+        # 提取Manipulation_rules用于查询
+        tmp_rules_list = []
+        for i in range(len(rules_tuple)):
+            if rules_tuple[i]["type"] == "proxy_manipulation":
+                tmp_rules_list.append(rules_tuple[i])
+        tmp_rules_tuple = tuple(tmp_rules_list)
+
         # 验证tsg的日志是否符合策略执行的预期
         if parameter["initiation_method"] == "ui":
-            log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
+            log_result = ui_client.query_rule_log(verification_result, tmp_rules_tuple, traffic_result)
         elif parameter["initiation_method"] == "api":
-            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, traffic_start_time, traffic_result)
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, tmp_rules_tuple, traffic_start_time, traffic_result)
         if log_result == True:
             test_summary["log"] = "Pass."
         elif log_result == False:
@@ -177,7 +184,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, traffic_start_time, traffic_result)
+            metric_result = api_client.query_rule_metric(verification_result, tmp_rules_tuple, traffic_start_time, traffic_result)
         if metric_result == True:
             test_summary["metric"] = "Pass."
         elif metric_result == False:

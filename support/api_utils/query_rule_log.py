@@ -16,7 +16,7 @@ class QueryRuleLog:
     def query_rule_log(self, traffic_generation, verification_result, rule_uuids_tuple, start_time):
         try:
             self.rule_type = self.policy_configuration["type"]
-            if self.rule_type == "security" or self.rule_type == "pxy_intercept" or self.rule_type == "pxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" :
+            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" :
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 log_result = None
                 for _ in range(int(90)):
@@ -75,11 +75,11 @@ class QueryRuleLog:
                     schema_type = log_source = 'security_event'
                     identifier_name = 'security-event-list'
                     log_query_rule_type = 'security_rule_uuid_list'
-                elif self.rule_type == 'pxy_intercept':
+                elif self.rule_type == 'proxy_intercept':
                     schema_type = log_source = 'session_record'
                     identifier_name = 'session-record-list'
                     log_query_rule_type = 'proxy_rule_uuid_list'
-                elif self.rule_type == 'pxy_manipulation':
+                elif self.rule_type == 'proxy_manipulation':
                     schema_type = log_source = 'proxy_event'
                     identifier_name = 'proxy-event-manipulation-list'
                     log_query_rule_type = 'proxy_rule_uuid_list'
@@ -315,7 +315,7 @@ class QueryRuleLog:
                                     temp_log_result_list.append(False)
                     else:
                         temp_log_result_list.append(False)
-                if self.rule_type == 'pxy_intercept' and len(temp_log_result_list) < len(log_query):
+                if self.rule_type == 'proxy_intercept' and len(temp_log_result_list) < len(log_query):
                     if True in temp_log_result_list:
                         log_result = True
                     else:
