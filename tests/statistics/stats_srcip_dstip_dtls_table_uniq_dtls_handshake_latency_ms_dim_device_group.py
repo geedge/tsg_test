@@ -185,9 +185,6 @@ def run(parameter):
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            libraries_tuple, api_error = api_client.create_libraries(policy_configuration)
-            if len(api_error) > 0:
-                return api_error
             source_change_destination = copy.deepcopy(policy_configuration["and_conditions"][0]["or_conditions"][0])
             source_change_destination["attribute_name"] = "ATTR_DESTINATION_IP"
             policy_configuration["and_conditions"][1]["or_conditions"].append(source_change_destination)
@@ -210,7 +207,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        traffic_start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)

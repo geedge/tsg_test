@@ -155,19 +155,18 @@ class CreateRules:
             action_parameter_dict["sub_action"] = policy_configuration["action_parameter"]["sub_action"]
             action_parameter_dict["packet_capture"] = {}
             action_parameter_dict["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
-            action_parameter_dict["after_n_packets"] = policy_configuration["action_parameter"]["after_n_packets"]
             action_parameter_dict["send_icmp_unreachable"] = policy_configuration["action_parameter"]["send_icmp_unreachable"]
-            action_parameter_dict["send_tcp_reset"] = policy_configuration["action_parameter"]["send_tcp_reset"]
-            if policy_configuration["action_parameter"]["sub_action"] == "block":
+            if policy_configuration["action_parameter"]["sub_action"] == "default":
+                action_parameter_dict["send_tcp_reset"] = policy_configuration["action_parameter"]["send_tcp_reset"]
+            elif policy_configuration["action_parameter"]["sub_action"] == "drop":
+                action_parameter_dict["send_tcp_reset"] = policy_configuration["action_parameter"]["send_tcp_reset"]
+                action_parameter_dict["after_n_packets"] = policy_configuration["action_parameter"]["after_n_packets"]
+            elif policy_configuration["action_parameter"]["sub_action"] == "block":
                 action_parameter_dict["code"] = policy_configuration["action_parameter"]["code"]
                 if "html_profile" in policy_configuration["action_parameter"].keys():
                     action_parameter_dict["html_profile"] = policy_configuration["action_parameter"]["html_profile"]
                 elif "message" in policy_configuration["action_parameter"].keys():
                     action_parameter_dict["message"] = policy_configuration["action_parameter"]["message"]
-                action_parameter_dict["packet_capture"] = {}
-                action_parameter_dict["packet_capture"]["enable"] = policy_configuration["action_parameter"]["packet_capture"]["enable"]
-                action_parameter_dict["send_icmp_unreachable"] = policy_configuration["action_parameter"]["send_icmp_unreachable"]
-                action_parameter_dict["send_tcp_reset"] = policy_configuration["action_parameter"]["send_tcp_reset"]
             elif policy_configuration["action_parameter"]["sub_action"] == "redirect":
                 # dns redirect
                 if "resolution" in policy_configuration["action_parameter"].keys() and len(policy_configuration["action_parameter"]["resolution"]) > 0:

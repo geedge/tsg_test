@@ -166,14 +166,11 @@ def run(parameter):
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            libraries_tuple, api_error = api_client.create_libraries(policy_configuration)
-            if len(api_error) > 0:
-                return api_error
             # 处理Profiles
             profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, libraries_tuple, profiles_tuple)
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", profiles_tuple)
             if len(api_error) > 0:
                 return api_error
         # 等待下发配置生效
@@ -185,7 +182,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        traffic_start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
@@ -242,17 +239,13 @@ def run(parameter):
                 api_client.delete_rules(rules_tuple)
             if profiles_tuple:
                 api_client.delete_profiles(profiles_tuple)
-            if libraries_tuple:
-                api_client.delete_libraries(libraries_tuple)
             if objects_tuple:
                 api_client.delete_objects(objects_tuple)
         # 统计脚本用时
         end_time = time.time()
-        duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration/1000), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Finish test case: " + parameter["test_case_name"], flush=True)
+        duration = end_time - start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
 
         # 生成csv报告
         update = ReportUpdate()

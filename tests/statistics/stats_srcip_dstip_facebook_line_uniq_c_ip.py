@@ -185,14 +185,11 @@ def run(parameter):
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            libraries_tuple, api_error = api_client.create_libraries(policy_configuration)
-            if len(api_error) > 0:
-                return api_error
             # 处理Profiles
             profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, libraries_tuple, profiles_tuple)
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", profiles_tuple)
             if len(api_error) > 0:
                 return api_error
         # 等待下发配置生效
@@ -204,7 +201,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        traffic_start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
@@ -260,8 +257,6 @@ def run(parameter):
                 api_client.delete_rules(rules_tuple)
             if profiles_tuple:
                 api_client.delete_profiles(profiles_tuple)
-            if libraries_tuple:
-                api_client.delete_libraries(libraries_tuple)
             if objects_tuple:
                 api_client.delete_objects(objects_tuple)
         # 统计脚本用时
