@@ -13,28 +13,32 @@ from datetime import datetime
 
 class DeleteObjectsExample:
     def delete_objects(self, parameter, objects_tuple, search_type, driver):
-        result = ""
-        for obj in objects_tuple:
-            # 删除object
-            search_object = SearchObjects(driver)
-            element_position_map = get_element_position(obj["type"])
-            search_object_code, first_row_checkbox_element = search_object.search(obj, search_type, element_position_map)
-            if search_object_code == 200:
-                delete_Object = DeleteObjects(driver)
-                delete_object_code = delete_Object.delete(element_position_map,first_row_checkbox_element)
-                if delete_object_code == 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete {} object successfully.".format(obj["type"]), flush=True)
-                elif delete_object_code != 200:
-                    result = result + " In addition, fail to delete {} object.".format(obj["type"])
-            else:
-                result = result + " In addition, fail to search {} object.".format(obj["type"])
-        # 环境清理
-        support.ui_utils.env.teardown()
-        # 强制删除
-        log_in = LogIn()
-        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-        headers = {"Content-Type": "application/json", "Authorization": token}
-        objects = DeleteObjectsAPI(parameter, headers)
-        objects.delete_objects(objects_tuple)
-        return result
+        try:
+            result = ""
+            for obj in objects_tuple:
+                # 删除object
+                search_object = SearchObjects(driver)
+                element_position_map = get_element_position(obj["type"])
+                search_object_code, first_row_checkbox_element = search_object.search(obj, search_type, element_position_map)
+                if search_object_code == 200:
+                    delete_Object = DeleteObjects(driver)
+                    delete_object_code = delete_Object.delete(element_position_map,first_row_checkbox_element)
+                    if delete_object_code == 200:
+                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete {} object successfully.".format(obj["type"]), flush=True)
+                    elif delete_object_code != 200:
+                        result = result + " In addition, fail to delete {} object.".format(obj["type"])
+                else:
+                    result = result + " In addition, fail to search {} object.".format(obj["type"])
+            # 环境清理
+            support.ui_utils.env.teardown()
+            # 强制删除
+            log_in = LogIn()
+            pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
+            token = log_in.login(parameter["username"], pwd, parameter["api_server"])
+            headers = {"Content-Type": "application/json", "Authorization": token}
+            objects = DeleteObjectsAPI(parameter, headers)
+            objects.delete_objects(objects_tuple)
+            return result
+        except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When deleting object by ui, the exception error: ", str(e), flush=True)
+            return "", "When deleting object by ui, the exception error: " + str(e)
