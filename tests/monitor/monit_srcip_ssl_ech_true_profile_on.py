@@ -122,6 +122,9 @@ def run(parameter):
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
+            profile_tuple, api_error = api_client.create_profiles(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
             rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
             if len(api_error) > 0:
                 return api_error
@@ -190,6 +193,8 @@ def run(parameter):
                 api_client.delete_rules(rules_tuple)
             if objects_tuple:
                 api_client.delete_objects(objects_tuple)
+            if profile_tuple:
+                api_client.delete_profiles(profile_tuple)
 
         # 统计脚本用时
         end_time = time.time()

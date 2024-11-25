@@ -212,7 +212,7 @@ class CreateRules:
                 action_parameter_dict["packet_capture"]["capture_depth"] = policy_configuration["action_parameter"]["packet_capture"]["capture_depth"]
             action_parameter_dict["traffic_mirroring"] = {}
             action_parameter_dict["traffic_mirroring"]["enable"] = policy_configuration["action_parameter"]["traffic_mirroring"]["enable"]
-            if policy_configuration["action_parameter"]["traffic_mirroring"]["enable"] == 1:
+            if policy_configuration["action_parameter"]["traffic_mirroring"]["enable"] == 1 and "vlanID" in policy_configuration["action_parameter"]["traffic_mirroring"]:
                 action_parameter_dict["traffic_mirroring"]["vlanID"] = policy_configuration["action_parameter"]["traffic_mirroring"]["vlanID"]
                 action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]
         elif policy_configuration["type"] == "statistics":   
