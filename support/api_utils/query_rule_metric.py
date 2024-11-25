@@ -20,7 +20,7 @@ class QueryRuleMetric:
     def query_rule_metric(self, verification_result, rule_uuids_tuple, start_time):
         try:
             self.rule_type = self.policy_configuration["type"]
-            if self.rule_type == "security" or self.rule_type == "pxy_intercept" or self.rule_type == "pxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "dos_protection":
+            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "dos_protection":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 metric_result = None
                 for _ in range(int(90)):
@@ -155,7 +155,7 @@ class QueryRuleMetric:
             for _ in range(rule_number):
                 if self.rule_type == 'security':
                     dataset_identifier_name = "security-policy-rule-statistics"
-                elif self.rule_type == 'pxy_intercept' or self.rule_type == 'pxy_manipulation':
+                elif self.rule_type == 'proxy_intercept' or self.rule_type == 'proxy_manipulation':
                     dataset_identifier_name = "proxy-policy-rule-statistics"
                 elif self.rule_type == 'monitor':
                     dataset_identifier_name = "monitor-policy-rule-statistics"
