@@ -53,6 +53,8 @@ class APIClient:
     def query_rule_log(self, traffic_generation, verification_result, rule_uuids_tuple, start_time, traffic_result):
         query = QueryRuleLog(self.parameter, self.policy_configuration, self.token, traffic_result)
         log_result = query.query_rule_log(traffic_generation, verification_result, rule_uuids_tuple, start_time)
+        #if not log_result:
+        #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG:log_result:{};traffic_generation:{};verification_result：{}'.format(log_result, traffic_generation, verification_result), flush=True)
         return log_result
     
     def delete_objects(self, object_uuids_tuple):

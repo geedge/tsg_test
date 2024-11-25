@@ -139,6 +139,8 @@ class TrafficGenerator:
                 traffic_result_temp = traffic_result
             expected_result_temp = verification["excepted_traffic_result"]
             result = all(word in traffic_result_temp for word in expected_result_temp)
+            #if not result:
+            #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG:excepted_traffic_result:{};expected_result_temp:{};traffic_result_temp：{}'.format(result, expected_result_temp, traffic_result_temp), flush=True)
             if result == True:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'The traffic return traffic result match the expected result.', flush=True)
                 return True, ""
