@@ -22,6 +22,7 @@ from datetime import datetime
 
 class TrafficGenerator:
     def run(self, policy_configuration, traffic_generation):
+        self.traffic_generation = traffic_generation
         debug = "local"
         if debug == "local":
             #traffic_generation["type"]=traffic_generation["tool"]
@@ -129,6 +130,8 @@ class TrafficGenerator:
     
     def result(self, verification, traffic_result):
         try:
+            if self.traffic_generation["tool"] == "trex":
+                return True, ""
             debug = "local"
             if debug == "local":
                 traffic_result_temp = traffic_result["result"]

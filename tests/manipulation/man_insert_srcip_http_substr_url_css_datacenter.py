@@ -25,7 +25,7 @@ def run(parameter):
         start_time = time.time()
 
         policy_configuration = {
-            "name": "test_name",
+            "name": parameter["test_case_name"],
             "type": "proxy_manipulation",
             "action": "modify",
             "and_conditions": [
@@ -42,7 +42,7 @@ def run(parameter):
                     "items": [
                     {
                         "op": "add",
-                        "ip": "99.99.99.99",
+                        "ip": parameter["test_pc_ip"],
                         "interval": "0-65535"
                     }]
                 }]
@@ -83,6 +83,18 @@ def run(parameter):
                     "name": "manipulation_insert_profile",
                     "file_path": "insert_css_1.css"
                 }
+            },
+            "effective_range": {
+                "tag_sets": [
+                    [
+                        {
+                            "tag": "data_center",
+                            "value": [
+                                "center-xxg-tsgx"
+                            ]
+                        }
+                    ]
+                ]
             }
         }
 

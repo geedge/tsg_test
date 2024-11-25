@@ -372,7 +372,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
     print(faile_path)
     resource_text = ""
     parameter = {"test_pc_ip":'2.2.2.2',
-                 "test_case_name":"test_name"}
+                 "test_case_name":parameter["test_case_name"]}
     tmp_resource_text = copy.deepcopy(resource_text)
     with open(faile_path, "r", encoding="utf-8") as f:
         text = f.read()
@@ -387,7 +387,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
     match_text = match_text.lstrip("test_data =")
     match_text = match_text.lstrip()
     match_text = match_text.replace('parameter["test_case_name"]', '"tmp_name"')
-    match_text = match_text.replace('parameter["test_pc_ip"]', '"99.99.99.99"')
+    match_text = match_text.replace('parameter["test_pc_ip"]', 'parameter["test_pc_ip"]')
     match_text = match_text.replace('"$" + parameter["test_subcriber_id"]', '"$test_tmp_subid"')
     # print(match_text)
     # print(type(match_text))
@@ -972,7 +972,7 @@ if __name__ == '__main__':
 
     # 替换test_data
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
-    name = "man_run_script_srcip_dstport_http_substr_url.py"
+    name = "man_run_script_srcip_xly_fqdn_http_substr_url.py"
     #name = "{}.py".format(name1)
     replace_test_data_from_py_2(case_directory_path=case_directory_path, name=name)
 
