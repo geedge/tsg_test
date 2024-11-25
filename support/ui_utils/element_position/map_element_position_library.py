@@ -2313,7 +2313,7 @@ def replace_paras(parameter):
     parameter['test_apn'] = parse.get("network_address", "apn")
     parameter["vsys"] = parse.get("vsys", "for_traffic_verification")
     parameter["is_log"] = parse.get("is_log", "value")
-    parameter["script_type"] = parse.get("debug_script_type", "script_type")
+    parameter["initiation_method"] = parse.get("debug_script_type", "script_type")
 
     #project_path = parse.get("root_path", "path")
     #parameter["root_path"] = project_path

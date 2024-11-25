@@ -133,3 +133,11 @@ if __name__ == '__main__':
     print(util.get_all_metrics_or_dimensions("unique_count_metrics"))
     print("distribution_metrics")
     print(util.get_all_metrics_or_dimensions("distribution_metrics"))
+    """
+
+    test_tuple = ({"name": "vlan_none", "type": "service-functions", "uuid": "01934e60-e452-7500-b5a9-37138b731ba6"}, {"name": "autotest", "type": "service-function-forwarders", "uuid": "01934e60-f8ec-7017-a3ff-4544ea8da1e9"})
+    reversed_tuple = tuple(reversed(test_tuple))
+    print(reversed_tuple)
+    #sorted_tuple = tuple(sorted(test_tuple, reverse=True))
+    #print(sorted_tuple)
+    """
