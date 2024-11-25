@@ -88,7 +88,9 @@ class CreateRules:
             if len(protocol_field_condition_temp_list) > 0:
                 rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(protocol_field_condition_temp_list, object_uuids_list))
             if "action_parameter" in policy_configuration.keys() and len(policy_configuration["action_parameter"]) > 0:
-                rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)        
+                rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)
+            if "effective_range" in policy_configuration.keys() and len(policy_configuration["effective_range"]) > 0:
+                rule_template_json["rule"]["effective_range"] = policy_configuration["effective_range"]
             rule_type_dict = {
                 "security": "security-rules",
                 "proxy_intercept": "proxy-intercept-rules",
@@ -105,6 +107,7 @@ class CreateRules:
                     return "", api_error
                 rule_uuids_list.append(pre_intercept_rule_uuid_dict)
             url = api_server + "/v1/policies/{}".format(rule_type_dict[policy_configuration["type"]])
+            #print(json.dumps(rule_template_json))
             response = requests.post(url, headers=self.headers, json=rule_template_json, verify=False)
             if response.status_code == 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(policy_configuration["type"].replace("_", " ")), flush=True)
