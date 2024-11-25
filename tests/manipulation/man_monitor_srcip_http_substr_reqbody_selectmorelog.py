@@ -25,7 +25,7 @@ def run(parameter):
         start_time = time.time()
 
         policy_configuration = {
-            "name": "test_name",
+            "name": parameter["test_case_name"],
             "type": "proxy_manipulation",
             "action": "monitor",
             "and_conditions": [
@@ -42,7 +42,7 @@ def run(parameter):
                     "items": [
                     {
                         "op": "add",
-                        "ip": "99.99.99.99",
+                        "ip": parameter["test_pc_ip"],
                         "interval": "0-65535"
                     }]
                 }]
@@ -89,7 +89,7 @@ def run(parameter):
                 {"query_field_key": "http_host", "query_value": "open.node.com"},
                 {"query_field_key": "decoded_as", "query_value": "HTTP"},
                 {"query_field_key": "decoded_as", "query_value": "HTTP"},
-                {"query_field_key": "client_ip", "query_value": "99.99.99.99"},
+                {"query_field_key": "client_ip", "query_value": parameter["test_pc_ip"]},
                 {"query_field_key": "server_ip", "query_value": "open.node.com"},
                 {"query_field_key": "server_fqdn", "query_value": "open.node.com"},
                 {"query_field_key": "ip_protocol", "query_value": "tcp"},
