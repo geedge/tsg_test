@@ -10,7 +10,7 @@ def run(parameter):
 
         # 参数初始化
         result, exception_result = "", ""
-        test_summary = {}
+        # test_summary = {}
 
         # 脚本启动时间
         start_time = time.time()
@@ -32,26 +32,25 @@ def run(parameter):
                     ]
                 }
             ],
-            "search": {
-                "is_fuzzy": False,
-                "type": "uuid"
-            },
-            "audit_log": False  # system
+            # "search": {
+            #     "is_fuzzy": False,
+            #     "type": "uuid"
+            # },
+            # "audit_log": False  # system
         }
 
         # 创建
-        if parameter["initiation_method"] == "ui":
-            ui_client = UIClient()
-            objects_tuple, ui_error = ui_client.create_objects(policy_configuration)
-            if len(ui_error) > 0:
-                return ui_error
-
-
+        ui_client = UIClient()
+        objects_tuple, ui_error = ui_client.create_objects(policy_configuration)
+        if len(ui_error) > 0:
+            return ui_error
+        objects_list = list(objects_tuple)
+        if len(objects_list) > 0 and len(objects_list[0]["uuid"]) > 0:
+            return ""
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"When running test case, the exception error: ", str(e), flush=True)
         return "When running test case, the exception error: " + str(e)
-
     finally:
         # 删除
         # if parameter["initiation_method"] == "ui":

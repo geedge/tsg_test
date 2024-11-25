@@ -149,7 +149,7 @@ class ApiVerification:
             start_time = new_time.strftime('%Y-%m-%dT%H:%M:%SZ')
             statistics_metircs_expect = traffic_result
             time.sleep(10)
-            max_fail_count = 15    #  更具实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
+            max_fail_count = 15    #  根据实际情况修改： 最大查询次数， 每次间隔search_interval_time 秒
             search_interval_time = 10    # 每次查询statistic metric的 间隔时间 单位秒
             if script_type == "ui":
                 max_fail_count = 20    # 每次查询statistic metric的 间隔时间 单位秒
@@ -422,17 +422,4 @@ class ApiVerification:
 
 if __name__ == "__main__":
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "test")
-    """
-    log = support.api_utils.get_log.GetLog()
-    token = "f4339216-6164-42fd-98f0-48f5cecf7154&41&"
-    start_time, end_time = "2024-07-29T09:22:42Z","2024-08-02T09:22:42Z"
-    statistics_info = {'rule_id': '281993', 'template_id': 43, 'chart_id': 121, 'chart_type': 'table', 'version': 1, 'sql': ' SELECT client_ip as "Client IP" ,sum(in_bytes) as "incoming bytes" ,sum(out_bytes) as "outgoing bytes" ,RATE(bytes, ${duration}, ${interval}) * 8 as "all bytes"  FROM statistics_rule WHERE  __time  >= \'${start_time}\' AND __time < \'${end_time}\'  AND ( ${filter} )  AND rule_id = ${rule_id} AND template_id = ${template_id} AND chart_id = ${chart_id} AND version = ${version} GROUP BY client_ip ORDER BY  "all bytes" desc LIMIT 100', 'metrics_dimension': {'metrics': {'incoming bytes': 'in_bytes', 'outgoing bytes': 'out_bytes', 'all bytes': 'bytes'}, 'dimensions': {'Client IP': 'client_ip'}}}
-    statistics_metircs = {'clients_end': '10.64.21.202', 'clients_start': '10.64.21.202', 'servers_end': '2.1.1.3', 'servers_start': '2.1.1.3'}
-    trex_ip_info = {'clients_end': '10.64.21.202', 'clients_start': '10.64.21.202', 'servers_end': '2.1.1.3', 'servers_start': '2.1.1.3'}
-    test_data =test_data = {'is_multi_priority': False, 'rule_num': 1, 'policy_type': 'statistics', 'rule_name': 'stats_srcip_dstip_mail_imap_table_all_bytes_dim_client_ip', 'rule_action': 'statistics', 'rule_type': 'create', 'debug_flag': 'local', 'test_subcriber_id': 'test6489', 'script_type': 'ui', 'condition': {'source_ip': [{'name': 'stats_srcip_mail_imap_table_all_bytes_dim_client_ip', 'object_type': 'ip', 'select_type': False, 'negate': False, 'item': [{'item_operation': 'add', 'item_type': 'ipv4', 'item_value': '10.64.21.202'}]}], 'source_port': [], 'destination_ip': [{'name': 'stats_dstip_mail_imap_table_all_bytes_dim_client_ip', 'object_type': 'ip', 'select_type': False, 'negate': False, 'item': [{'item_operation': 'add', 'item_type': 'ipv4', 'item_value': '2.1.1.3'}]}], 'destination_port': [], 'internal_ip': [], 'internal_port': [], 'external_ip': [], 'external_port': [], 'source_geography': [], 'destination_geography': [], 'sub_id': [], 'device': [], 'tunnel': [], 'tunnel_level': [], 'flag': [], 'application': [{'name': 'mail', 'object_type': 'application', 'negate': False}], 'server_fqdn': [], 'protocol_filed': [], 'sub_action_override': True, 'sub_action': [], 'packet_capture': []}, 'action_parameter': {'statistics_template': [{'name': 'stats_mail_imap_table_all_bytes_dim_client_ip', 'profile_type': 'statistics_template', 'charts': [{'chart_name': 'stats_mail_imap_table_all_bytes_dim_client_ip', 'visualization_type': 'Table', 'metrics': ['in_bytes:SUM:incoming bytes', 'out_bytes:SUM:outgoing bytes', 'bytes:BITRATE:all bytes'], 'dimensions': ['client_ip'], 'order_by': 'all bytes', 'row_limit': '100', 'min_in_size': '0', 'max_out_size': '0'}]}]}, 'expected_return': 'reset', 'counters': {'hits': 1}, 'log_query_param': [{'query_field_key': 'app', 'query_value': 'imap'}], 'traffic': {'protocol': '', 'type': 'trex', 'clients_start_ip': '10.64.21.202', 'clients_end_ip': '10.64.21.202', 'servers_start_ip': '2.1.1.3', 'servers_end_ip': '2.1.1.3', 'm': 1, 'd': 1, 'yaml_name': 'test_https', 'pcap_name': 'mail_imap'}, 'statists_metric_results': [{'client_ip': '10.64.5.193', 'in_bytes': 17247, 'out_bytes': 1157083, 'bytes': 9394640}], 'token': 'f4339216-6164-42fd-98f0-48f5cecf7154&41&', 'rule_id': '281993'}
-    script_type = "ui"
-    vsys_id = 1
-    api_server = "http://192.168.44.72"
-    metric_results = log.get_livechart_statistics_2408(token, start_time, end_time, statistics_info, statistics_metircs,
-                                                  trex_ip_info, test_data, api_server, vsys_id, script_type)
-    """
+
