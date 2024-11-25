@@ -17,6 +17,11 @@ class UIClient:
         self.driver = support.ui_utils.env.my_driver()
         support.ui_utils.env.setup()
     
+    def create_objects(self, policy_configuration):
+        objects = CreateObjectsExample()
+        objects_uuids_tuple, _, result = objects.create_objects(policy_configuration, self.driver)
+        return objects_uuids_tuple, result
+    
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration
         if "type" in policy_configuration.keys() and policy_configuration["type"] == "security":
@@ -40,12 +45,6 @@ class UIClient:
             rules = DeleteSecurityRulesExample()
             rules.delete_rules(parameter, policy_configuration, self.driver)
 
-    def create_objects(self,policy_configuration):
-        objects = CreateObjectsExample()
-        objects_uuids_tuple, element_position, result = objects.create_objects(policy_configuration, self.driver)
-        self.element_position = element_position
-        return objects_uuids_tuple, result
-
-    def delete_objects(self, parameter,objects_tuple,search_type):
+    def delete_objects(self, parameter, objects_tuple):
         objects = DeleteObjectsExample()
-        objects.delete_objects(parameter,objects_tuple,search_type,self.driver)
+        objects.delete_objects(parameter, objects_tuple, self.driver)
