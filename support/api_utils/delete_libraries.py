@@ -20,6 +20,8 @@ class DeleteLibraries:
             deleted_catalog_dict = {"uuids": [], "vsys":1}
             deleted_catalog_dict["vsys"] = self.vsys
             deleted_catalog_dict["uuids"] = catalog_uuids_list
+            if catalog_uuids_list == []:
+                return 0
             url = self.api_server + "/v1/library/catalogs"
             response = requests.delete(url, headers=self.headers, json=deleted_catalog_dict, verify=False)
             if response.status_code == 200:
@@ -36,6 +38,8 @@ class DeleteLibraries:
             delete_tag_dict = {"uuids": [], "vsys":1}
             delete_tag_dict["vsys"] = self.vsys
             delete_tag_dict["uuids"] =tag_uuids_list
+            if tag_uuids_list == []:
+                return 0
             url = self.api_server + "/v1/library/tags"
             response = requests.delete(url, headers=self.headers, json=delete_tag_dict, verify=False)
             if response.status_code == 200:
