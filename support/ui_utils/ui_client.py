@@ -9,6 +9,7 @@ from support.ui_utils.query_rule_log import QueryRuleLog
 from support.ui_utils.delete_security_rules_example import DeleteSecurityRulesExample
 from support.ui_utils.create_objects_example import CreateObjectsExample
 from support.ui_utils.delete_objects_example import DeleteObjectsExample
+from support.ui_utils.edit_objects_example import EditObjectsExample
 
 
 class UIClient:
@@ -17,9 +18,14 @@ class UIClient:
         self.driver = support.ui_utils.env.my_driver()
         support.ui_utils.env.setup()
     
-    def create_objects(self, policy_configuration):
+    def create_objects(self,object_configuration):
         objects = CreateObjectsExample()
-        objects_uuids_tuple, _, result = objects.create_objects(policy_configuration, self.driver)
+        objects_uuids_tuple, result = objects.create_objects(object_configuration, self.driver)
+        return objects_uuids_tuple, result
+
+    def edit_objects(self,objects_tuple,object_edit_configuration):
+        objects = EditObjectsExample()
+        objects_uuids_tuple,result = objects.edit_objects(objects_tuple, object_edit_configuration, self.driver)
         return objects_uuids_tuple, result
     
     def create_rules(self, policy_configuration):
@@ -40,10 +46,10 @@ class UIClient:
         log_result = query.query_rule_log()
         return log_result
     
-    def delete_rules(self, parameter, policy_configuration):
+    def delete_rules(self, parameter, policy_configuration, rule_uuids_tuple):
         if "type" in policy_configuration.keys() and policy_configuration["type"] == "security":
             rules = DeleteSecurityRulesExample()
-            rules.delete_rules(parameter, policy_configuration, self.driver)
+            rules.delete_rules(parameter, policy_configuration, self.driver, rule_uuids_tuple)
 
     def delete_objects(self, parameter, objects_tuple):
         objects = DeleteObjectsExample()

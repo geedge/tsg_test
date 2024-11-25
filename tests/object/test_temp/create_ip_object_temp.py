@@ -36,21 +36,49 @@ def run(parameter):
                             "interval": "0-65535"
                         }
                     ]
-                }
+                },
             ],
-            "search": {
-                "is_fuzzy": False,
-                "type": "uuid"
-            },
-            "audit_log": False  # system
+            # "search": {
+            #     "is_fuzzy": False,
+            #     "type": "uuid"
+            # },
+            # "audit_log": False  # system
         }
 
+        object_edit_configuration =  {
+                "name": "test",
+                "type": "ip",
+                "sub_type": "ip",
+                "member_type": "item",
+                "statistics_option": "",  # random
+                "items": [
+                    # {
+                    #     "op": "update",
+                    #     "ip": "1.1.1.1",
+                    #     "interval": "0-65535",
+                    #     "edit_ip":"2.2.2.2"
+                    # },
+                    {
+                        "op": "add",
+                        "ip": "1.1.1.1",
+                        "interval": "0-65535",
+                        "edit_ip": "2.2.2.2"
+                    }
+                ]
+            }
+
         # 创建
-        if parameter["initiation_method"] == "ui":
-            ui_client = UIClient()
-            objects_tuple, ui_error = ui_client.create_objects(object_configuration)
-            if len(ui_error) > 0:
-                return ui_error
+        ui_client = UIClient()
+        objects_tuple, ui_error = ui_client.create_objects(object_configuration)
+        if len(ui_error) > 0:
+            return ui_error
+        # objects_list = list(objects_tuple)
+        # if len(objects_list) > 0 and len(objects_list[0]["uuid"]) > 0:
+        #     return ""
+
+        ui_error = ui_client.edit_objects(objects_tuple,object_edit_configuration)
+        if len(ui_error) > 0:
+            return ui_error
 
 
     except Exception as e:
@@ -62,7 +90,7 @@ def run(parameter):
         # 删除
         if parameter["initiation_method"] == "ui":
             if objects_tuple is not None:
-                ui_client.delete_objects(parameter,objects_tuple,object_configuration["search"])
+                ui_client.delete_objects(parameter,objects_tuple)
         # elif parameter["initiation_method"] == "api":
         #     if not objects_tuple:
         #         api_client.delete_rules(rules_tuple)
@@ -87,7 +115,7 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "initiation_method": "ui",
         "env": "tsgx",
-        "vsys_id": 2,
+        "vsys": 2,
         "is_log": 0,
         "root_path": "D:/PycharmProjects/tsg_test",
         "path": "D:/PycharmProjects/tsg_test/tests/ui",
