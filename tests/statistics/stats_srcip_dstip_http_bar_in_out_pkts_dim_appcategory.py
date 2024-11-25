@@ -32,14 +32,35 @@ def run(parameter):
                     "negate_option": False,
                     "or_conditions": [
                         {
-                            "name": parameter["test_case_name"],
-                            "attribute_name": "ATTR_SOURCE_PORT",
-                            "type": "port",
+                            "name": parameter["test_case_name"].replace("_dstip", "", 1),
+                            "attribute_name": "ATTR_SOURCE_IP",
+                            "type": "ip",
                             "member_type": "item",
                             "items": [
                                 {
                                     "op": "add",
+                                    "ip": "10.64.224.31",
                                     "interval": "1-65535"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "name": parameter["test_case_name"].replace("_srcip", "", 1),
+                            "attribute_name": "ATTR_DESTINATION_IP",
+                            "type": "ip",
+                            "sub_type": "ip",
+                            "statistics_option": "none",
+                            "member_type": "item",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "ip": "2.1.1.9",
+                                    "interval": "0-65535"
                                 }
                             ]
                         }
@@ -63,66 +84,180 @@ def run(parameter):
                     "dataview": {
                         "charts": [
                             {
-                                "id": "",
-                                "display": {
-                                    "page_x": None,
-                                    "page_y": None,
-                                    "height": "",
-                                    "width": "",
-                                    "type": "bar",
-                                    "table_type": ""
-                                },
-                                "uuid": "",
-                                "name": "SUM(Incoming Packets, Outgoing Packets) Distributed by Application Category",
-                                "threshold": {
-                                    "in_bytes": 0,
-                                    "out_bytes": 0
-                                },
-                                "query": {
-                                    "dimensions": [
-                                        {
-                                            "source_fields": [
-                                                "app_category"
-                                            ],
-                                            "function": {
-                                                "name": "",
-                                                "expression": "",
-                                                "variables": [
+                            "id": "",
+                            "display": {
+                                "page_x": None,
+                                "page_y": None,
+                                "height": "",
+                                "width": "",
+                                "type": "bar",
+                                "table_type": ""
+                            },
+                            "uuid": "",
+                            "name": "RATE(Incoming Packets, Outgoing Packets) Distributed by Application Category",
+                            "threshold": {
+                                "in_bytes": 0,
+                                "out_bytes": 0
+                            },
+                            "query": {
+                                "dimensions": [
+                                    {
+                                        "source_fields": [
+                                            "app_category"
+                                        ],
+                                        "function": {
+                                            "name": "",
+                                            "expression": "",
+                                            "variables": [
 
-                                                ]
-                                            },
-                                            "label": "Application Category",
-                                            "is_drill_down": 0
-                                        }
-                                    ],
-                                    "limit": "100",
-                                    "metrics": [
-                                        {
-                                            "source_fields": [
-                                                "in_pkts",
-                                                "out_pkts"
-                                            ],
-                                            "function": {
-                                                "name": "SUM",
-                                                "expression": "",
-                                                "variables": [
+                                            ]
+                                        },
+                                        "label": "Application Category",
+                                        "is_drill_down": 0
+                                    }
+                                ],
+                                "limit": "5",
+                                "metrics": [
+                                    {
+                                        "source_fields": [
+                                            "in_pkts",
+                                            "out_pkts"
+                                        ],
+                                        "function": {
+                                            "name": "RATE",
+                                            "expression": "",
+                                            "variables": [
 
-                                                ]
-                                            },
-                                            "metric_type": "count",
-                                            "metric_name": "count_1",
-                                            "label": "SUM(Incoming Packets, Outgoing Packets)",
-                                            "unit": "packets"
-                                        }
-                                    ],
-                                    "order_by": "SUM(Incoming Packets, Outgoing Packets)",
-                                    "source": "statistics_rule",
-                                    "series_limit": ""
-                                }
+                                            ]
+                                        },
+                                        "metric_type": "count",
+                                        "metric_name": "count_1",
+                                        "label": "RATE(Incoming Packets, Outgoing Packets)",
+                                        "unit": "pps"
+                                    }
+                                ],
+                                "order_by": "RATE(Incoming Packets, Outgoing Packets)",
+                                "source": "statistics_rule",
+                                "series_limit": ""
                             }
-                        ]
-                    },
-                    "vsys": 1
+                        },
+                        {
+                            "id": "",
+                            "display": {
+                                "page_x": None,
+                                "page_y": None,
+                                "height": "",
+                                "width": "",
+                                "type": "bar",
+                                "table_type": ""
+                            },
+                            "uuid": "",
+                            "name": "RATE(Incoming Packets) Distributed by Application Category",
+                            "threshold": {
+                                "in_bytes": 0,
+                                "out_bytes": 0
+                            },
+                            "query": {
+                                "dimensions": [
+                                    {
+                                        "source_fields": [
+                                            "app_category"
+                                        ],
+                                        "function": {
+                                            "name": "",
+                                            "expression": "",
+                                            "variables": [
+
+                                            ]
+                                        },
+                                        "label": "Application Category",
+                                        "is_drill_down": 0
+                                    }
+                                ],
+                                "limit": "10",
+                                "metrics": [
+                                    {
+                                        "source_fields": [
+                                            "in_pkts"
+                                        ],
+                                        "function": {
+                                            "name": "RATE",
+                                            "expression": "",
+                                            "variables": [
+
+                                            ]
+                                        },
+                                        "metric_type": "count",
+                                        "metric_name": "count_1",
+                                        "label": "RATE(Incoming Packets)",
+                                        "unit": "pps"
+                                    }
+                                ],
+                                "order_by": "RATE(Incoming Packets)",
+                                "source": "statistics_rule",
+                                "series_limit": ""
+                            }
+                        },
+                        {
+                            "id": "",
+                            "display": {
+                                "page_x": None,
+                                "page_y": None,
+                                "height": "",
+                                "width": "",
+                                "type": "bar",
+                                "table_type": ""
+                            },
+                            "uuid": "",
+                            "name": "RATE(Outgoing Packets) Distributed by Application Category",
+                            "threshold": {
+                                "in_bytes": 0,
+                                "out_bytes": 0
+                            },
+                            "query": {
+                                "dimensions": [
+                                    {
+                                        "source_fields": [
+                                            "app_category"
+                                        ],
+                                        "function": {
+                                            "name": "",
+                                            "expression": "",
+                                            "variables": [
+
+                                            ]
+                                        },
+                                        "label": "Application Category",
+                                        "is_drill_down": 0
+                                    }
+                                ],
+                                "limit": 20,
+                                "metrics": [
+                                    {
+                                        "source_fields": [
+                                            "out_pkts"
+                                        ],
+                                        "function": {
+                                            "name": "RATE",
+                                            "expression": "",
+                                            "variables": [
+
+                                            ]
+                                        },
+                                        "metric_type": "count",
+                                        "metric_name": "count_1",
+                                        "label": "RATE(Outgoing Packets)",
+                                        "unit": "pps"
+                                    }
+                                ],
+                                "order_by": "RATE(Outgoing Packets)",
+                                "source": "statistics_rule",
+                                "series_limit": ""
+                            }
+                        }
+                    ]
+                },
+                "vsys":  1
                 }
             },
             "is_enabled": 1,

@@ -32,14 +32,35 @@ def run(parameter):
                     "negate_option": False,
                     "or_conditions": [
                         {
-                            "name": parameter["test_case_name"],
-                            "attribute_name": "ATTR_SOURCE_PORT",
-                            "type": "port",
+                            "name": parameter["test_case_name"].replace("_dstip", "", 1),
+                            "attribute_name": "ATTR_SOURCE_IP",
+                            "type": "ip",
                             "member_type": "item",
                             "items": [
                                 {
                                     "op": "add",
+                                    "ip": "10.64.224.31",
                                     "interval": "1-65535"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "name": parameter["test_case_name"].replace("_srcip", "", 1),
+                            "attribute_name": "ATTR_DESTINATION_IP",
+                            "type": "ip",
+                            "sub_type": "ip",
+                            "statistics_option": "none",
+                            "member_type": "item",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "ip": "2.1.1.9",
+                                    "interval": "0-65535"
                                 }
                             ]
                         }
@@ -73,7 +94,7 @@ def run(parameter):
                                     "table_type": ""
                                 },
                                 "uuid": "",
-                                "name": "SUM(Incoming Packets, Outgoing Packets) Distributed by Client IP Object List",
+                                "name": "RATE(Incoming Packets, Outgoing Packets) Distributed by Client IP Object List",
                                 "threshold": {
                                     "in_bytes": 0,
                                     "out_bytes": 0
@@ -95,7 +116,7 @@ def run(parameter):
                                             "is_drill_down": 0
                                         }
                                     ],
-                                    "limit": "100",
+                                    "limit": "5",
                                     "metrics": [
                                         {
                                             "source_fields": [
@@ -103,7 +124,7 @@ def run(parameter):
                                                 "out_pkts"
                                             ],
                                             "function": {
-                                                "name": "SUM",
+                                                "name": "RATE",
                                                 "expression": "",
                                                 "variables": [
 
@@ -111,11 +132,125 @@ def run(parameter):
                                             },
                                             "metric_type": "count",
                                             "metric_name": "count_1",
-                                            "label": "SUM(Incoming Packets, Outgoing Packets)",
-                                            "unit": "packets"
+                                            "label": "RATE(Incoming Packets, Outgoing Packets)",
+                                            "unit": "pps"
                                         }
                                     ],
-                                    "order_by": "SUM(Incoming Packets, Outgoing Packets)",
+                                    "order_by": "RATE(Incoming Packets, Outgoing Packets)",
+                                    "source": "statistics_rule",
+                                    "series_limit": ""
+                                }
+                            },
+                            {
+                                "id": "",
+                                "display": {
+                                    "page_x": None,
+                                    "page_y": None,
+                                    "height": "",
+                                    "width": "",
+                                    "type": "bar",
+                                    "table_type": ""
+                                },
+                                "uuid": "",
+                                "name": "RATE(Incoming Packets) Distributed by Client IP Object List",
+                                "threshold": {
+                                    "in_bytes": 0,
+                                    "out_bytes": 0
+                                },
+                                "query": {
+                                    "dimensions": [
+                                        {
+                                            "source_fields": [
+                                                "client_ip_object_list"
+                                            ],
+                                            "function": {
+                                                "name": "",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "label": "Client IP Object List",
+                                            "is_drill_down": 0
+                                        }
+                                    ],
+                                    "limit": "10",
+                                    "metrics": [
+                                        {
+                                            "source_fields": [
+                                                "in_pkts"
+                                            ],
+                                            "function": {
+                                                "name": "RATE",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_1",
+                                            "label": "RATE(Incoming Packets)",
+                                            "unit": "pps"
+                                        }
+                                    ],
+                                    "order_by": "RATE(Incoming Packets)",
+                                    "source": "statistics_rule",
+                                    "series_limit": ""
+                                }
+                            },
+                            {
+                                "id": "",
+                                "display": {
+                                    "page_x": None,
+                                    "page_y": None,
+                                    "height": "",
+                                    "width": "",
+                                    "type": "bar",
+                                    "table_type": ""
+                                },
+                                "uuid": "",
+                                "name": "RATE(Outgoing Packets) Distributed by Client IP Object List",
+                                "threshold": {
+                                    "in_bytes": 0,
+                                    "out_bytes": 0
+                                },
+                                "query": {
+                                    "dimensions": [
+                                        {
+                                            "source_fields": [
+                                                "client_ip_object_list"
+                                            ],
+                                            "function": {
+                                                "name": "",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "label": "Client IP Object List",
+                                            "is_drill_down": 0
+                                        }
+                                    ],
+                                    "limit": 20,
+                                    "metrics": [
+                                        {
+                                            "source_fields": [
+                                                "out_pkts"
+                                            ],
+                                            "function": {
+                                                "name": "RATE",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_1",
+                                            "label": "RATE(Outgoing Packets)",
+                                            "unit": "pps"
+                                        }
+                                    ],
+                                    "order_by": "RATE(Outgoing Packets)",
                                     "source": "statistics_rule",
                                     "series_limit": ""
                                 }
