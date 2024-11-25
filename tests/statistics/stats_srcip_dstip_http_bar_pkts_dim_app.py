@@ -345,6 +345,7 @@ def run(parameter):
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
             metric_result = api_client.query_rule_metric(verification_result, rules_tuple, traffic_start_time, traffic_result)
+        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"DEBUG:Case:{},log_result:{},excepted_traffic_result:{},metric_result:{}".format(os.path.basename(__file__)[:-3], log_result, excepted_traffic_result, metric_result),  flush=True)
         if metric_result == True:
             test_summary["metric"] = "Pass."
         elif metric_result == False:

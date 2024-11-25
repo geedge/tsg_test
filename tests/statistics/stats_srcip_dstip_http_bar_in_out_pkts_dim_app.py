@@ -344,7 +344,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time,
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, traffic_start_time,
                                                          traffic_result)
         if metric_result == True:
             test_summary["metric"] = "Pass."
@@ -354,7 +354,8 @@ def run(parameter):
             test_summary["metric"] = "The failure reason: the returned metric is empty."
         elif len(metric_result) > 0:
             test_summary["metric"] = metric_result
-
+        #if rules_tuple:
+        #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBUG:Case:{},rule:{},log_result:{},excepted_traffic_result:{},metric_result:{}".format(os.path.basename(__file__)[:-3], list(rules_tuple)[0]["uuid"], log_result, excepted_traffic_result, metric_result), flush=True)
         return test_summary
     except Exception as e:
         exception_result = str(e)

@@ -12,7 +12,7 @@ class QueryRuleLog:
         self.policy_configuration = policy_configuration
         self.token = token
         self.traffic_result = traffic_result
-    
+
     def query_rule_log(self, traffic_generation, verification_result, rule_uuids_tuple, start_time):
         try:
             self.rule_type = self.policy_configuration["type"]
@@ -20,12 +20,13 @@ class QueryRuleLog:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 log_result = None
                 for _ in range(int(90)):
+                    time.sleep(10)
                     utc_tz = pytz.timezone('UTC')
                     current_utc_time = datetime.now(utc_tz)
                     end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                    time.sleep(7)
                     if log_result == None:
                         log_dict, error = self.get_log(traffic_generation, rule_uuids_tuple, start_time, end_time)
+                        #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBGU:start_time:{},end_time:{};log_dict:{}, error:{}".format(start_time, end_time, log_dict, error), flush=True)
                         if len(error) != 0:
                             return error
                         elif len(log_dict) == 0:
@@ -48,7 +49,7 @@ class QueryRuleLog:
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When querying rule log, the exception error: ", str(e), flush=True)
             return "When querying rule log, the exception error: " + str(e)
-        
+
     def get_log(self, traffic_generation, rule_uuids_tuple, start_time, end_time):
         try:
             self.traffic_generation = traffic_generation
@@ -98,12 +99,12 @@ class QueryRuleLog:
                 log_condition_dict['columns'] = fields
                 log_condition_dict['source'] = log_source
                 log_condition_dict['identifier_name'] = identifier_name
-                
+
                 log_condition_dict['start_time'] = start_time
                 log_condition_dict['end_time'] = end_time
                 log_condition_dict['vsys'] = self.parameter["vsys"]
                 log_condition_dict['execution_mode'] = 'oneshot'
-                
+
                 if self.rule_type == "dos_protection":
                     attack_type = "Custom Network Attack"
                     log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='{attack_type}'"
@@ -129,7 +130,7 @@ class QueryRuleLog:
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When getting log, the exception error: ", e, flush=True)
             return "", "When getting log, the exception error: " + str(e)
-    
+
     def is_attribute_name_exsit(self, attribute_name):
         if "and_conditions" in self.policy_configuration:
             and_conditions = self.policy_configuration["and_conditions"]
@@ -139,7 +140,7 @@ class QueryRuleLog:
                     if or_conditions[j]["attribute_name"] == attribute_name:
                         return True
         return False
-    
+
     def get_log_schema(self, token, schema_type, api_host, vsys):
         headers = {'Content-Type': 'application/json', 'Authorization': token}
         url = api_host + "/v1/logs/schema/" + schema_type
@@ -150,7 +151,7 @@ class QueryRuleLog:
         log_schema = log_schema['data']['fields']
         log_schema = ",".join([field['name'] for field in log_schema])
         return log_schema
-    
+
     def verify_log(self, log_dict, verification_result):
         log_query = verification_result['expected_log']
         temp_log_result_list = []
@@ -181,7 +182,7 @@ class QueryRuleLog:
                                 if response.status_code == 200:
                                     temp_log_result_list.append(True)
                                 else:
-                                    temp_log_result_list.append(False)       
+                                    temp_log_result_list.append(False)
                             else:
                                 temp_log_result_list.append(False)
                         elif query_value == False:
@@ -329,7 +330,7 @@ class QueryRuleLog:
         elif len(log_query) == 0:
             log_result = True
         return log_result
-    
+
     def get_application_from_configration(self):
         action_parameter = self.policy_configuration["action_parameter"]
         for i in range(len(action_parameter)):
@@ -338,14 +339,14 @@ class QueryRuleLog:
                 if or_conditions[j]["attribute_name"] == "ATTR_APP_ID":
                     application = or_conditions[j]["items"]
                     return application
-    
+
     def is_exist_in_list(self, application, actual_application_list):
         application_set = set(actual_application_list)
         for element in application:
             if element not in application_set:
                 return False
         return True
-    
+
     def get_attribute_name_from_configration(self):
         action_parameter_list = []
         # 只收集Protocol Filed相关的Attribute Name，所以需要根据实际情况补充exclude_list？？
@@ -357,7 +358,7 @@ class QueryRuleLog:
                 if or_conditions[j]["attribute_name"] not in exclude_list:
                     action_parameter_list.append(or_conditions[j]["attribute_name"])
         return action_parameter_list
-                    
+
     def verify_dos_log(self, log_dict, verification_result, start_time, end_time):
         self.verification_result = verification_result
         log_query = verification_result['expected_log']
@@ -388,7 +389,7 @@ class QueryRuleLog:
         elif len(log_query) == 0:
             log_result = True
         return log_result
-    
+
     def verify_value_from_dos_event(self, log, query_field_key, count, start_time, end_time):
         session_number, total_packets, total_bytes = self.get_value_from_session_record(start_time, end_time)
         if self.policy_configuration["action_parameter"]["mitigation"]["behavior"] == "deny":
@@ -465,7 +466,7 @@ class QueryRuleLog:
         else:
             log_result_list.append(False)
         return log_result_list
-    
+
     def get_value_from_session_record(self, start_time, end_time):
         headers = {'Content-Type': 'application/json', 'Authorization': self.token}
         log_condition = {

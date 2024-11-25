@@ -83,7 +83,7 @@ class QueryRuleMetric:
                                     if fail_count >= max_fail_count:
                                         break
                                     time.sleep(query_metric_interval)
-                return metric_result
+                return flag
             elif self.rule_type == "service_chaining":
                 # sc自动化目前只实现了但application、单sf、单sff的用例？？
                 conf_path = os.path.join(workdir, "configuration_file.ini")

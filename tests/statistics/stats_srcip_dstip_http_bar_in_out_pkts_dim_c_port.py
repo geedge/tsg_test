@@ -344,7 +344,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time,
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, traffic_start_time,
                                                          traffic_result)
         if metric_result == True:
             test_summary["metric"] = "Pass."
