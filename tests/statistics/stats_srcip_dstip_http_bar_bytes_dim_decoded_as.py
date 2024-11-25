@@ -32,14 +32,34 @@ def run(parameter):
                     "negate_option": False,
                     "or_conditions": [
                         {
-                            "name": parameter["test_case_name"],
-                            "attribute_name": "ATTR_INTERNAL_IP",
+                            "name": parameter["test_case_name"].replace("_dstip", "", 1),
+                            "attribute_name": "ATTR_SOURCE_IP",
                             "type": "ip",
                             "member_type": "item",
                             "items": [
                                 {
                                     "op": "add",
-                                    "ip": "60.190.243.167",
+                                    "ip": "10.64.224.31",
+                                    "interval": "1-65535"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "name": parameter["test_case_name"].replace("_srcip", "", 1),
+                            "attribute_name": "ATTR_DESTINATION_IP",
+                            "type": "ip",
+                            "sub_type": "ip",
+                            "statistics_option": "none",
+                            "member_type": "item",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "ip": "2.1.1.9",
                                     "interval": "0-65535"
                                 }
                             ]
