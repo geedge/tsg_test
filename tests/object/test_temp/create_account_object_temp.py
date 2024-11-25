@@ -16,7 +16,7 @@ def run(parameter):
         start_time = time.time()
 
         #测试数据
-        policy_configuration =  {
+        object_configuration =  {
             "or_conditions": [
                 {
                     "name": "test",
@@ -41,7 +41,7 @@ def run(parameter):
 
         # 创建
         ui_client = UIClient()
-        objects_tuple, ui_error = ui_client.create_objects(policy_configuration)
+        objects_tuple, ui_error = ui_client.create_objects(object_configuration)
         if len(ui_error) > 0:
             return ui_error
         objects_list = list(objects_tuple)
@@ -53,14 +53,12 @@ def run(parameter):
         return "When running test case, the exception error: " + str(e)
     finally:
         # 删除
-        # if parameter["initiation_method"] == "ui":
-        #     if not objects_tuple:
-        #         ui_client.delete_rules(parameter, policy_configuration)
+        if parameter["initiation_method"] == "ui":
+            if objects_tuple is not None:
+                ui_client.delete_objects(parameter, objects_tuple, object_configuration["search"])
         # elif parameter["initiation_method"] == "api":
-        #
-        #     if not rules_tuple:
+        #     if not objects_tuple:
         #         api_client.delete_rules(rules_tuple)
-        #
         #     if not objects_tuple:
         #         api_client.delete_objects(objects_tuple)
 

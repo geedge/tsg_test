@@ -81,7 +81,7 @@ class CreateObjectsExample:
                 object_uuids_list.append(object_uuids_temp_dict)
                 rule_uuids_tuple = tuple(object_uuids_list)
 
-            return rule_uuids_tuple,element_position_map,result
+            return rule_uuids_tuple,result
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"When creating rule by ui, the exception error: ", str(e), flush=True)
             return "", "When creating rule by ui, the exception error: " + str(e)
