@@ -31,9 +31,9 @@ class UIClient:
         code = objects.create_objects(policy_configuration)
         return code
     
-    def search_objects(self, policy_configuration):
+    def search_objects(self, policy_configuration, search_type):
         objects = SearchObjects()
-        objects_tuple, code = objects.search_objects(policy_configuration)
+        objects_tuple, code = objects.search_objects(policy_configuration, search_type)
         self.objects_tuple = objects_tuple
         return objects_tuple, code
 
@@ -75,7 +75,6 @@ class UIClient:
         return log_result
     
     def delete_rules(self, parameter, rule_tuple):
-        self.parameter = parameter
         rules = DeleteRules(self.driver)
         rules.delete_rules(parameter, rule_tuple)
 

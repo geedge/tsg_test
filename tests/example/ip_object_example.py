@@ -45,7 +45,7 @@ def run(parameter):
             return "Fail to create object."
 
         # 查询
-        objects_tuple, code = ui_client.search_objects(object_configuration)
+        objects_tuple, code = ui_client.search_objects(object_configuration, "name")
         objects_list = list(objects_tuple)
         if len(objects_list) == 0:
             return "Fail to get object uuid."
