@@ -173,21 +173,26 @@ class CreateRules:
             elif policy_configuration["action_parameter"]["sub_action"] == "redirect":
                 # dns redirect
                 if "resolution" in policy_configuration["action_parameter"].keys() and len(policy_configuration["action_parameter"]["resolution"]) > 0:
-                    action_parameter_dict["resolution"] = [
-                        {
-                            "qtype":policy_configuration["action_parameter"]["resolution"][0]["qtype"],
-                            "answer":[]
+                    action_parameter_dict["resolution"] = []
+                    for i in range(len(policy_configuration["action_parameter"]["resolution"])):
+                        resolution_dict = {
+                            "qtype" : policy_configuration["action_parameter"]["resolution"][i]["qtype"],
+                            "answer" : []
                         }
-                    ]
-                    for i in range(len(policy_configuration["action_parameter"]["resolution"][0]["answer"])):
-                        answer_dict = {}
-                        answer_dict["atype"] = policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["atype"]
-                        answer_dict["value"] = policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["value"]
-                        answer_dict["ttl"] = {
-                            "min": policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["ttl"]["min"],
-                            "max": policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["ttl"]["max"]
-                        }
-                        action_parameter_dict["resolution"]["answer"].append(answer_dict) 
+                        for j in range(len(policy_configuration["action_parameter"]["resolution"][i]["answer"])):
+                            answer_dict = {}
+                            answer_dict["atype"] = policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["atype"]
+                            if "value" in policy_configuration["action_parameter"]["resolution"][i]["answer"][j].keys():
+                                answer_dict["value"] = policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["value"]
+                            elif "record_profile" in policy_configuration["action_parameter"]["resolution"][i]["answer"][j].keys():
+                                answer_dict["record_profile"] = policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["record_profile"]
+                                answer_dict["selected_num"] = policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["selected_num"]
+                            answer_dict["ttl"] = {
+                                "min": policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["ttl"]["min"],
+                                "max": policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["ttl"]["max"]
+                            }
+                            resolution_dict["answer"].append(answer_dict)
+                        action_parameter_dict["resolution"].append(resolution_dict)
                 # http redirect
                 else:
                     action_parameter_dict["code"] = policy_configuration["action_parameter"]["code"]
