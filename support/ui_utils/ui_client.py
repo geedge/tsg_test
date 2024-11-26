@@ -11,6 +11,9 @@ from support.ui_utils.create_objects_example import CreateObjectsExample
 from support.ui_utils.delete_objects_example import DeleteObjectsExample
 from support.ui_utils.edit_objects_example import EditObjectsExample
 from support.ui_utils.object.create_objects_example import CreateObjects
+from support.ui_utils.object.search_objects_example import SearchObjects
+from support.ui_utils.object.delete_objects_example import DeleteObjects
+from support.ui_utils.object.edit_objects_example import EditObjects
 
 class UIClient:
     def __init__(self):
@@ -23,14 +26,18 @@ class UIClient:
         result = objects.create(object_configuration)
         return result
     
-    def search_objects(self, object_configuration):
-        objects = SearchObjects()
-        objects_uuids_tuple, result = objects.search_objects(object_configuration)
-        return objects_uuids_tuple, result
+    def search_objects(self,search_value,object_configuration,type):
+        objects = SearchObjects(self.driver)
+        if type == "object_info":
+            objects_uuids_tuple, result = objects.get_object_info(search_value,object_configuration)
+            return objects_uuids_tuple, result
+        elif type == "object_select":
+            first_row_checkbox_element,result = objects.get_first_object(search_value,object_configuration)
+            return first_row_checkbox_element, result
 
-    def edit_objects(self,objects_tuple,object_edit_configuration):
-        objects = EditObjectsExample()
-        objects_uuids_tuple,result = objects.edit_objects(objects_tuple, object_edit_configuration, self.driver)
+    def edit_objects(self,objects_tuple,first_row_checkbox_element,src_item,new_item):
+        objects = EditObjects(self.driver)
+        objects_uuids_tuple,result = objects.edit(objects_tuple, first_row_checkbox_element,src_item, new_item)
         return objects_uuids_tuple, result
     
     def create_rules(self, policy_configuration):
@@ -56,6 +63,6 @@ class UIClient:
             rules = DeleteSecurityRulesExample()
             rules.delete_rules(parameter, policy_configuration, self.driver, rule_uuids_tuple)
 
-    def delete_objects(self, parameter, objects_tuple):
-        objects = DeleteObjectsExample()
-        objects.delete_objects(parameter, objects_tuple, self.driver)
+    def delete_objects(self,objects_tuple,first_row_checkbox_element):
+        objects = DeleteObjects(self.driver)
+        objects.delete(objects_tuple,first_row_checkbox_element)
