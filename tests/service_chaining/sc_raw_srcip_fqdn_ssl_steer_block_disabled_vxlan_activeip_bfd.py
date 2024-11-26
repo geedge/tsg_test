@@ -1,151 +1,236 @@
-# -*- coding: UTF-8 -*-
-import time
 import os
 import sys
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
-import traceback
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+import time
+import pytz
 from datetime import datetime
-from support.common_utils.create_policy import CreatePolicy
+from support.ui_utils.workpath import workdir
+from support.ui_utils.ui_client import UIClient
+from support.api_utils.api_client import APIClient
+from support.packet_generator.traffic_generator import *
 from support.report_update import ReportUpdate
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
+
         # 参数初始化
-        exception_result = ""
-        result = {}
-        
+        result, exception_result = "", ""
+        test_summary = {}
+
         # 脚本启动时间
         script_start_time = time.time()
 
         # 测试数据
-        test_data = {
-            "is_multi_priority": False,
-            "rule_num": 1,
-            "policy_type": "service_chaining",
-            "rule_name": "sc_raw_srcip_fqdn_ssl_steer_block_disabled_vxlan_activeip_bfd",
-            "rule_action": "service_chaining",
-            "targeted_traffic": "raw",
-            "rule_type": "create",
-            "condition": {
-                "source_ip": [
-                    {
-                        "name": "service_chaining_source_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "10.64.224.25"
-                            }
-                        ]
-                    }
-                ],
-                "source_port": [],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [],
-                "external_ip": [],
-                "external_port": [],
-                "geography": [],
-                "sub_id": [],
-                "device": [],
-                "tunnel": [],
-                "tunnel_level": [],
-                "flag": [],
-                "application": [
-                    {
-                        "name": "ssl",  
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
-                "server_fqdn": [
-                    {
-                        "name": "service_chaining_fqdn",
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_value": "www.baidu.com",
-                            }
-                        ]
-                    }
-                ],
-                "protocol_filed": [],
-                "sub_action_override": False,
-                "sub_action": [],
-                "packet_capture": [],
-            },
-            "multiProfile": True,
-            "profile": [
+        policy_configuration = {
+            "type": "service_chaining",
+            "name": os.path.basename(__file__)[:-3],
+            "action": "service_chaining",
+            "and_conditions": [
                 {
-                    "name": "steer_block_disabled_vxlan_activeip_bfd",
-                    "profile_type": "create",
-                    "type": "steering",
-                    "load_balance_method": "hash_int-ip",
-                    "load_balance_localization": "nearby",
-                    "failure_action": "Block",
-                    "service_functions": [
+                    "negate_option": False,
+                    "or_conditions": [
                         {
-                            "name": "vxlan_activeip_bfd",
-                            "profile_type": "create",
-                            "device_group": "Device_Group:group-xxg-tsgx",
-                            "connectivity": "VXLAN-G:2.2.2.53",
-                            "health_check": "BFD:10:2",
-                            "enable": "off"
+                            "attribute_name": "ATTR_SOURCE_IP",
+                            "type": "ip",
+                            "sub_type": "ip",
+                            "statistics_option": "none",
+                            "member_type": "item",
+                            "name": "service_chaining_source_ip",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "ip": "10.64.224.25",
+                                    "interval": "0-65535"
+                                }
+                            ]
+                        }
+                    ]
+                }, 
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_APP_ID",
+                            "type": "application",
+                            "items": ["ssl"]
+                        }
+                    ]
+                },
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_SERVER_FQDN",
+                            "type": "fqdn",
+                            "member_type": "item",
+                            "name": "service_chaining_fqdn",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "expr_type": "and",
+                                    "expression": "www.baidu.com",
+                                }
+                            ]
+                        }
+                    ],
+                }
+            ],
+            "action_parameter": {
+                "targeted_traffic": "raw",
+                "sff_profiles":
+                [
+                    {
+                        "name": "steer_block_disabled_vxlan_activeip_bfd",
+                        "type": 1,
+                        "load_balance_method": "hash-int-ip",
+                        "load_balance_localization": "nearby",
+                        "failure_action": "block",
+                        "service_func_profiles":[
+                            {
+                                "name": "vxlan_activeip_bfd",
+                                "admin_status": 1,
+                                "device_group":{
+                                    "value": "group-xxg-tsgx",
+                                    "tag": "device_group"
+                                },
+                                "connectivity": {
+                                    "method": "vxlan_g",
+                                    "dest_ip" : "2.2.2.53"
+                                }, 
+                                "health_check": {
+                                    "method": "bfd",
+                                    "interval_ms": 10,
+                                    "retires": 2
+                                },
+                                "admin_status": 0,
                         }
                     ]
                 }
-            ],
-            "log_query_param": [{"query_field_key": "sc_rsp_raw", "query_value": ""},
-                                {"query_field_key": "sent_pkts", "query_value": ""},
-                                {"query_field_key": "received_pkts", "query_value": ""},
-                                {"query_field_key": "sent_bytes", "query_value": ""},
-                                {"query_field_key": "received_bytes", "query_value": ""}],
-            "traffic":{
-                    "protocol": "",
-                    "type": "trex",
-                    "clients_start_ip": "192.168.64.86",
-                    "clients_end_ip": "192.168.64.86",
-                    "servers_start_ip": "2.1.1.1",
-                    "servers_end_ip": "2.1.1.2",
-                    "m": 1,
-                    "d": 1,
-                    "yaml_name": "test",
-                    "pcap_name": "test_https"
-                },
-            "expected_return":"",
-            "token": ""
+                ]
+            },
+            "is_enabled": 1,
+            "log_option": "metadata",
         }
 
-        # 测试用例实例化
-        create = CreatePolicy(test_data, parameter)
-        result = create.create_policy()
-        
-        # 脚本结束时间和耗时
-        script_end_time = time.time()
-        duration = script_end_time - script_start_time
+        traffic_generation = {
+            "tool": "trex",  # or trex/http
+            "clients_start_ip": "10.64.224.3",
+            "clients_end_ip": "10.64.224.3",
+            "servers_start_ip": "10.64.224.29",
+            "servers_end_ip": "10.64.224.29",
+            "m": 1,
+            "d": 1,
+            "yaml_name": "test",
+            "pcap_name": "test_https"
+        }
+
+        verification_result = {
+            "excepted_traffic_result": "",
+            "expected_metric": "",
+            "expected_log": [
+                {"query_field_key": "sc_rsp_raw", "query_value": ""},
+                {"query_field_key": "sent_pkts", "query_value": ""},
+                {"query_field_key": "received_pkts", "query_value": ""},
+                {"query_field_key": "sent_bytes", "query_value": ""},
+                {"query_field_key": "received_bytes", "query_value": ""}
+            ]
+        } 
+
+        # 创建
+        if parameter["initiation_method"] == "ui":
+            ui_client = UIClient()
+            rules_tuple, ui_error = ui_client.create_rules(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
+        elif parameter["initiation_method"] == "api":
+            api_client = APIClient(parameter)
+            objects_tuple, api_error = api_client.create_objects(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", profiles_tuple)
+            if len(api_error) > 0:
+                return api_error
+
+        # 等待下发配置生效
+        time.sleep(3)
+
+        # 类实例化
+        generator = TrafficGenerator()
+
+        # 获取当前时间
+        utc_tz = pytz.timezone('UTC')
+        current_utc_time = datetime.now(utc_tz)
+        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+
+        # 触发流量
+        traffic_result = generator.run(policy_configuration, traffic_generation)
+
+        # 验证流量生成器的返回值是否符合策略执行的预期
+        excepted_traffic_result, error = generator.result(verification_result, traffic_result)
+        if excepted_traffic_result == False:
+            return error
+
+        # 验证tsg的日志是否符合策略执行的预期
+        if parameter["initiation_method"] == "ui":
+            log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time,
+                                                   traffic_result)
+        if log_result == True:
+            test_summary["log"] = "Pass."
+        elif log_result == False:
+            test_summary["log"] = "The failure reason: the returned log does not match the expected result."
+        elif log_result == None:
+            test_summary["log"] = "The failure reason: the returned log is empty."
+        elif len(log_result) > 0:
+            test_summary["log"] = log_result
+
+        # 验证tsg的metric是否符合策略执行的预期
+        if parameter["initiation_method"] == "ui":
+            metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
+        elif parameter["initiation_method"] == "api":
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
+        if metric_result == True:
+            test_summary["metric"] = "Pass."
+        elif metric_result == False:
+            test_summary["metric"] = "The failure reason: the returned metric does not match the expected result."
+        elif metric_result == None:
+            test_summary["metric"] = "The failure reason: the returned metric is empty."
+        elif len(metric_result) > 0:
+            test_summary["metric"] = metric_result
+
+        return test_summary
+    except Exception as e:
+        exception_result = str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "When running test case, the exception error: ", str(e), flush=True)
+        return "When running test case, the exception error: " + str(e)
+    finally:
+        # 删除
+        if parameter["initiation_method"] == "ui":
+            if not rules_tuple:
+                ui_client.delete_rules(parameter, policy_configuration)
+        elif parameter["initiation_method"] == "api":
+            if rules_tuple:
+                api_client.delete_rules(rules_tuple)
+            if objects_tuple:
+                api_client.delete_objects(objects_tuple)
+            if profiles_tuple:
+                api_client.delete_profiles(profiles_tuple)
+
+        # 统计脚本用时
+        end_time = time.time()
+        duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
-        return result
-    except Exception as e:
-        exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
-              flush=True)
-        traceback.print_exc()
-        return "Error: " + str(e)
-    finally:
-        # 清理环境
-        if isinstance(create, CreatePolicy):
-            create.clean_up()
+
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
@@ -164,7 +249,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_srcip_fqdn_ssl_steer_block_disabled_vxlan_activeip_bfd"
+        "test_case_name": ""
     }
     run(parameter)
     """

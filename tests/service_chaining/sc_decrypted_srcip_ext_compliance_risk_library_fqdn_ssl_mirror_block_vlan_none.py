@@ -25,29 +25,29 @@ def run(parameter):
         # 测试数据
         policy_configuration = {
             "type": "service_chaining",
-            "name": "sc_decrypted_srcip_ext_compliance_risk_library_fqdn_ssl_mirror_block_vlan_none",
+            "name": os.path.basename(__file__)[:-3],
             "action": "service_chaining",
             "and_conditions": [
-                # {
-                #     "negate_option": False,
-                #     "or_conditions": [
-                #         {
-                #             "attribute_name": "ATTR_SOURCE_IP",
-                #             "type": "ip",
-                #             "sub_type": "ip",
-                #             "statistics_option": "none",
-                #             "member_type": "item",
-                #             "name": "service_chaining_source_ip",
-                #             "items": [
-                #                 {
-                #                     "op": "add",
-                #                     "ip": parameter["test_pc_ip"],
-                #                     "interval": "0-65535"
-                #                 }
-                #             ]
-                #         }
-                #     ]
-                # },
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_SOURCE_IP",
+                            "type": "ip",
+                            "sub_type": "ip",
+                            "statistics_option": "none",
+                            "member_type": "item",
+                            "name": "service_chaining_source_ip",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "ip": parameter["test_pc_ip"],
+                                    "interval": "0-65535"
+                                }
+                            ]
+                        }
+                    ]
+                },
                 {
                     "negate_option": False,
                     "or_conditions": [
@@ -82,24 +82,24 @@ def run(parameter):
                         }
                     ]
                 },
-                # {
-                #     "negate_option": False,
-                #     "or_conditions": [
-                #         {
-                #             "attribute_name": "ATTR_SERVER_FQDN",
-                #             "type": "fqdn",
-                #             "member_type": "item",
-                #             "name": "service_chaining_fqdn",
-                #             "items": [
-                #                 {
-                #                     "op": "add",
-                #                     "expr_type": "and",
-                #                     "expression": "^www.example.com$",
-                #                 }
-                #             ]
-                #         }
-                #     ],
-                # },
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_SERVER_FQDN",
+                            "type": "fqdn",
+                            "member_type": "item",
+                            "name": "service_chaining_fqdn",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "expr_type": "and",
+                                    "expression": "^www.example.com$",
+                                }
+                            ]
+                        }
+                    ],
+                },
                 {
                     "negate_option": False,
                     "or_conditions": [
@@ -112,7 +112,7 @@ def run(parameter):
                 }
             ],
             "action_parameter": {
-                "targeted_traffic": "decrypted",   
+                "targeted_traffic": "decrypted", 
                 "sff_profiles":
                 [
                     {
@@ -122,12 +122,12 @@ def run(parameter):
                         "type": 2,
                         "load_balance_method": "hash-innermost-int-ip",
                         "load_balance_localization": "nearby",
-                        "failure_action": "bypass",
+                        "failure_action": "block",
                         "service_func_profiles":[
                             {
                                 "name":"vlan_none",
-                                "admin_status": 0,
-                                "device_group": {
+                                "admin_status": 1,
+                                "device_group":{
                                     "value": "group-xxg-tsgx",
                                     "tag": "device_group"
                                 },
@@ -142,7 +142,6 @@ def run(parameter):
                                     "retires": 5
                                 }
                             }
-
                         ]
                     }
                 ]
@@ -150,6 +149,7 @@ def run(parameter):
             "is_enabled": 1,
             "log_option": "metadata",
         }
+        
         traffic_generation = {
             "tool": "ssl",  # or trex/http
             "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.example.com/"
@@ -184,29 +184,28 @@ def run(parameter):
 
         # 等待下发配置生效
         time.sleep(3)
-
+        
         # 类实例化
         generator = TrafficGenerator()
-
+        
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
         start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-
+        
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
-
+        
         # 验证流量生成器的返回值是否符合策略执行的预期
         excepted_traffic_result, error = generator.result(verification_result, traffic_result)
         if excepted_traffic_result == False:
             return error
-
+        
         # 验证tsg的日志是否符合策略执行的预期
         if parameter["initiation_method"] == "ui":
             log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
         elif parameter["initiation_method"] == "api":
-            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time,
-                                                   traffic_result)
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time, traffic_result)
         if log_result == True:
             test_summary["log"] = "Pass."
         elif log_result == False:
@@ -215,7 +214,7 @@ def run(parameter):
             test_summary["log"] = "The failure reason: the returned log is empty."
         elif len(log_result) > 0:
             test_summary["log"] = log_result
-
+            
         # 验证tsg的metric是否符合策略执行的预期
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
@@ -229,12 +228,11 @@ def run(parameter):
             test_summary["metric"] = "The failure reason: the returned metric is empty."
         elif len(metric_result) > 0:
             test_summary["metric"] = metric_result
-
+        
         return test_summary
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "When running test case, the exception error: ", str(e), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
         return "When running test case, the exception error: " + str(e)
     finally:
         # 删除
@@ -246,6 +244,8 @@ def run(parameter):
                 api_client.delete_rules(rules_tuple)
             if objects_tuple:
                 api_client.delete_objects(objects_tuple)
+            if tags_tuple:
+                api_client.delete_libraries(tags_tuple)
             if profiles_tuple:
                 api_client.delete_profiles(profiles_tuple)
 
