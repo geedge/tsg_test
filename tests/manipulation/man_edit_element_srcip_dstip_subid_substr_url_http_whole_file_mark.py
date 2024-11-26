@@ -78,7 +78,7 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "^test_tmp_subid$"
+                        "expression": "^{}$".format(parameter["test_subcriber_id"])
                     }]
                 }]
             },

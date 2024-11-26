@@ -79,7 +79,19 @@ def run(parameter):
                 }]
             }],
             "is_enabled": 1,
-            "log_option": "metadata"
+            "log_option": "metadata",
+            "action_parameter":
+                {
+                    "sub_action": "block",
+                    "manipulation_block": "warning_page",
+                    "code": 404,
+                    "html_profile":
+                        {
+                            "name": "manipulation_profile_page",
+                            "format": "html",
+                            "file_path": "response_testa.html"
+                        }
+                }
         }
 
         traffic_generation = {
