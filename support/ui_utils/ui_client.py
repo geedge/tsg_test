@@ -43,6 +43,7 @@ class UIClient:
         return code
     
     def delete_objects(self, parameter, objects_tuple):
+        self.parameter = parameter
         objects = DeleteObjectsExample(self.driver)
         objects.delete_objects(parameter, objects_tuple)
     
