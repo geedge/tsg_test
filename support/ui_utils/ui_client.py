@@ -1,6 +1,9 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
+
+from support.ui_utils.object.search_objects import SearchObject
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import support.ui_utils.env
 from support.ui_utils.create_security_rules_example import CreateSecurityRulesExample
@@ -24,8 +27,10 @@ class UIClient:
         return result
     
     def search_objects(self, object_configuration):
-        objects = SearchObjects()
-        objects_uuids_tuple, result = objects.search_objects(object_configuration)
+        objects = SearchObject()
+        objects_uuids_tuple, result = objects.search(object_configuration)
+        # objects = SearchObjects()
+        # objects_uuids_tuple, result = objects.search_objects(object_configuration)
         return objects_uuids_tuple, result
 
     def edit_objects(self,objects_tuple,object_edit_configuration):

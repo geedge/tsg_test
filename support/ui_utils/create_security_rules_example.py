@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import support.ui_utils.env
 from support.api_utils.log_in import LogIn
-from support.ui_utils.object.create_objects import CreateObject
+from support.ui_utils.object.create_objects import CreateObjects
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
@@ -23,7 +23,7 @@ class CreateSecurityRulesExample:
                     cond_key_out = cond_key.replace("_", " ")
                     if len(cond_value) != 0:  # 不为空
                         cond_data = cond_value
-                        create_ip = CreateObject(driver)
+                        create_ip = CreateObjects(driver)
                         for i in range(len(cond_data)):  # 遍历创建所有condition
                             if cond_key == "protocol_filed":
                                 tmp_key = cond_data[i]["object_type"]
