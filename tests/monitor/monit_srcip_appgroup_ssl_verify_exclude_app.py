@@ -17,7 +17,7 @@ def run(parameter):
         exception_result = ""
         result = {}
         # 脚本启动时间
-        start_time = time.time()
+        script_start_time = time.time()
 
         # 测试数据
         test_data = {
