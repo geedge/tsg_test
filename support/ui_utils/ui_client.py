@@ -23,20 +23,20 @@ class UIClient:
         self.driver = support.ui_utils.env.my_driver()
         support.ui_utils.env.setup()
     
-    def create_objects(self, object_configuration):
+    def create_objects(self, policy_configuration):
         objects = CreateObjects(self.driver)
-        code = objects.create(object_configuration)
+        code = objects.create_objects(policy_configuration)
         return code
     
-    def search_objects(self, object_configuration):
+    def search_objects(self, policy_configuration):
         objects = SearchObjects()
-        objects_tuple, code = objects.search_objects(object_configuration)
+        objects_tuple, code = objects.search_objects(policy_configuration)
         self.objects_tuple = objects_tuple
         return objects_tuple, code
 
-    def edit_objects(self, objects_tuple, object_edit_configuration):
+    def edit_objects(self, objects_tuple, policy_configuration):
         objects = EditObjectsExample()
-        code = objects.edit_objects(objects_tuple, object_edit_configuration, self.driver)
+        code = objects.edit_objects(objects_tuple, policy_configuration, self.driver)
         return code
     
     def delete_objects(self, parameter, objects_tuple):

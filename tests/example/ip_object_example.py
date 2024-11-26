@@ -1,0 +1,109 @@
+# -*- coding: UTF-8 -*-
+import time
+from support.api_utils.log_in import *
+from support.report_update import ReportUpdate
+from support.ui_utils.ui_client import UIClient
+
+def run(parameter):
+    try:
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+
+        # 参数初始化
+        result, exception_result = "", ""
+
+        # 脚本启动时间
+        script_start_time = time.time()
+
+        #测试数据
+        object_configuration = [
+            {
+                "name": "test",
+                "type": "ip",
+                "sub_type": "ip",
+                "member_type": "item",
+                "statistics_option": "",  # random
+                "items": [
+                    {
+                        "op": "add",
+                        "ip": "1.1.1.1",
+                        "interval": "0-65535"
+                    },
+                    {
+                        "op": "add",
+                        "ip": "192.168.2.1/24",
+                        "interval": "0-65535"
+                    }
+                ]
+            }
+        ]
+
+        ui_client = UIClient()
+        
+        # 创建
+        code = ui_client.create_objects(object_configuration)
+        if code != 200:
+            return "Fail to create object."
+
+        # 查询
+        objects_tuple, code = ui_client.search_objects(object_configuration)
+        objects_list = list(objects_tuple)
+        if len(objects_list) == 0:
+            return "Fail to get object uuid."
+        if code != 200:
+            return "Fail to search object."
+
+        # 编辑
+        # 根据object uuid或object name查询，进入编辑模式
+        # 如果src_item是空，则表示该item是新加
+        code = ui_client.edit_objects(objects_tuple, "", "2.1.1.1")
+        if code != 200:
+            return "Fail to edit object."
+        # 如果src_item是不是空，在item输入框，输入src_item，找到item，点击item的编辑按钮，删除src_item，输入new_item，点击保存按钮
+        code = ui_client.edit_objects(objects_tuple, "1.1.1.1", "11.1.1.1")
+        if code != 200:
+            return "Fail to edit object."
+
+        return ""
+    except Exception as e:
+        exception_result = str(e)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
+        return "When running test case, the exception error: " + str(e)
+    finally:
+        # 删除
+        if objects_tuple:
+            ui_client.delete_objects(parameter, objects_tuple)
+        
+        # 统计脚本用时
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
+        
+        # 生成csv报告
+        update = ReportUpdate()
+        update.write_result(parameter, result, exception_result)
+
+if __name__ == '__main__':
+    parameter = {
+        "username": "auto_ui_yzj",
+        "password": "auto_ui_yzj",
+        "test_pc_ip": "192.168.64.28",
+        "test_subcriber_id": "",
+        "api_server": "http://192.168.44.72",
+        "initiation_method": "ui",
+        "env": "tsgx",
+        "vsys": 2,
+        "is_log": 0,
+        "root_path": "D:/PycharmProjects/tsg_test",
+        "path": "D:/PycharmProjects/tsg_test/tests/ui",
+        "module_name": "",
+        "test_case_name": "create_table_traffic_spectrum"
+    }
+    run(parameter)
+    """
+    # 在测试文件的当前路径执行如下命令执行测试用例：
+    pytest –cache-clear  -v  pytest_json.py --alluredir ./allure
+
+    # 执行如下命令生成测试报告（自动打开浏览器）：
+    allure serve allure
+    """
