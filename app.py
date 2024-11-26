@@ -127,14 +127,14 @@ def receive_parameter():
                         response_result["result"] = "pass"
                         response_result["data"] = None
                         response_result["success"] = True
-                    elif isinstance(result, dict) and len(result["log"]) == "Pass" and len(result["metric"]) == "Pass":
+                    elif isinstance(result, dict) and result["log"] == "Pass" and result["metric"] == "Pass":
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is passed.", flush=True)
                         response_result["code"] = 200
                         response_result["log_result"] = "pass"
                         response_result["metric_result"] = "pass"
                         response_result["data"] = None
                         response_result["success"] = True
-                    elif isinstance(result, dict) and (len(result["log"]) != 0 or len(result["metric"]) != 0):
+                    elif isinstance(result, dict) and (result["log"] != "Pass" or result["metric"] != "Pass"):
                         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "The test case is failed. The failure reason is: ", result, flush=True)
                         response_result["code"] = 416
                         response_result["log_result"] = result["log"]

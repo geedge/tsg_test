@@ -26,29 +26,26 @@ class UIClient:
         self.driver = support.ui_utils.env.my_driver()
         support.ui_utils.env.setup()
     
-    def create_objects(self, object_configuration):
+    def create_objects(self, policy_configuration):
         objects = CreateObjects(self.driver)
-        code = objects.create(object_configuration)
+        code = objects.create_objects(policy_configuration)
         return code
     
-    def search_objects(self,search_value,object_configuration,type):
-        objects = SearchObjects(self.driver)
-        if type == "object_info":
-            objects_tuple, result = objects.get_object_info(search_value,object_configuration)
-            return objects_tuple, result
-        elif type == "object_select":
-            first_row_checkbox_element,result = objects.get_first_object(search_value,object_configuration)
-            return first_row_checkbox_element, result
+    def search_objects(self, policy_configuration, search_type):
+        objects = SearchObjects()
+        objects_tuple, code = objects.search_objects(policy_configuration, search_type)
+        self.objects_tuple = objects_tuple
+        return objects_tuple, code
 
-    def edit_objects(self,objects_tuple,first_row_checkbox_element,src_item,new_item):
-        objects = EditObjects(self.driver)
-        objects_uuids_tuple,result = objects.edit(objects_tuple, first_row_checkbox_element,src_item, new_item)
-        return objects_uuids_tuple, result
-
-    def delete_objects(self,objects_tuple,first_row_checkbox_element):
-        objects = DeleteObjects(self.driver)
-        objects.delete(objects_tuple,first_row_checkbox_element)
-
+    def edit_objects(self, objects_tuple, policy_configuration):
+        objects = EditObjectsExample()
+        code = objects.edit_objects(objects_tuple, policy_configuration, self.driver)
+        return code
+    
+    def delete_objects(self, parameter, objects_tuple):
+        objects = DeleteObjectsExample(self.driver)
+        objects.delete_objects(parameter, objects_tuple)
+    
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration
         rules = CreateRules(self.driver)
@@ -78,7 +75,6 @@ class UIClient:
         return log_result
     
     def delete_rules(self, parameter, rule_tuple):
-        self.parameter = parameter
         rules = DeleteRules(self.driver)
         rules.delete_rules(parameter, rule_tuple)
 

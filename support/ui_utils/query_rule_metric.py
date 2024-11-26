@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
-from support.ui_utils.policy.edit_rules import EditRule
+from support.ui_utils.policy.edit_rules import EditRules
 from support.packet_generator.workpath import workdir
 
 class QueryRuleMetric:
@@ -21,7 +21,7 @@ class QueryRuleMetric:
             rule_type = self.policy_configuration["type"]
             rule_action = self.policy_configuration["action"]
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the policy rule metric by ui.", flush=True)
-            edit_rule = EditRule(self.driver)
+            edit_rule = EditRules(self.driver)
             edit_rule_code, _ = edit_rule.edit(rule_type, rule_action, self.element_position)
             if edit_rule_code != 200:
                 return "Fail to edit rule when ui verification."

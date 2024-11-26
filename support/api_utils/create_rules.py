@@ -18,6 +18,7 @@ class CreateRules:
         try:
             self.policy_configuration = policy_configuration
             object_uuids_list = list(self.object_uuids_tuple)
+            self.profile_uuids_list = list(self.profile_uuids_tuple)
             if len(self.library_uuids_tuple) > 0:
                 library_uuids_list = list(self.library_uuids_tuple)
                 for i in range(len(library_uuids_list)):
@@ -219,9 +220,10 @@ class CreateRules:
                 action_parameter_dict["packet_capture"]["capture_depth"] = policy_configuration["action_parameter"]["packet_capture"]["capture_depth"]
             action_parameter_dict["traffic_mirroring"] = {}
             action_parameter_dict["traffic_mirroring"]["enable"] = policy_configuration["action_parameter"]["traffic_mirroring"]["enable"]
-            if policy_configuration["action_parameter"]["traffic_mirroring"]["enable"] == 1:
+            if policy_configuration["action_parameter"]["traffic_mirroring"]["enable"] == 1 and "vlanID" in policy_configuration["action_parameter"]["traffic_mirroring"]:
                 action_parameter_dict["traffic_mirroring"]["vlanID"] = policy_configuration["action_parameter"]["traffic_mirroring"]["vlanID"]
-                action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]
+                # action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]
+                action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = self.profile_uuids_list[0]["uuid"]
         elif policy_configuration["type"] == "statistics":   
             action_parameter_dict = {
                 "template_profile" : policy_configuration["action_parameter"]["template_profile"]

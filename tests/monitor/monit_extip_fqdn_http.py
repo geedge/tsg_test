@@ -130,10 +130,13 @@ def run(parameter):
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
         start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        print(start_time)
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
 
+        temp_time = datetime.now(utc_tz).strftime('%Y-%m-%dT%H:%M:%SZ')
+        print(temp_time)
         # 验证流量生成器的返回值是否符合策略执行的预期
         excepted_traffic_result, error = generator.result(verification_result, traffic_result)
         if excepted_traffic_result == False:

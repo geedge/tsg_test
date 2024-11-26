@@ -42,11 +42,18 @@ def run(parameter):
                                             "ip": parameter['test_pc_ip']
                                         }
                                     ],
+                                    "fqdn_entries": [
+                                        {
+                                            "op": "add",
+                                            "fqdn": "google.com"
+                                        }
+                                    ],
                                     "tag": [
                                         {
                                             "category": "internet_service",
                                             # "parent_uuid": 0, # 有parent则是对应的tag value"
-                                            "parent_uuid": "Rose Island",
+                                            # "parent_uuid": "Rose Island",
+                                            "parent_uuid": 0,
                                             "description": "",
                                             "tag_key": "is_zk",
                                             "tag_value": "is_zk",
@@ -129,7 +136,11 @@ def run(parameter):
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
+            library_tuple, api_error = api_client.create_libraries(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, library_tuple, "")
+            # rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
             if len(api_error) > 0:
                 return api_error
 
@@ -197,6 +208,8 @@ def run(parameter):
                 api_client.delete_rules(rules_tuple)
             if objects_tuple:
                 api_client.delete_objects(objects_tuple)
+            if library_tuple:
+                api_client.delete_libraries(library_tuple)
 
         # 统计脚本用时
         end_time = time.time()

@@ -7,7 +7,7 @@ from support.packet_generator.workpath import workdir
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.ui_utils.log.search_log import SearchLog
-from support.ui_utils.policy.edit_rules import EditRule
+from support.ui_utils.policy.edit_rules import EditRules
 
 class QueryRuleLog:
     def __init__(self, policy_configuration, verification_result, rule_uuids_tuple, driver, element_position, traffic_result):
@@ -25,7 +25,7 @@ class QueryRuleLog:
             rule_action = self.policy_configuration["action"]
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the policy rule log by ui.", flush=True)
             # 进入edit页面目的是为了找到hit count
-            edit_rule = EditRule(self.driver)
+            edit_rule = EditRules(self.driver)
             edit_rule_code, _ = edit_rule.edit(rule_type, rule_action, self.element_position)
             if edit_rule_code != 200:
                 return "Fail to edit rule when ui verification."

@@ -88,7 +88,7 @@ class CreateProfiles:
                 profile_uuids_temp_dict["uuid"] = mirroring_uuids
                 profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]["name"]
                 profile_uuids_list.append(profile_uuids_temp_dict)
-                policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"] = mirroring_uuids
+                # policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"] = mirroring_uuids
             elif "replacement_file" in policy_configuration["action_parameter"].keys():
                 profile_type = "proxy-replacement-files"
                 replacement_uuids, replacement_temp = self.create_file_upload_profiles(

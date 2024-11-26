@@ -83,8 +83,8 @@ def run(parameter):
             "receiver": "autotest@163.com",
             "subject": "Bestman",
             "body": "123",
-            # "attach": "/app/support/packet_generator/mail_file/subjectEnglish.txt"
-            "attach": "/opt/traffic_replay/mail_file/subjectEnglish.txt"
+            "attach": "/app/support/packet_generator/mail_file/subjectEnglish.txt"
+            #"attach": "/opt/traffic_replay/mail_file/subjectEnglish.txt"
         }
 
         verification_result = {
