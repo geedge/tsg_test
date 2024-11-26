@@ -9,11 +9,11 @@ from support.ui_utils.policy.page_jump import PageJump
 import traceback
 from datetime import datetime 
 
-class EditRule:
+class EditRules:
     def __init__(self, driver):
         self.driver = driver
         
-    def edit(self, type, name, rule_element_position, vsys_name=""):
+    def edit_rules(self, type, name, rule_element_position, vsys_name=""):
         try:
             search_element_position = rule_element_position["search"]
             page_jump_element_position = rule_element_position["page_jump"]

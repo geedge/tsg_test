@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import support.ui_utils.env
 from support.api_utils.log_in import LogIn
-from support.ui_utils.object.create_objects import CreateObject
+from support.ui_utils.object.create_objects import CreateObjects
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
@@ -23,7 +23,7 @@ class CreateSecurityRulesExample:
                     cond_key_out = cond_key.replace("_", " ")
                     if len(cond_value) != 0:  # 不为空
                         cond_data = cond_value
-                        create_ip = CreateObject(driver)
+                        create_ip = CreateObjects(driver)
                         for i in range(len(cond_data)):  # 遍历创建所有condition
                             if cond_key == "protocol_filed":
                                 tmp_key = cond_data[i]["object_type"]
@@ -45,7 +45,7 @@ class CreateSecurityRulesExample:
             
             # 创建rule
             if cond_code == 200:
-                create_rule = CreateRule(driver)
+                create_rule = CreateRules(driver)
                 element_position_map = get_element_position(policy_configuration["policy_type"])
                 #动态选择变量
                 if policy_configuration["threshold"]["type"] == "rate":
@@ -66,7 +66,7 @@ class CreateSecurityRulesExample:
                     result = "Fail to create {} rule.".format(policy_configuration["policy_type"])
                     return "", "", result
                 
-                search_rule = SearchRule(driver)
+                search_rule = SearchRules(driver)
                 element_position_map = get_element_position(policy_configuration["policy_type"])
                 search_rule_code, rule_uuid = search_rule.get_rule_id(policy_configuration["policy_type"], policy_configuration["name"], element_position_map)
                 if search_rule_code != 200:
