@@ -308,9 +308,14 @@ class EditObjects:
                         self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_search_item_posXpath"]).send_keys(send_data + Keys.ENTER)
                         self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_edit_item_posXpath"]).click()
                         input_field = self.driver.find_element(By.XPATH,edit_element_position["objectPage_inputItem_posXpath"])
-                        input_field.clear()
+                        # self.driver.execute_script("arguments[0].setAttribute('aria-autocomplete', 'none');",input_field)
+                        # self.driver.execute_script("arguments[0].value = '';", input_field)
+                        # 清空内容：模拟 Ctrl + A 全选后删除
+                        input_field.send_keys(Keys.CONTROL, 'a')  # 或使用 Keys.COMMAND 在 macOS
+                        input_field.send_keys(Keys.DELETE)
+                        time.sleep(0.5)
                         for char in str(edit_data):
-                            input_field.send_keys(char)
+                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_inputItem_posXpath"]).send_keys(char)
                             time.sleep(0.1)
                         self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
 
