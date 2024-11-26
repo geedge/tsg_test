@@ -86,12 +86,18 @@ def run(parameter):
         # 创建
         if parameter["initiation_method"] == "ui":
             ui_client = UIClient(parameter)
-            code = ui_client.create_objects(policy_configuration)
-            if code != 200:
+            created_object_code = ui_client.create_objects(policy_configuration)
+            if created_object_code != 200:
                 return "Fail to create object."
-            code = ui_client.create_rules(policy_configuration, objects_tuple)
-            if code != 200:
+            objects_tuple, searched_object_code = ui_client.search_objects(policy_configuration, "name")
+            if searched_object_code != 200:
+                return "Fail to search object."
+            created_rule_code = ui_client.create_rules(policy_configuration)
+            if created_rule_code != 200:
                 return "Fail to create rule."
+            rules_tuple, searched_rule_code = ui_client.search_rules(policy_configuration, "name")
+            if searched_rule_code != 200:
+                return "Fail to search rule."
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
