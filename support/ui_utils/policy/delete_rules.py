@@ -8,11 +8,11 @@ import random
 import time
 from datetime import datetime 
 
-class DeleteRule:
+class DeleteRules:
     def __init__(self, driver):
         self.driver = driver
         
-    def delete(self, rule_element_position, first_row_checkbox_element, is_del_all):
+    def delete_rules(self, rule_element_position, first_row_checkbox_element, is_del_all):
         delete_element_position = rule_element_position["delete"]
         try:
             time.sleep(0.3)

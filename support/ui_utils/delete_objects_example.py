@@ -12,15 +12,18 @@ from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 
 class DeleteObjectsExample:
-    def delete_objects(self, parameter, objects_tuple, driver):
+    def __init__(self, driver):
+        self.driver = driver
+        
+    def delete_objects(self, parameter, objects_tuple):
         result = ""
         for obj in objects_tuple:
             # 删除object
-            search_object = SearchObjects(driver)
+            search_object = SearchObjects(self.driver)
             element_position_map = get_element_position(obj["type"])
             search_object_code, first_row_checkbox_element = search_object.get_first_object(obj["uuid"],element_position_map)
             if search_object_code == 200:
-                delete_Object = DeleteObjects(driver)
+                delete_Object = DeleteObjects(self.driver)
                 delete_object_code = delete_Object.delete(element_position_map,first_row_checkbox_element)
                 if delete_object_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete {} object successfully.".format(obj["type"]), flush=True)

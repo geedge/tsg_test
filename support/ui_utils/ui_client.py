@@ -1,19 +1,24 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
-
-from support.ui_utils.object.search_objects import SearchObject
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import support.ui_utils.env
-from support.ui_utils.create_security_rules_example import CreateSecurityRulesExample
-from support.ui_utils.query_rule_metric import QueryRuleMetric
-from support.ui_utils.query_rule_log import QueryRuleLog
-from support.ui_utils.delete_security_rules_example import DeleteSecurityRulesExample
 from support.ui_utils.create_objects_example import CreateObjectsExample
 from support.ui_utils.delete_objects_example import DeleteObjectsExample
 from support.ui_utils.edit_objects_example import EditObjectsExample
 from support.ui_utils.object.create_objects_example import CreateObjects
+from support.ui_utils.policy.create_rules import CreateRules
+from support.ui_utils.policy.search_rules import SearchRules
+from support.ui_utils.policy.edit_rules import EditRules
+from support.ui_utils.policy.delete_rules import DeleteRules
+from support.ui_utils.query_rule_metric import QueryRuleMetric
+from support.ui_utils.query_rule_log import QueryRuleLog
+from support.api_utils.log_in import LogIn
+from support.api_utils.delete_objects import DeleteObjects as DeleteObjectsAPI
+from support.api_utils.delete_rules import DeleteRules as DeleteRulesAPI
+from support.ui_utils.object.search_objects_example import SearchObjects
+from support.ui_utils.object.delete_objects_example import DeleteObjects
+from support.ui_utils.object.edit_objects_example import EditObjects
 
 class UIClient:
     def __init__(self):
@@ -23,44 +28,69 @@ class UIClient:
     
     def create_objects(self, object_configuration):
         objects = CreateObjects(self.driver)
-        result = objects.create(object_configuration)
-        return result
+        code = objects.create(object_configuration)
+        return code
     
-    def search_objects(self, object_configuration):
-        objects = SearchObject()
-        objects_uuids_tuple, result = objects.search(object_configuration)
-        # objects = SearchObjects()
-        # objects_uuids_tuple, result = objects.search_objects(object_configuration)
+    def search_objects(self,search_value,object_configuration,type):
+        objects = SearchObjects(self.driver)
+        if type == "object_info":
+            objects_tuple, result = objects.get_object_info(search_value,object_configuration)
+            return objects_tuple, result
+        elif type == "object_select":
+            first_row_checkbox_element,result = objects.get_first_object(search_value,object_configuration)
+            return first_row_checkbox_element, result
+
+    def edit_objects(self,objects_tuple,first_row_checkbox_element,src_item,new_item):
+        objects = EditObjects(self.driver)
+        objects_uuids_tuple,result = objects.edit(objects_tuple, first_row_checkbox_element,src_item, new_item)
         return objects_uuids_tuple, result
 
-    def edit_objects(self,objects_tuple,object_edit_configuration):
-        objects = EditObjectsExample()
-        objects_uuids_tuple,result = objects.edit_objects(objects_tuple, object_edit_configuration, self.driver)
-        return objects_uuids_tuple, result
-    
+    def delete_objects(self,objects_tuple,first_row_checkbox_element):
+        objects = DeleteObjects(self.driver)
+        objects.delete(objects_tuple,first_row_checkbox_element)
+
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration
-        if "type" in policy_configuration.keys() and policy_configuration["type"] == "security":
-            rules = CreateSecurityRulesExample()
-            rule_uuids_tuple, element_position, result = rules.create_rules(policy_configuration, self.driver)
-            self.element_position = element_position
-        return rule_uuids_tuple, result
+        rules = CreateRules(self.driver)
+        element_position, code = rules.create_rules(policy_configuration)
+        self.element_position = element_position
+        return code
+
+    def search_rules(self, policy_configuration):
+        rules = SearchRules(self.driver)
+        rule_tuple, code = rules.search_rules(policy_configuration, self.element_position)
+        self.rule_tuple = rule_tuple
+        return rule_tuple, code
+
+    def edit_rules(self, policy_configuration):
+        rules = EditRules(self.driver)
+        code = rules.edit_rules(policy_configuration, self.element_position)
+        return code
 
     def query_rule_metric(self, verification_result, traffic_result):
         query = QueryRuleMetric(self.policy_configuration, verification_result, self.driver, self.element_position, traffic_result)
         metric_result = query.query_rule_metric()
         return metric_result
     
-    def query_rule_log(self, verification_result, rule_uuids_tuple, traffic_result):
-        query = QueryRuleLog(self.policy_configuration, verification_result, rule_uuids_tuple, self.driver, self.element_position, traffic_result)
+    def query_rule_log(self, verification_result, rule_tuple, traffic_result):
+        query = QueryRuleLog(self.policy_configuration, verification_result, rule_tuple, self.driver, self.element_position, traffic_result)
         log_result = query.query_rule_log()
         return log_result
     
-    def delete_rules(self, parameter, policy_configuration, rule_uuids_tuple):
-        if "type" in policy_configuration.keys() and policy_configuration["type"] == "security":
-            rules = DeleteSecurityRulesExample()
-            rules.delete_rules(parameter, policy_configuration, self.driver, rule_uuids_tuple)
+    def delete_rules(self, parameter, rule_tuple):
+        self.parameter = parameter
+        rules = DeleteRules(self.driver)
+        rules.delete_rules(parameter, rule_tuple)
 
-    def delete_objects(self, parameter, objects_tuple):
-        objects = DeleteObjectsExample()
-        objects.delete_objects(parameter, objects_tuple, self.driver)
+    def cleanup(self):
+        # 清理环境
+        support.ui_utils.env.teardown()
+        # 按uuid还是按name进行强制删除？？
+        log_in = LogIn()
+        pwd = log_in.encryptPwd(self.parameter["password"], self.parameter["api_server"])
+        token = log_in.login(self.parameter["username"], pwd, self.parameter["api_server"])
+        headers = {"Content-Type": "application/json", "Authorization": token}
+        rules = DeleteRulesAPI(self.parameter, headers)
+        rules.delete_rules(self.rule_tuple)
+        objects = DeleteObjectsAPI(self.parameter, headers)
+        objects.delete_objects(self.objects_tuple)

@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import configparser
-from support.ui_utils.policy.edit_rule import EditRule
+from support.ui_utils.policy.edit_rules import EditRule
 from support.packet_generator.workpath import workdir
 from support.ui_utils.element_position.log_element_position import *
 from support.ui_utils.element_position.map_element_position_library import *

@@ -9,11 +9,11 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.policy.page_jump import PageJump
 
-class SearchRule:
+class SearchRules:
     def __init__(self, driver):
         self.driver = driver
         
-    def search(self, type, name, rule_element_position, vsys_name=""):
+    def search_rules(self, type, name, rule_element_position, vsys_name=""):
         try:
             search_element_position = rule_element_position["search"]
             page_jump_element_position = rule_element_position["page_jump"]

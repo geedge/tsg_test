@@ -45,7 +45,7 @@ class CreateSecurityRulesExample:
             
             # 创建rule
             if cond_code == 200:
-                create_rule = CreateRule(driver)
+                create_rule = CreateRules(driver)
                 element_position_map = get_element_position(policy_configuration["policy_type"])
                 #动态选择变量
                 if policy_configuration["threshold"]["type"] == "rate":
@@ -66,7 +66,7 @@ class CreateSecurityRulesExample:
                     result = "Fail to create {} rule.".format(policy_configuration["policy_type"])
                     return "", "", result
                 
-                search_rule = SearchRule(driver)
+                search_rule = SearchRules(driver)
                 element_position_map = get_element_position(policy_configuration["policy_type"])
                 search_rule_code, rule_uuid = search_rule.get_rule_id(policy_configuration["policy_type"], policy_configuration["name"], element_position_map)
                 if search_rule_code != 200:
