@@ -63,7 +63,7 @@ def run(parameter):
                 "sub_action": "block",
                 "manipulation_block": "warning_page",
                 "code": 403,
-                "message": "test_response_code_{{tsg_policy_id}}_{{tsg_subscriber_id}}__{{tsg_client_ip}}"
+                "message": "test_response_code_{{tsg_policy_uuid}}_{{tsg_subscriber_id}}__{{tsg_client_ip}}"
             }
         }
 
