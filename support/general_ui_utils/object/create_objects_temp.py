@@ -12,7 +12,7 @@ from support.ui_utils.element_position.object_element_position import *
 from datetime import datetime
 
 
-class CreateObject:
+class CreateObjects:
     def __init__(self, driver):
         self.driver = driver
 

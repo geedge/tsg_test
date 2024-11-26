@@ -10,7 +10,7 @@ from support.ui_utils.delete_security_rules_example import DeleteSecurityRulesEx
 from support.ui_utils.create_objects_example import CreateObjectsExample
 from support.ui_utils.delete_objects_example import DeleteObjectsExample
 from support.ui_utils.edit_objects_example import EditObjectsExample
-
+from support.ui_utils.object.create_objects_example import CreateObjects
 
 class UIClient:
     def __init__(self):
@@ -18,9 +18,14 @@ class UIClient:
         self.driver = support.ui_utils.env.my_driver()
         support.ui_utils.env.setup()
     
-    def create_objects(self,object_configuration):
-        objects = CreateObjectsExample()
-        objects_uuids_tuple, result = objects.create_objects(object_configuration, self.driver)
+    def create_objects(self, object_configuration):
+        objects = CreateObjects(self.driver)
+        result = objects.create(object_configuration)
+        return result
+    
+    def search_objects(self, object_configuration):
+        objects = SearchObjects()
+        objects_uuids_tuple, result = objects.search_objects(object_configuration)
         return objects_uuids_tuple, result
 
     def edit_objects(self,objects_tuple,object_edit_configuration):

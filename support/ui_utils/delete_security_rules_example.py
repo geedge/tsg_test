@@ -6,8 +6,8 @@ import support.ui_utils.env
 from support.api_utils.log_in import LogIn
 # from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.delete_rules import DeleteRules
-from support.ui_utils.object.search_object import SearchObject
-from support.ui_utils.object.delete_object import DeleteObject
+from support.ui_utils.object.search_objects import SearchObject
+from support.ui_utils.object.delete_objects import DeleteObject
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 

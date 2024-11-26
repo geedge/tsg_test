@@ -6,11 +6,10 @@ from support.ui_utils.ui_client import UIClient
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
 
         # 参数初始化
         result, exception_result = "", ""
-        test_summary = {}
 
         # 脚本启动时间
         start_time = time.time()
@@ -37,71 +36,51 @@ def run(parameter):
                         }
                     ]
                 },
-            ],
-            # "search": {
-            #     "is_fuzzy": False,
-            #     "type": "uuid"
-            # },
-            # "audit_log": False  # system
+            ]
         }
 
-        object_edit_configuration =  {
-                "name": "test",
-                "type": "ip",
-                "sub_type": "ip",
-                "member_type": "item",
-                "statistics_option": "",  # random
-                "items": [
-                    # {
-                    #     "op": "update",
-                    #     "ip": "1.1.1.1",
-                    #     "interval": "0-65535",
-                    #     "edit_ip":"2.2.2.2"
-                    # },
-                    {
-                        "op": "add",
-                        "ip": "1.1.1.1",
-                        "interval": "0-65535",
-                        "edit_ip": "2.2.2.2"
-                    }
-                ]
-            }
-
-        # 创建
         ui_client = UIClient()
-        objects_tuple, ui_error = ui_client.create_objects(object_configuration)
-        if len(ui_error) > 0:
-            return ui_error
-        # objects_list = list(objects_tuple)
-        # if len(objects_list) > 0 and len(objects_list[0]["uuid"]) > 0:
-        #     return ""
+        
+        # 创建
+        code = ui_client.create_objects(object_configuration)
+        if code != 200:
+            return "Fail to create object."
 
-        ui_error = ui_client.edit_objects(objects_tuple,object_edit_configuration)
-        if len(ui_error) > 0:
-            return ui_error
+        # 查询
+        objects_tuple, code = ui_client.search_objects(object_configuration)
+        objects_list = list(objects_tuple)
+        if len(objects_list) == 0:
+            return "Fail to get object uuid."
+        if code != 200:
+            return "Fail to search object."
 
+        # 编辑
+        # 根据object uuid或object name查询，进入编辑模式
+        # 如果src_item是空，则表示该item是新加
+        code = ui_client.edit_objects(objects_tuple, "", new_item)
+        if code != 200:
+            return "Fail to edit object."
+        # 如果src_item是不是空，在item输入框，输入src_item，找到item，点击item的编辑按钮，删除src_item，输入new_item，点击保存按钮
+        code = ui_client.edit_objects(objects_tuple, src_item, new_item)
+        if code != 200:
+            return "Fail to edit object."
 
+        return ""
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"When running test case, the exception error: ", str(e), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
         return "When running test case, the exception error: " + str(e)
-
     finally:
         # 删除
-        if parameter["initiation_method"] == "ui":
-            if objects_tuple is not None:
-                ui_client.delete_objects(parameter,objects_tuple)
-        # elif parameter["initiation_method"] == "api":
-        #     if not objects_tuple:
-        #         api_client.delete_rules(rules_tuple)
-        #     if not objects_tuple:
-        #         api_client.delete_objects(objects_tuple)
-
+        if objects_tuple:
+            ui_client.delete_objects(parameter, objects_tuple)
+        
         # 统计脚本用时
         end_time = time.time()
         duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
+        
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

@@ -4,7 +4,7 @@ import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import support.ui_utils.env
 from support.api_utils.log_in import LogIn
-from support.ui_utils.object.create_object import CreateObject
+from support.ui_utils.object.create_objects import CreateObject
 from support.ui_utils.element_position.map_element_position_library import *
 from datetime import datetime
 

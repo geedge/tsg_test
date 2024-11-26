@@ -6,9 +6,9 @@ from support.common_utils.data_translation import DataTranslation
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.api_utils.log_in import LogIn
-from support.ui_utils.object.create_object import CreateObject
-from support.ui_utils.object.search_object import SearchObject
-from support.ui_utils.object.delete_object import DeleteObject
+from support.ui_utils.object.create_objects import CreateObject
+from support.ui_utils.object.search_objects import SearchObject
+from support.ui_utils.object.delete_objects import DeleteObject
 from support.ui_utils.profile.create_profile import CreateProfile
 from support.ui_utils.profile.search_profile import SearchProfile
 from support.ui_utils.profile.delete_profile import DeleteProfile
