@@ -94,7 +94,7 @@ def run(parameter):
                                     "table_type": ""
                                 },
                                 "uuid": "",
-                                "name": "BITRATE(Bytes Sent, Bytes Received) Distributed by Time",
+                                "name": "MEDIAN(Round-trip Time), MEDIAN(Access Latency), MEDIAN(Internet latency) Distributed by Time",
                                 "threshold": {
                                     "in_bytes": 0,
                                     "out_bytes": 0
@@ -120,136 +120,51 @@ def run(parameter):
                                     "metrics": [
                                         {
                                             "source_fields": [
-                                                "sent_bytes",
-                                                "received_bytes"
+                                                "tcp_access_latency_ms"
                                             ],
                                             "function": {
-                                                "name": "BITRATE",
+                                                "name": "MEDIAN",
                                                 "expression": "",
                                                 "variables": [
 
                                                 ]
                                             },
-                                            "metric_type": "count",
-                                            "metric_name": "count_1",
-                                            "label": "BITRATE(Bytes Sent, Bytes Received)",
-                                            "unit": "bps"
-                                        }
-                                    ],
-                                    "order_by": "",
-                                    "source": "statistics_rule",
-                                    "series_limit": ""
-                                }
-                            },
-                            {
-                                "id": "",
-                                "display": {
-                                    "page_x": None,
-                                    "page_y": None,
-                                    "height": "",
-                                    "width": "",
-                                    "type": "line",
-                                    "table_type": ""
-                                },
-                                "uuid": "",
-                                "name": "RATE(Bytes Sent, Bytes Received) Distributed by Time",
-                                "threshold": {
-                                    "in_bytes": 0,
-                                    "out_bytes": 0
-                                },
-                                "query": {
-                                    "dimensions": [
+                                            "metric_type": "distribution",
+                                            "metric_name": "distribution_1",
+                                            "label": "MEDIAN(Access Latency)",
+                                            "unit": "ms"
+                                        },
                                         {
                                             "source_fields": [
-                                                "__time"
+                                                "in_pkt_length_distribution"
                                             ],
                                             "function": {
-                                                "name": "DATETIME_FLOOR_WITH_FILL",
+                                                "name": "MEDIAN",
                                                 "expression": "",
                                                 "variables": [
 
                                                 ]
                                             },
-                                            "label": "Time",
-                                            "is_drill_down": 0
-                                        }
-                                    ],
-                                    "limit": 65536,
-                                    "metrics": [
+                                            "metric_type": "distribution",
+                                            "metric_name": "distribution_2",
+                                            "label": "MEDIAN(Internet latency)",
+                                            "unit": "ms"
+                                        },
                                         {
                                             "source_fields": [
-                                                "sent_bytes",
-                                                "received_bytes"
+                                                "tcp_internet_latency_ms"
                                             ],
                                             "function": {
-                                                "name": "RATE",
+                                                "name": "MEDIAN",
                                                 "expression": "",
                                                 "variables": [
 
                                                 ]
                                             },
-                                            "metric_type": "count",
-                                            "metric_name": "count_1",
-                                            "label": "RATE(Bytes Sent, Bytes Received)",
-                                            "unit": "Bps"
-                                        }
-                                    ],
-                                    "order_by": "",
-                                    "source": "statistics_rule",
-                                    "series_limit": ""
-                                }
-                            },
-                            {
-                                "id": "",
-                                "display": {
-                                    "page_x": None,
-                                    "page_y": None,
-                                    "height": "",
-                                    "width": "",
-                                    "type": "line",
-                                    "table_type": ""
-                                },
-                                "uuid": "",
-                                "name": "SUM(Bytes Sent, Bytes Received) Distributed by Time",
-                                "threshold": {
-                                    "in_bytes": 0,
-                                    "out_bytes": 0
-                                },
-                                "query": {
-                                    "dimensions": [
-                                        {
-                                            "source_fields": [
-                                                "__time"
-                                            ],
-                                            "function": {
-                                                "name": "DATETIME_FLOOR_WITH_FILL",
-                                                "expression": "",
-                                                "variables": [
-
-                                                ]
-                                            },
-                                            "label": "Time",
-                                            "is_drill_down": 0
-                                        }
-                                    ],
-                                    "limit": 65536,
-                                    "metrics": [
-                                        {
-                                            "source_fields": [
-                                                "sent_bytes",
-                                                "received_bytes"
-                                            ],
-                                            "function": {
-                                                "name": "SUM",
-                                                "expression": "",
-                                                "variables": [
-
-                                                ]
-                                            },
-                                            "metric_type": "count",
-                                            "metric_name": "count_1",
-                                            "label": "SUM(Bytes Sent, Bytes Received)",
-                                            "unit": "bytes"
+                                            "metric_type": "distribution",
+                                            "metric_name": "distribution_3",
+                                            "label": "MEDIAN(Internet latencyn)",
+                                            "unit": "ms"
                                         }
                                     ],
                                     "order_by": "",
@@ -318,7 +233,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        traffic_start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
@@ -332,7 +247,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
         elif parameter["initiation_method"] == "api":
-            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, traffic_start_time, traffic_result)
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time, traffic_result)
         if log_result == True:
             test_summary["log"] = "Pass."
         elif log_result == False:
@@ -346,7 +261,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, traffic_start_time,
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time,
                                                          traffic_result)
         if metric_result == True:
             test_summary["metric"] = "Pass."
@@ -376,7 +291,7 @@ def run(parameter):
                 api_client.delete_objects(objects_tuple)
             if profiles_tuple:
                 api_client.delete_profiles(profiles_tuple)
-        # 统计脚本用时
+        # 脚本结束时间和耗时
         script_end_time = time.time()
         duration = script_end_time - script_start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
