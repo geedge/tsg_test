@@ -31,21 +31,21 @@ class UIClient:
         objects = CreateObjects(self.driver)
         code = objects.create_objects(policy_configuration)
         return code
-    
-    def search_objects(self, policy_configuration, search_type):
-        objects = SearchObjects()
-        objects_tuple, code = objects.search_objects(policy_configuration, search_type)
+
+    def search_objects(self, name, policy_configuration, search_type):
+        objects = SearchObjects(self.driver)
+        objects_tuple, code = objects.get_object_uuid(name, policy_configuration)
         self.objects_tuple = objects_tuple
         return objects_tuple, code
 
-    def edit_objects(self, objects_tuple, policy_configuration):
-        objects = EditObjectsExample()
-        code = objects.edit_objects(objects_tuple, policy_configuration, self.driver)
+    def edit_objects(self, objects_tuple, src_item,new_item):
+        objects = EditObjects(self.driver)
+        code = objects.edit(objects_tuple, src_item,new_item)
         return code
     
     def delete_objects(self, objects_tuple):
-        objects = DeleteObjectsExample(self.driver)
-        objects.delete_objects(self.parameter, objects_tuple)
+        objects = DeleteObjects(self.driver)
+        objects.delete(self.parameter, objects_tuple)
     
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration

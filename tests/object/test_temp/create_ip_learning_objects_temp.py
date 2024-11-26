@@ -16,46 +16,49 @@ def run(parameter):
         script_start_time = time.time()
 
         #测试数据
-        object_configuration =  {
-            "or_conditions": [
-                {
-                    "name": "test",
-                    "type": "ip",
-                    "op": "add",
-                    "sub_type": "ip_learning",
-                    "member_type": "item",
-                    "statistics_option": "",  # random
-                    "learning_plan": {
-                        "fqdn_ip_learning_plan": {
-                            "learning_depth": "1",
-                            "from_protocol": "SSL",
-                            "aging_time": 10,
-                            "vote_client_num": 10,
-                            "goal_upper_limit": 10,
-                            "from_fqdns": [
-                                "^www.example.com$"
-                            ]
-                        }
+        object_configuration =  [
+            {
+                "name": "create_ip_learing_object",
+                "type": "ip",
+                "op": "add",
+                "sub_type": "ip_learning",
+                "member_type": "item",
+                "statistics_option": "",  # random
+                "learning_plan": {
+                    "fqdn_ip_learning_plan": {
+                        "learning_depth": "1",
+                        "from_protocol": "SSL",
+                        "aging_time": 10,
+                        "vote_client_num": 10,
+                        "goal_upper_limit": 10,
+                        "from_fqdns": [
+                            "^www.example.com$"
+                        ]
                     }
                 }
-            ],
-            "search": {
-                "is_fuzzy": False,
-                "type": "uuid"
-            },
+            }
+        ]
 
-            "audit_log": False  # system
-        }
+        ui_client = UIClient(parameter)
 
         # 创建
-        ui_client = UIClient()
-        objects_tuple, ui_error = ui_client.create_objects(object_configuration)
-        if len(ui_error) > 0:
-            return ui_error
-        objects_list = list(objects_tuple)
-        if len(objects_list) > 0 and len(objects_list[0]["uuid"]) > 0:
-            return ""
+        code = ui_client.create_objects(object_configuration)
+        if code != 200:
+            return "Fail to create object."
+        else:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create Object successful ")
 
+        # 查询
+        objects_tuple, code = ui_client.search_objects("create_ip_learing_object", object_configuration, "")
+        objects_list = list(objects_tuple)
+        if len(objects_list) == 0:
+            return "Fail to get object uuid."
+        if code != 200:
+            return "Fail to search object."
+        else:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search Object successful ")
+
+        return ""
 
     except Exception as e:
         exception_result = str(e)
@@ -64,15 +67,10 @@ def run(parameter):
 
     finally:
         # 删除
-        if parameter["initiation_method"] == "ui":
-            if objects_tuple is not None:
-                ui_client.delete_objects(parameter, objects_tuple, object_configuration["search"])
-        # elif parameter["initiation_method"] == "api":
-        #     if not objects_tuple:
-        #         api_client.delete_rules(rules_tuple)
-        #     if not objects_tuple:
-        #         api_client.delete_objects(objects_tuple)
-
+        if objects_tuple:
+            ui_client.delete_objects(objects_tuple)
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete Object successful ")
+        # ui_client.cleanup()
         # 统计脚本用时
         script_end_time = time.time()
         duration = script_end_time - script_start_time
@@ -80,6 +78,7 @@ def run(parameter):
               "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
+
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

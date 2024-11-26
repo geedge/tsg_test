@@ -17,56 +17,64 @@ class SearchObjects:
         self.my_random = RandomName()
 
 
+    def search(self,name,policy_configuration,search_type):
+        if "name" != "":
+            self.get_object_uuid(name,policy_configuration)
+        else:
+            self.search_objects(policy_configuration,search_type)
 
-    def search(self,object_info,search,element_position_library):
+
+    def search_objects(self,objects_tuple,search_type):
         try:
-            page_jump_element_position = element_position_library["page_jump"]
-            # 打开该列表
-            page_jump = PageJump(self.driver)
-            time.sleep(0.5)
-            page_jump.jump_sub_object_page(page_jump_element_position)
-            search_types = search["type"].split('&')
-            for search_type in search_types:
-                search_value = self.get_search_value(object_info,search_type,search["is_fuzzy"])
-                if search_type == "uuid":
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
-                    self.driver.find_element(By.XPATH, objectListPage_search_select_Id_posXpath).click()
-                elif search_type == "name":
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
-                    self.driver.find_element(By.XPATH, objectListPage_search_select_Name_posXpath).click()
-                elif search_type == "description":
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
-                    self.driver.find_element(By.XPATH, objectListPage_search_select_Description_posXpath).click()
-                elif search_type == "details":
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
-                    self.driver.find_element(By.XPATH, objectListPage_search_select_Details_posXpath).click()
-                elif search_type == "sub_type":
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
-                    self.driver.find_element(By.XPATH, objectListPage_search_select_subType_posXpath).click()
-                elif search_type == 'sub_name':
-                    # 删除Group下的sub mobile
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
-                    self.driver.find_element(By.XPATH, objectListPage_search_select_Name_posXpath).click()
-                elif search_type == "ip":
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
-                    self.driver.find_element(By.XPATH, objectListPage_search_select_IP_posXpath).click()
-                elif "global" in search_type :
-                    self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
-                    self.driver.find_element(By.XPATH,listPage_objectSearch_ip_address_select_Search_posXpath).click()
-            # self.driver.find_element(By.XPATH, mainPage_objectSearch_buttonSearch_posXpath).click()
-            # time.sleep(0.5)
-            # row = self.driver.find_elements(By.XPATH, "//div[@class='MuiDataGrid-virtualScrollerContent css-0']/div/div")
-            # if len(row) != 0:
-            #     first_row = row[0]
-            #     first_row_checkBox_element = first_row.find_element(By.XPATH, '//input[@aria-label="Select row"]')
-                return 200
+            for object in objects_tuple:
+                element_position_library = get_element_position(object["type"])
+                page_jump_element_position = element_position_library["page_jump"]
+                # 打开该列表
+                page_jump = PageJump(self.driver)
+                time.sleep(0.5)
+                page_jump.jump_sub_object_page(page_jump_element_position)
+                search_types = search_type["type"].split('&')
+                for search_type in search_types:
+                    search_value = self.get_search_value(object, search_type,search_type["is_fuzzy"])
+                    if search_type == "uuid":
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
+                        self.driver.find_element(By.XPATH, objectListPage_search_select_Id_posXpath).click()
+                    elif search_type == "name":
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
+                        self.driver.find_element(By.XPATH, objectListPage_search_select_Name_posXpath).click()
+                    elif search_type == "description":
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
+                        self.driver.find_element(By.XPATH, objectListPage_search_select_Description_posXpath).click()
+                    elif search_type == "details":
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
+                        self.driver.find_element(By.XPATH, objectListPage_search_select_Details_posXpath).click()
+                    elif search_type == "sub_type":
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
+                        self.driver.find_element(By.XPATH, objectListPage_search_select_subType_posXpath).click()
+                    elif search_type == 'sub_name':
+                        # 删除Group下的sub mobile
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
+                        self.driver.find_element(By.XPATH, objectListPage_search_select_Name_posXpath).click()
+                    elif search_type == "ip":
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).click()
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
+                        self.driver.find_element(By.XPATH, objectListPage_search_select_IP_posXpath).click()
+                    elif "global" in search_type :
+                        self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
+                        self.driver.find_element(By.XPATH,listPage_objectSearch_ip_address_select_Search_posXpath).click()
+                # self.driver.find_element(By.XPATH, mainPage_objectSearch_buttonSearch_posXpath).click()
+                # time.sleep(0.5)
+                # row = self.driver.find_elements(By.XPATH, "//div[@class='MuiDataGrid-virtualScrollerContent css-0']/div/div")
+                # if len(row) != 0:
+                #     first_row = row[0]
+                #     first_row_checkBox_element = first_row.find_element(By.XPATH, '//input[@aria-label="Select row"]')
+                    return 200
         except Exception as e:
             raise
 
@@ -104,11 +112,11 @@ class SearchObjects:
 
         return search_value
 
-    def get_object_info(self,name,object_configuration):
+    def get_object_uuid(self,name,object_configuration):
         try:
             object_uuids_list = []
             object_uuids_temp_dict = {}
-            for object in object_configuration["or_conditions"]:
+            for object in object_configuration:
                 # 获取当前所需的element
                 if "sub_type" in object.keys():
                     object_type = object["sub_type"]
@@ -139,10 +147,10 @@ class SearchObjects:
                 object_uuids_temp_dict["name"] = object["name"]
                 object_uuids_temp_dict["description"] = object_description
                 object_uuids_list.append(object_uuids_temp_dict)
-                rule_uuids_tuple = tuple(object_uuids_list)
-                return rule_uuids_tuple,200
+                object_uuids_tuple = tuple(object_uuids_list)
+                return object_uuids_tuple,200
         except Exception as e:
-            raise
+            return 400
 
     def get_first_object(self,uuid,object_configuration):
         try:
@@ -168,7 +176,7 @@ class SearchObjects:
                 if len(row) != 0:
                     first_row = row[0]
                     first_row_checkBox_element = first_row.find_element(By.XPATH, '//input[@aria-label="Select row"]')
-                    return 200, first_row_checkBox_element
+                    return first_row_checkBox_element,200
         except Exception as e:
             raise
     # def main_page_item_search(self,object_info):

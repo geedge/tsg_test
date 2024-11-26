@@ -12,12 +12,24 @@ class DeleteObjects:
         self.driver = driver
         self.driver.implicitly_wait(5)
 
-    def delete(self,object_tuple,first_row_checkbox_element):
+    def delete(self,parmameter,objects_tuple):
         try:
-            for obj in object_tuple:
-                element_position_library = get_element_position(obj["type"])
+            for object in objects_tuple:
+                element_position_library = get_element_position(object["type"])
                 delete_element_position = element_position_library["delete"]
-                first_row_checkbox_element.click()
+                page_jump_element_position = element_position_library["page_jump"]
+                search_element_position = element_position_library["search"]
+                page_jump = PageJump(self.driver)
+                time.sleep(0.5)
+                page_jump.jump_sub_object_page(page_jump_element_position)
+                time.sleep(3)
+                self.driver.find_element(By.XPATH,search_element_position["objectListPage_searchLabel_posXpath"]).click()
+                self.driver.find_element(By.XPATH,search_element_position["objectListPage_searchLabel_posXpath"]).send_keys(object["uuid"])
+                self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_selectID_posXpath"]).click()
+                self.driver.find_element(By.XPATH,search_element_position["objectListPage_search_button_posXpath"]).click()
+                time.sleep(2)
+                self.driver.find_element(By.XPATH, '(//input[@aria-label="Select row"])[1]').click()
+                #点击删除按钮
                 self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_posXpath"]).click()
                 self.driver.find_element(By.XPATH,delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
                 time.sleep(3)
