@@ -37,7 +37,7 @@ def run(parameter):
                             "attribute_name": "ATTR_SOURCE_IP",
                             "type": "ip",
                             "sub_type": "ip",
-                            "name": "sec_srcip",
+                            "name": "dos_srcip",
                             "items": [
                                 {
                                     "op": "add",
