@@ -21,7 +21,8 @@ from support.ui_utils.object.delete_objects_example import DeleteObjects
 from support.ui_utils.object.edit_objects_example import EditObjects
 
 class UIClient:
-    def __init__(self):
+    def __init__(self, parameter):
+        self.parameter = parameter
         support.ui_utils.env.initiate_selenium_request()
         self.driver = support.ui_utils.env.my_driver()
         support.ui_utils.env.setup()
@@ -42,10 +43,9 @@ class UIClient:
         code = objects.edit_objects(objects_tuple, policy_configuration, self.driver)
         return code
     
-    def delete_objects(self, parameter, objects_tuple):
-        self.parameter = parameter
+    def delete_objects(self, objects_tuple):
         objects = DeleteObjectsExample(self.driver)
-        objects.delete_objects(parameter, objects_tuple)
+        objects.delete_objects(self.parameter, objects_tuple)
     
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration
@@ -64,6 +64,10 @@ class UIClient:
         rules = EditRules(self.driver)
         code = rules.edit_rules(policy_configuration, self.element_position)
         return code
+    
+    def delete_rules(self, rule_tuple):
+        rules = DeleteRules(self.driver)
+        rules.delete_rules(self.parameter, rule_tuple)
 
     def query_rule_metric(self, verification_result, traffic_result):
         query = QueryRuleMetric(self.policy_configuration, verification_result, self.driver, self.element_position, traffic_result)
@@ -74,10 +78,6 @@ class UIClient:
         query = QueryRuleLog(self.policy_configuration, verification_result, rule_tuple, self.driver, self.element_position, traffic_result)
         log_result = query.query_rule_log()
         return log_result
-    
-    def delete_rules(self, parameter, rule_tuple):
-        rules = DeleteRules(self.driver)
-        rules.delete_rules(parameter, rule_tuple)
 
     def cleanup(self):
         # 清理环境

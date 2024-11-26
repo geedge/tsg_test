@@ -37,7 +37,7 @@ def run(parameter):
             }
         ]
 
-        ui_client = UIClient()
+        ui_client = UIClient(parameter)
         
         # 创建
         code = ui_client.create_objects(object_configuration)
@@ -71,7 +71,7 @@ def run(parameter):
     finally:
         # 删除
         if objects_tuple:
-            ui_client.delete_objects(parameter, objects_tuple)
+            ui_client.delete_objects(objects_tuple)
         
         # 统计脚本用时
         script_end_time = time.time()

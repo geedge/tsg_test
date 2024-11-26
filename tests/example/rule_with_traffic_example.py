@@ -85,7 +85,7 @@ def run(parameter):
         
         # 创建
         if parameter["initiation_method"] == "ui":
-            ui_client = UIClient()
+            ui_client = UIClient(parameter)
             code = ui_client.create_objects(policy_configuration)
             if code != 200:
                 return "Fail to create object."
@@ -158,9 +158,9 @@ def run(parameter):
         # 删除
         if parameter["initiation_method"] == "ui":
             if rules_tuple:
-                ui_client.delete_rules(parameter, rules_tuple)
+                ui_client.delete_rules(rules_tuple)
             if objects_tuple:
-                ui_client.delete_objects(parameter, objects_tuple)
+                ui_client.delete_objects(objects_tuple)
             ui_client.cleanup()
         elif parameter["initiation_method"] == "api":
             if rules_tuple:
