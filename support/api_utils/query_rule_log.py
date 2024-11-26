@@ -112,14 +112,10 @@ class QueryRuleLog:
                     log_filter = f"subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, '{rule_uuid}')"
                     log_condition_dict['filter'] = log_filter
                 else:
-                    if self.rule_type == "statistics":
+                    if self.rule_type == "statistics" or (self.rule_type == "monitor" and self.traffic_generation["tool"] == "trex"):
                         log_filter = f"client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                         log_condition_dict['filter'] = log_filter
                         log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation['clients_start_ip']}", f"client_ip='{traffic_generation['clients_start_ip']}'")
-                    if  self.rule_type == "monitor" and self.traffic_generation["tool"] == "trex":
-                        log_filter = f"client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
-                        log_condition_dict['filter'] = log_filter
-                        log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation['clients_start_ip']}",f"client_ip='{traffic_generation['clients_start_ip']}'")
                     else:
                         log_filter = f"client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                         log_condition_dict['filter'] = log_filter
@@ -195,8 +191,8 @@ class QueryRuleLog:
                             else:
                                 temp_log_result_list.append(True)
                     elif query_field_key in {"monitor_mirrored_pkts", "monitor_mirrored_bytes"}:
-                        actual_bytes_value = self.traffic_result['result']['total_bytes']
-                        actual_pkts_value = self.traffic_result['result']["total_packets"]
+                        actual_bytes_value = self.traffic_result['total_bytes']
+                        actual_pkts_value = self.traffic_result["total_packets"]
                         mirror_bytes_value = 0
                         mirror_pkts_value = 0
                         application = self.get_application_from_configration()

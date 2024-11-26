@@ -49,7 +49,7 @@ class TrafficGenerator:
                 if parse_boolean == False:
                     json_data = {}
                     json_data = response.text
-                result = json_data
+                result = json_data["result"]
         else:
             if traffic_generation["tool"] == "http":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic.", flush=True)

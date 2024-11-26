@@ -7,7 +7,8 @@ from scapy.all import *
 from scapy.layers.inet import TCP
 
 class SSLPlayer:
-    def send_ssl_traffic(self, traffic_data, script_type, debug_flag):
+    def send_ssl_traffic(self, traffic_data):
+    # def send_ssl_traffic(self, traffic_data, script_type, debug_flag):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send ssl traffic for effect verification.", flush=True)
         if "command" in traffic_data:
             p = subprocess.Popen(traffic_data["command"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
