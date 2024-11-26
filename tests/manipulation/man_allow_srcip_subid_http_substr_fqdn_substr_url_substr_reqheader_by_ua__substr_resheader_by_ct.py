@@ -22,7 +22,7 @@ def run(parameter):
         test_summary = {}
 
         # 脚本启动时间
-        start_time = time.time()
+        script_start_time = time.time()
 
         policy_configuration = {
             "name": parameter["test_case_name"],
@@ -60,7 +60,7 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "^test_tmp_subid$"
+                        "expression": "^{}$".format(parameter["test_subcriber_id"])
                     }]
                 }]
             },
@@ -160,6 +160,7 @@ def run(parameter):
         }
 
         # 创建
+        objects_tuple, profiles_tuple,  libraries_tuple, rules_tuple = None, None, None, None
         if parameter["initiation_method"] == "ui":
             ui_client = UIClient()
             rules_tuple, ui_error = ui_client.create_rules(policy_configuration)
@@ -190,7 +191,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        traffic_start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
@@ -200,11 +201,18 @@ def run(parameter):
         if excepted_traffic_result == False:
             return error
 
+        # 提取Manipulation_rules用于查询
+        tmp_rules_list = []
+        for i in range(len(rules_tuple)):
+            if rules_tuple[i]["type"] == "proxy_manipulation":
+                tmp_rules_list.append(rules_tuple[i])
+        tmp_rules_tuple = tuple(tmp_rules_list)
+
         # 验证tsg的日志是否符合策略执行的预期
         if parameter["initiation_method"] == "ui":
-            log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
+            log_result = ui_client.query_rule_log(verification_result, tmp_rules_tuple, traffic_result)
         elif parameter["initiation_method"] == "api":
-            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time, traffic_result)
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, tmp_rules_tuple, traffic_start_time, traffic_result)
         if log_result == True:
             test_summary["log"] = "Pass."
         elif log_result == False:
@@ -218,7 +226,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
+            metric_result = api_client.query_rule_metric(verification_result, tmp_rules_tuple, traffic_start_time, traffic_result)
         if metric_result == True:
             test_summary["metric"] = "Pass."
         elif metric_result == False:
@@ -249,8 +257,8 @@ def run(parameter):
                 api_client.delete_objects(objects_tuple)
 
         # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - start_time
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
 

@@ -20,7 +20,7 @@ def run(parameter):
         test_summary = {}
         
         # 脚本启动时间
-        start_time = time.time()
+        script_start_time = time.time()
         
         policy_configuration = {
             "name": os.path.splitext(os.path.basename(__file__))[0],
@@ -174,8 +174,8 @@ def run(parameter):
                 api_client.delete_objects(objects_tuple)
         
         # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - start_time
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         
@@ -184,182 +184,7 @@ def run(parameter):
         update.write_result(parameter, result, exception_result)
         
 if __name__ == '__main__':
-    # sc rule json example
-    policy_configuration = {
-        "and_conditions": [
-            {
-                "negate_option": False,
-                "or_conditions": [
-                    {
-                        "attribute_name": "ATTR_SOURCE_IP",
-                        "object_uuids": [
-                            "f5cf118e-99d4-4726-bd57-66ab1ad31a27"
-                        ]
-                    }
-                ]
-            },
-            {
-                "negate_option": False,
-                "or_conditions": [
-                    {
-                        "attribute_name": "ATTR_APP_ID",
-                        "type": "application",
-                        "items": ["http"]
-                    }
-                ],
-            }
-        ],
-        "action": "service_chaining",
-        "type": "service_chaining",
-        "action_parameter": {
-            "targeted_traffic": "raw",
-            "sff_profiles": [
-				{
-					"name": "sff_zk",
-					"type": 1, # 1是steer，2是mirror
-					"load_balance_method": "hash-int-ip",
-					"load_balance_localization": "nearby",
-					"failure_action": "bypass",
-					"service_func_profiles": [
-						{
-							"name": "sf_zk",
-							"admin_status": 1,
-							"device_group": {
-								"value": "City A",
-								"tag": "device_group"
-							},
-							"connectivity": {
-								"method": "vxlan_g",
-								"dest_ip": "1.1.1.1"
-							},
-							"health_check": {
-								"method": "bfd",
-								"interval_ms": 200,
-								"retires": 5
-							}
-						}
-					]
-				}
-            ]
-        }
-    }
-    # monitor rule json example
-    policy_configuration = {
-        "and_conditions": [
-            {
-                "negate_option": False,
-                "or_conditions": [
-                    {
-                        "attribute_name": "ATTR_SOURCE_IP",
-                        "object_uuids": [
-                            "f5cf118e-99d4-4726-bd57-66ab1ad31a27"
-                        ]
-                    }
-                ]
-            },
-            {
-                "negate_option": False,
-                "or_conditions": [
-                    {
-                        "attribute_name": "ATTR_APP_ID",
-                        "object_uuids": [
-                            "80791b3a-e700-2cb8-8c24-6876d9faa8f8"
-                        ]
-                    }
-                ]
-            },
-            {
-                "negate_option": False,
-                "or_conditions": [
-                    {
-                        "attribute_name": "ATTR_HTTP_URL",
-                        "type": "url",
-                        "member_type": "item",
-                        "items": [
-                            {
-                                "op": "add",
-                                "expr_type": "and",
-                                "expression": "yumi.com"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ],
-        "action_parameter": {
-            "traffic_mirroring": {
-                "enable": 1,
-                "vlanID": 1,
-                "mirroring_profile": {
-					"name": "mirror_zk",
-					"vlan_array": [
-						"5"
-					]
-				}
-            },
-            "packet_capture": {
-                "enable": 1,
-                "capture_depth": 2000
-            }
-        },
-        "name": "monitor_zk",
-        "log_option": "none",
-        "action": "monitor",
-        "type": "monitor",
-        "is_enabled": 0
-    }
-    # rule referencing library json example
-    policy_configuration = {
-        "and_conditions": [
-            {
-                "negate_option": False,
-                "or_conditions": [
-                    {
-                        "attribute_name": "ATTR_SOURCE_IP",
-						"type": "library",
-                        "catalog": {
-							"category": "internet_service",
-							"ip_entries": [
-								{
-									"op": "add",
-									"ip": "1.1.1.1"
-								}
-							],
-							"fqdn_entries": [
-								{
-									"op": "add",
-									"fqdn": "google.com"
-								}
-							],
-							"tag": {
-								"category": "internet_service",
-								"parent_uuid": 0, # 有parent则是对应的uuid，如"503a8672-2466-5cb4-a275-00407b8f8e21"
-								"description": "",
-								"tag_key": "is_zk",
-								"tag_value": "is_zk",
-								"icon_base64_code": "",
-								"icon_position": ""
-							}
-						}
-                    }
-                ]
-            }
-        ],
-        "action": "deny",
-        "type": "security",
-        "action_parameter": {
-            "sub_action": "drop",
-            "send_tcp_reset": 1,
-            "send_icmp_unreachable": 0,
-            "after_n_packets": 0,
-            "packet_capture": {
-                "enable": 0
-            }
-        },
-        "name": "test_zk",
-        "log_option": "metadata",
-        "is_enabled": 0
-    }
+
     parameter = {
         "username": "zhaokun",
         "password": "zhaokun1",

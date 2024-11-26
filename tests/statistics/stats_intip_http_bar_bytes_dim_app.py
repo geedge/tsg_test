@@ -21,7 +21,7 @@ def run(parameter):
         test_summary = {}
 
         # 脚本启动时间
-        start_time = time.time()
+        script_start_time = time.time()
 
         policy_configuration = {
             "name": parameter["test_case_name"],
@@ -144,8 +144,8 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": {"total_bytes": 94679, "total_bytes_received": 93284, "total_bytes_sent": 1395, "total_packets": 87, "total_packets_received": 65, "total_packets_sent": 22, "total_syn_pkt": 1},
-            "metric_query": {"hits": 1},
-            "log_query": [
+            "expected_query": {"hits": 1},
+            "expected_log": [
                 {"query_field_key": "decoded_as", "query_value": "HTTP"},
                 {"query_field_key": "server_fqdn", "query_value": "www.yumi.com"}
             ]
@@ -182,7 +182,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        traffic_start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
@@ -196,7 +196,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
         elif parameter["initiation_method"] == "api":
-            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time, traffic_result)
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, traffic_start_time, traffic_result)
         if log_result == True:
             test_summary["log"] = "Pass."
         elif log_result == False:
@@ -210,7 +210,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time, traffic_result)
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, traffic_start_time, traffic_result)
         if metric_result == True:
             test_summary["metric"] = "Pass."
         elif metric_result == False:
@@ -240,12 +240,10 @@ def run(parameter):
             if objects_tuple:
                 api_client.delete_objects(objects_tuple)
         # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration/1000), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Finish test case: " + parameter["test_case_name"], flush=True)
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
 
         # 生成csv报告
         update = ReportUpdate()

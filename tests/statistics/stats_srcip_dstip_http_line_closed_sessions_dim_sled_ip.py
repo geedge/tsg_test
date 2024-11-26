@@ -19,7 +19,7 @@ def run(parameter):
         result = {}
 
         # 脚本启动时间
-        start_time = time.time()
+        script_start_time = time.time()
 
         # 测试数据
         test_data = {
@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "closed_sessions_for_this_rule:RATE:Closed Sessions"
+                            "new_sessions_for_this_rule:RATE:sessions"
                           ],
                           "dimensions": ["sled_ip"],
                           "order_by": "",
@@ -111,7 +111,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "closed_sessions_for_this_rule:SUM:Closed Sessions"
+                                "new_sessions_for_this_rule:SUM:sessions"
                             ],
                             "dimensions": ["sled_ip"],
                             "order_by": "",
@@ -163,8 +163,8 @@ def run(parameter):
         result = create.create_policy()
 
         # 脚本结束时间和耗时
-        end_time = time.time()
-        duration = end_time - start_time
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],

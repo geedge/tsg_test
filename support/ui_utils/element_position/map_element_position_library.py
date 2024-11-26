@@ -1014,6 +1014,15 @@ object_ip_object_element_position = {
         "objectPage_statistics_select_posXpath": ObjectPage_statistics_select_posXpath,
         "objectPage_statistics_select_option_posXpath": ObjectPage_statistics_select_option_posXpath
     },
+    "edit": {
+        "ObjectListPage_editButton_posXpath":ipObjectListPage_editButton_posXpath,
+        "objectPage_addItem_posXpath": ipObjectPage_addItem_posXpath,
+        "ObjectPage_edit_item_posXpath": ipObjectPage_edit_item_posXpath,
+        "ObjectPage_search_item_posXpath": ipObjectPage_search_item_posXpath,
+        "objectPage_inputItem_posXpath": ipObjectPage_inputItem_posXpath,
+        "objectPage_button_saveItem_posXpath": ipObjectPage_button_saveItem_posXpath,
+        "objectPage_okButton_posXpath": ipObjectPage_okButton_posXpath,
+    },
     "search": {
         "objectListPage_searchLabel_posXpath": ipObjectListPage_searchLabel_posXpath,
         "objectListPage_searchLabel_selectName_posXpath": ipObjectListPage_searchLabel_selectName_posXpath,
@@ -2313,7 +2322,7 @@ def replace_paras(parameter):
     parameter['test_apn'] = parse.get("network_address", "apn")
     parameter["vsys"] = parse.get("vsys", "for_traffic_verification")
     parameter["is_log"] = parse.get("is_log", "value")
-    parameter["script_type"] = parse.get("debug_script_type", "script_type")
+    parameter["initiation_method"] = parse.get("debug_script_type", "script_type")
 
     #project_path = parse.get("root_path", "path")
     #parameter["root_path"] = project_path

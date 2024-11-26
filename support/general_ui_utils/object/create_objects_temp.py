@@ -12,7 +12,7 @@ from support.ui_utils.element_position.object_element_position import *
 from datetime import datetime
 
 
-class CreateObject:
+class CreateObjects:
     def __init__(self, driver):
         self.driver = driver
 
@@ -231,6 +231,7 @@ class CreateObject:
                                 self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[4]//button[text()='Cancel']").click()
                         self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_posXpath"]+"[3]").click()
                 self.driver.find_element(By.XPATH,create_element_position["objectPage_okButton_posXpath"]+"[2]").click()
+                self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[1]//button[text()='Cancel']").click()
             elif object_type == "tunnel":
                 if len(data["tunnel"]["and_conditions"]) == 1:
                     tunnel_endition_a = data["tunnel"]["and_conditions"][0]
@@ -451,6 +452,7 @@ class CreateObject:
                     else:
                         self.driver.find_element(By.XPATH, create_element_position["ObjectPage_sameItem_addItem_posXpath"]).click()
                         self.driver.find_element(By.XPATH, create_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
+                self.driver.find_element(By.XPATH,create_element_position["objectPage_button_saveItem_posXpath"]).click()
         elif object_type == "ip":
             for i in range(len(data["items"])):
                 if data["items"][i]["op"] == "add":

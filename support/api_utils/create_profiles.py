@@ -11,6 +11,8 @@ class CreateProfiles:
         self.headers = headers
     
     def create_profiles(self, policy_configuration):
+        if "action_parameter" not in policy_configuration:
+            return [], ""
         vsys = self.parameter["vsys"]
         profile_type = ""
         profile_uuids_list = []

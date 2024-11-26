@@ -90,6 +90,8 @@ class CreateRules:
                 rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(protocol_field_condition_temp_list, object_uuids_list))
             if "action_parameter" in policy_configuration.keys() and len(policy_configuration["action_parameter"]) > 0:
                 rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)
+            if "effective_range" in policy_configuration.keys() and len(policy_configuration["effective_range"]) > 0:
+                rule_template_json["rule"]["effective_range"] = policy_configuration["effective_range"]
             rule_type_dict = {
                 "security": "security-rules",
                 "proxy_intercept": "proxy-intercept-rules",
@@ -106,6 +108,7 @@ class CreateRules:
                     return "", api_error
                 rule_uuids_list.append(pre_intercept_rule_uuid_dict)
             url = api_server + "/v1/policies/{}".format(rule_type_dict[policy_configuration["type"]])
+            #print(json.dumps(rule_template_json))
             response = requests.post(url, headers=self.headers, json=rule_template_json, verify=False)
             if response.status_code == 200:
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} rule successfully.".format(policy_configuration["type"].replace("_", " ")), flush=True)
@@ -171,21 +174,26 @@ class CreateRules:
             elif policy_configuration["action_parameter"]["sub_action"] == "redirect":
                 # dns redirect
                 if "resolution" in policy_configuration["action_parameter"].keys() and len(policy_configuration["action_parameter"]["resolution"]) > 0:
-                    action_parameter_dict["resolution"] = [
-                        {
-                            "qtype":policy_configuration["action_parameter"]["resolution"][0]["qtype"],
-                            "answer":[]
+                    action_parameter_dict["resolution"] = []
+                    for i in range(len(policy_configuration["action_parameter"]["resolution"])):
+                        resolution_dict = {
+                            "qtype" : policy_configuration["action_parameter"]["resolution"][i]["qtype"],
+                            "answer" : []
                         }
-                    ]
-                    for i in range(len(policy_configuration["action_parameter"]["resolution"][0]["answer"])):
-                        answer_dict = {}
-                        answer_dict["atype"] = policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["atype"]
-                        answer_dict["value"] = policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["value"]
-                        answer_dict["ttl"] = {
-                            "min": policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["ttl"]["min"],
-                            "max": policy_configuration["action_parameter"]["resolution"][0]["answer"][i]["ttl"]["max"]
-                        }
-                        action_parameter_dict["resolution"]["answer"].append(answer_dict) 
+                        for j in range(len(policy_configuration["action_parameter"]["resolution"][i]["answer"])):
+                            answer_dict = {}
+                            answer_dict["atype"] = policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["atype"]
+                            if "value" in policy_configuration["action_parameter"]["resolution"][i]["answer"][j].keys():
+                                answer_dict["value"] = policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["value"]
+                            elif "record_profile" in policy_configuration["action_parameter"]["resolution"][i]["answer"][j].keys():
+                                answer_dict["record_profile"] = policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["record_profile"]
+                                answer_dict["selected_num"] = policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["selected_num"]
+                            answer_dict["ttl"] = {
+                                "min": policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["ttl"]["min"],
+                                "max": policy_configuration["action_parameter"]["resolution"][i]["answer"][j]["ttl"]["max"]
+                            }
+                            resolution_dict["answer"].append(answer_dict)
+                        action_parameter_dict["resolution"].append(resolution_dict)
                 # http redirect
                 else:
                     action_parameter_dict["code"] = policy_configuration["action_parameter"]["code"]

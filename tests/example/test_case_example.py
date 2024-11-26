@@ -20,7 +20,7 @@ def run(parameter):
         test_summary = {}
         
         # 脚本启动时间
-        start_time = time.time()
+        script_start_time = time.time()
         
         policy_configuration = {
             "name": "automation_test_zk",
@@ -158,7 +158,7 @@ def run(parameter):
         # 删除
         if parameter["initiation_method"] == "ui":
             if rules_tuple:
-                ui_client.delete_rules(parameter, policy_configuration)
+                ui_client.delete_rules(parameter, policy_configuration, rules_tuple)
         elif parameter["initiation_method"] == "api":
             if rules_tuple:
                 api_client.delete_rules(rules_tuple)
@@ -166,8 +166,8 @@ def run(parameter):
                 api_client.delete_objects(objects_tuple)
         
         # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - start_time
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Finish test case: " + parameter["test_case_name"], flush=True)
         

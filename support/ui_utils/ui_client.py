@@ -9,13 +9,29 @@ from support.ui_utils.query_rule_log import QueryRuleLog
 from support.ui_utils.delete_security_rules_example import DeleteSecurityRulesExample
 from support.ui_utils.create_objects_example import CreateObjectsExample
 from support.ui_utils.delete_objects_example import DeleteObjectsExample
-
+from support.ui_utils.edit_objects_example import EditObjectsExample
+from support.ui_utils.object.create_objects_example import CreateObjects
 
 class UIClient:
     def __init__(self):
         support.ui_utils.env.initiate_selenium_request()
         self.driver = support.ui_utils.env.my_driver()
         support.ui_utils.env.setup()
+    
+    def create_objects(self, object_configuration):
+        objects = CreateObjects(self.driver)
+        result = objects.create(object_configuration)
+        return result
+    
+    def search_objects(self, object_configuration):
+        objects = SearchObjects()
+        objects_uuids_tuple, result = objects.search_objects(object_configuration)
+        return objects_uuids_tuple, result
+
+    def edit_objects(self,objects_tuple,object_edit_configuration):
+        objects = EditObjectsExample()
+        objects_uuids_tuple,result = objects.edit_objects(objects_tuple, object_edit_configuration, self.driver)
+        return objects_uuids_tuple, result
     
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration
@@ -35,17 +51,11 @@ class UIClient:
         log_result = query.query_rule_log()
         return log_result
     
-    def delete_rules(self, parameter, policy_configuration):
+    def delete_rules(self, parameter, policy_configuration, rule_uuids_tuple):
         if "type" in policy_configuration.keys() and policy_configuration["type"] == "security":
             rules = DeleteSecurityRulesExample()
-            rules.delete_rules(parameter, policy_configuration, self.driver)
+            rules.delete_rules(parameter, policy_configuration, self.driver, rule_uuids_tuple)
 
-    def create_objects(self,policy_configuration):
-        objects = CreateObjectsExample()
-        objects_uuids_tuple, element_position, result = objects.create_objects(policy_configuration, self.driver)
-        self.element_position = element_position
-        return objects_uuids_tuple, result
-
-    def delete_objects(self, parameter,objects_tuple,search_type):
+    def delete_objects(self, parameter, objects_tuple):
         objects = DeleteObjectsExample()
-        objects.delete_objects(parameter,objects_tuple,search_type,self.driver)
+        objects.delete_objects(parameter, objects_tuple, self.driver)

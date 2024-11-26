@@ -24,7 +24,7 @@ def run(parameter):
         test_summary = {}
 
         # 脚本启动时间
-        start_time = time.time()
+        script_start_time = time.time()
 
         policy_configuration = {
             "and_conditions": [

@@ -13,10 +13,10 @@ def run(parameter):
         test_summary = {}
 
         # 脚本启动时间
-        start_time = time.time()
+        script_start_time = time.time()
 
         #测试数据
-        policy_configuration =  {
+        object_configuration =  {
             "or_conditions":[
                 {
                     "name": "test",
@@ -75,11 +75,13 @@ def run(parameter):
         }
 
         # 创建
-        if parameter["initiation_method"] == "ui":
-            ui_client = UIClient()
-            objects_tuple, ui_error = ui_client.create_objects(policy_configuration)
-            if len(ui_error) > 0:
-                return ui_error
+        ui_client = UIClient()
+        objects_tuple, ui_error = ui_client.create_objects(object_configuration)
+        if len(ui_error) > 0:
+            return ui_error
+        objects_list = list(objects_tuple)
+        if len(objects_list) > 0 and len(objects_list[0]["uuid"]) > 0:
+            return ""
 
 
     except Exception as e:
@@ -89,22 +91,22 @@ def run(parameter):
 
     finally:
         # 删除
-        # if parameter["initiation_method"] == "ui":
-        #     if not objects_tuple:
-        #         ui_client.delete_rules(parameter, policy_configuration)
+        if parameter["initiation_method"] == "ui":
+            if objects_tuple is not None:
+                ui_client.delete_objects(parameter, objects_tuple, object_configuration["search"])
         # elif parameter["initiation_method"] == "api":
-        #
-        #     if not rules_tuple:
+        #     if not objects_tuple:
         #         api_client.delete_rules(rules_tuple)
-        #
         #     if not objects_tuple:
         #         api_client.delete_objects(objects_tuple)
 
         # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Finish test case: " + parameter["test_case_name"], flush=True)
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)

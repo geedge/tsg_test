@@ -58,13 +58,13 @@ class SearchObjects:
                 elif "global" in search_type :
                     self.driver.find_element(By.XPATH,ipObjectListPage_searchLabel_posXpath).send_keys(search_value)
                     self.driver.find_element(By.XPATH,listPage_objectSearch_ip_address_select_Search_posXpath).click()
-            self.driver.find_element(By.XPATH, mainPage_objectSearch_buttonSearch_posXpath).click()
-            time.sleep(0.5)
-            row = self.driver.find_elements(By.XPATH, "//div[@class='MuiDataGrid-virtualScrollerContent css-0']/div/div")
-            if len(row) != 0:
-                first_row = row[0]
-                first_row_checkBox_element = first_row.find_element(By.XPATH, '//input[@aria-label="Select row"]')
-                return 200, first_row_checkBox_element
+            # self.driver.find_element(By.XPATH, mainPage_objectSearch_buttonSearch_posXpath).click()
+            # time.sleep(0.5)
+            # row = self.driver.find_elements(By.XPATH, "//div[@class='MuiDataGrid-virtualScrollerContent css-0']/div/div")
+            # if len(row) != 0:
+            #     first_row = row[0]
+            #     first_row_checkBox_element = first_row.find_element(By.XPATH, '//input[@aria-label="Select row"]')
+                return 200
         except Exception as e:
             raise
 
@@ -124,6 +124,27 @@ class SearchObjects:
             object_uuid = self.driver.find_element(By.XPATH, '//div[@aria-rowindex="2"]//div[@data-field="uuid"]').text
             description = self.driver.find_element(By.XPATH,'//div[@aria-rowindex="2"]//div[@data-field="description"]').text
             return 200,object_uuid, description
+        except Exception as e:
+            raise
+
+    def get_first_object(self,uuid,object_element_position):
+        try:
+            page_jump_element_position = object_element_position["page_jump"]
+            # 打开该列表
+            page_jump = PageJump(self.driver)
+            time.sleep(0.5)
+            page_jump.jump_sub_object_page(page_jump_element_position)
+            time.sleep(3)
+            self.driver.find_element(By.XPATH, ipObjectListPage_searchLabel_posXpath).click()
+            self.driver.find_element(By.XPATH, ipObjectListPage_searchLabel_posXpath).send_keys(uuid)
+            self.driver.find_element(By.XPATH, objectListPage_search_select_Id_posXpath).click()
+            self.driver.find_element(By.XPATH, mainPage_objectSearch_buttonSearch_posXpath).click()
+            time.sleep(2)
+            row = self.driver.find_elements(By.XPATH,"//div[@class='MuiDataGrid-virtualScrollerContent css-0']/div/div")
+            if len(row) != 0:
+                first_row = row[0]
+                first_row_checkBox_element = first_row.find_element(By.XPATH, '//input[@aria-label="Select row"]')
+                return 200, first_row_checkBox_element
         except Exception as e:
             raise
     # def main_page_item_search(self,object_info):

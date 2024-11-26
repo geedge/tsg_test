@@ -20,7 +20,7 @@ class QueryRuleMetric:
     def query_rule_metric(self, verification_result, rule_uuids_tuple, start_time):
         try:
             self.rule_type = self.policy_configuration["type"]
-            if self.rule_type == "security" or self.rule_type == "pxy_intercept" or self.rule_type == "pxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "dos_protection":
+            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "dos_protection":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 metric_result = None
                 for _ in range(int(90)):
@@ -69,7 +69,8 @@ class QueryRuleMetric:
                                 return metric_str
                             else:
                                 flag, metric_result = self.verify_statistics_metric(start_time, end_time, self.traffic_result["result"], statistics_info, metric_str)
-                                #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBUG：Case Flag：{}; metric_result:{}".format(flag, metric_result), flush=True)
+                                #if not flag:
+                                #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBUG：Case Flag：{}; metric_result:{}".format(flag, metric_result), flush=True)
                                 if flag == True:  # 返回结果不等于333，则退出循环查询
                                     break
                                 elif flag == 333 and metric_result == "this is a pass":    # session的incoming outgoing,fqdn_category区分判断
@@ -82,7 +83,7 @@ class QueryRuleMetric:
                                     if fail_count >= max_fail_count:
                                         break
                                     time.sleep(query_metric_interval)
-                return metric_result
+                return flag
             elif self.rule_type == "service_chaining":
                 # sc自动化目前只实现了但application、单sf、单sff的用例？？
                 conf_path = os.path.join(workdir, "configuration_file.ini")
@@ -154,7 +155,7 @@ class QueryRuleMetric:
             for _ in range(rule_number):
                 if self.rule_type == 'security':
                     dataset_identifier_name = "security-policy-rule-statistics"
-                elif self.rule_type == 'pxy_intercept' or self.rule_type == 'pxy_manipulation':
+                elif self.rule_type == 'proxy_intercept' or self.rule_type == 'proxy_manipulation':
                     dataset_identifier_name = "proxy-policy-rule-statistics"
                 elif self.rule_type == 'monitor':
                     dataset_identifier_name = "monitor-policy-rule-statistics"

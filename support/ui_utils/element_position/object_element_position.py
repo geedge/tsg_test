@@ -77,7 +77,8 @@ applicationGroupObjectListPage_deleteButton_posId = id="appDel-_OperateBtns_ElCo
 
 # ip object
 ipObject_navigationBar_logo_posXpath = '//div[contains(@class,"menu-ip-object")]'
-ipObjectListPage_createButton_posXpath= '//span[@class="action-create inline-flex mr-[8px] "]/button' # create按钮id
+ipObjectListPage_createButton_posXpath= '//span[@class="action-create inline-flex mr-[8px] "]/button' # create按钮
+ipObjectListPage_editButton_posXpath = "//span[@class='action-edit inline-flex mr-[8px] ']"
 ipObjectListPage_dropDown_createButton_posXpath = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[1]"  # 从下拉菜单中选择Address
 ipObjectListPage_dropDown_createGroupButton_posId = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[2]"
 ipObjectListPage_searchLabel_posXpath = '//*[@class="MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5"]/input' # 查询框id
@@ -97,6 +98,8 @@ ipObjectPage_addItem_posXpath = "//div[@class='ip-object-name']//parent::*//pare
 ipObjectPage_inputItem_posXpath = '//*[@class="MuiAutocomplete-input css-1lv7pyi"]'
 ipObjectPage_button_saveItem_posXpath = '//i[@class="operate-icon iconfont icon-save"]'  # 保存item按钮
 ipObjectPage_searchLable_dropDown_item_posXpath = '//span[normalize-space(text())="Name"]/../..'
+ipObjectPage_edit_item_posXpath = "//i[@class='iconfont icon-Edit']"
+ipObjectPage_search_item_posXpath = "//input[@placeholder='Search For']"
 # ipObjectPage_okButton_posXpath = '//button[@id="OK-_IpDetail_Home_App_anonymousComponent"]/span'  # OK按钮
 ipObjectPage_okButton_posXpath = '//div[@class="form-action bg-[--color-background] flex justify-center py-[12px] absolute bottom-0 w-full"]//button[normalize-space(text())="OK"]'# OK按钮
 ipObjectPage_okButton_warningYes_posXpath = "//div[@class='el-message-box__wrapper']//button[contains(@class, 'el-button--primary operation-confirm')]//span"
