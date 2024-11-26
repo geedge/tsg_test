@@ -70,7 +70,7 @@ def run(parameter):
                             {
                                 "op": "add",
                                 "expr_type": "and",
-                                "expression": '$' + parameter['test_phone_number']
+                                "expression": '{}'.format(parameter['test_phone_number'])
                             }
                         ]
                     }

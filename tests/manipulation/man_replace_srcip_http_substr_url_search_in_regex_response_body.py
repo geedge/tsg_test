@@ -69,7 +69,7 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "www.114chn.com"
+                        "expression": "www.8684.cn"
                     }]
                 }]
             }],
@@ -82,7 +82,8 @@ def run(parameter):
                 {
                     "regex_enable": 1,
                     "search_in": "http_resp_body",
-                    "find": r"\s[0-9]{3}-[\d]{8}\s",
+                    "find": r"[0-9]{3}-[\d]{8}",
+                    #"find": r"\s[0-9]{3}-[\d]{8}\s",
                     "replace_with": "aaa-bbbbbbbb"
                 }]
             }
@@ -90,14 +91,14 @@ def run(parameter):
 
         traffic_generation = {
             "tool": "ssl",  # or trex/http
-            "command": "curl --compressed --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\"  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" http://www.114chn.com/tel.htm",
+            "command": "curl --compressed --connect-timeout 30 -m 60 -H \"Content-Type:application/json;charset=UTF-8\"  -kv --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.8684.cn/code_c_114",
         }
 
         verification_result = {
             "excepted_traffic_result": "aaa-bbbbbbbb",
             "expected_metric": {"hits": 1},
             "expected_log": [
-                {"query_field_key": "http_host", "query_value": "open.node.com"},
+                {"query_field_key": "http_host", "query_value": "www.8684.cn"},
                 {"query_field_key": "decoded_as", "query_value": "HTTP"}
             ]
         }

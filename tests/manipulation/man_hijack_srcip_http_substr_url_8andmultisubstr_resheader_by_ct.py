@@ -86,7 +86,7 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "text&html&html&charset&charset&UTF&UTF"
+                        "expression": "text&html&html&charset&charset&UTF&UTF&text"
                     }]
                 }]
             }],

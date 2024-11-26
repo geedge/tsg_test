@@ -86,7 +86,7 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "Safari/537.36$"
+                        "expression": "Safari/537.36"
                     },
                     {
                         "op": "add",

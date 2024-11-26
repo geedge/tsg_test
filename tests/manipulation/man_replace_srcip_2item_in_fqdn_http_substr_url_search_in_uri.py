@@ -72,9 +72,9 @@ def run(parameter):
                         "expression": "python"
                     },
                     {
-                        "item_operation": "add",
-                        "item_type": "fqdn",
-                        "item_value": "baidu",
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "baidu"
                     }]
                 }]
             },

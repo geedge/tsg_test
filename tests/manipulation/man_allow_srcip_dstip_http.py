@@ -28,57 +28,51 @@ def run(parameter):
             "type": "proxy_manipulation",
             "action": "allow",
             "and_conditions": [
+            {
+                "negate_option": False,
+                "or_conditions": [
                 {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_SOURCE_IP",
-                            "type": "ip",
-                            "sub_type": "ip",
-                            "statistics_option": "none",
-                            "member_type": "item",
-                            "name": "manipulation_source_ip",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "ip": parameter["test_pc_ip"],
-                                    "interval": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                },
+                    "attribute_name": "ATTR_SOURCE_IP",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "name": "manipulation_source_ip",
+                    "items": [
+                    {
+                        "op": "add",
+                        "ip": parameter["test_pc_ip"],
+                        "interval": "0-65535"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
                 {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_DESTINATION_IP",
-                            "type": "ip",
-                            "sub_type": "ip",
-                            "statistics_option": "none",
-                            "member_type": "item",
-                            "name": "manipulation_destination_ip",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "ip": "192.168.40.206",
-                                    "interval": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                },
+                    "attribute_name": "ATTR_DESTINATION_IP",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "name": "manipulation_destination_ip",
+                    "items": [
+                    {
+                        "op": "add",
+                        "ip": "192.168.40.206",
+                        "interval": "0-65535"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
                 {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_APP_ID",
-                            "type": "application",
-                            "items": ["http"]
-                        }
-                    ]
-                }
-            ],
+                    "attribute_name": "ATTR_APP_ID",
+                    "type": "application",
+                    "items": ["http"]
+                }]
+            }],
             "is_enabled": 1,
             "log_option": "metadata",
         }

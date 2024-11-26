@@ -93,7 +93,7 @@ def run(parameter):
 
         traffic_generation = {
             "tool": "ssl",  # or trex/http
-            "log_query_param": [{"query_field_key": "http_host", "query_value": "www.baidu.com"}, {"query_field_key": "decoded_as", "query_value": "HTTP"}],
+            "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
         }
 
         verification_result = {

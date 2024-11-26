@@ -956,7 +956,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
     result_text = tmp_resource_text.replace("        replace_text", match_text)
 if __name__ == '__main__':
     # 定义目录和目标文件  需要调整的变量
-    ms_json_path = 'C:/Users/root/Downloads/Metersphere_Api_TSG (20).json'
+    ms_json_path = 'C:/Users/root/Downloads/Metersphere_Api_TSG (29).json'
     case_directory_path = 'C:/zcw/tsg_test/tests/manipulation'
     file_startwith = "man_"
     file_endswith = ".py"
@@ -965,16 +965,14 @@ if __name__ == '__main__':
     #local_run()
 
     # 对比MS工具
-    #diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
+    diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
     # 生成excle使用数据工具
     #get_excel_formate_from_case(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
     # 替换test_data
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
-    name = "man_run_script_srcip_xly_fqdn_http_substr_url.py"
-    #name = "{}.py".format(name1)
-    replace_test_data_from_py_2(case_directory_path=case_directory_path, name=name)
+
 
 
 

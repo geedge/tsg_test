@@ -50,30 +50,31 @@ def run(parameter):
             {
                 "negate_option": False,
                 "or_conditions": [
+                {
+                    "attribute_name": "ATTR_APP_ID",
+                    "type": "application",
+                    "items": ["http"]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
                     {
-                        "attribute_name": "ATTR_GTP_APN",
-                        "name": "manipulation_apn",
-                        "type": "apn",
+                        "attribute_name": "ATTR_GTP_IMSI",
+                        "name": "manipulation_imsi",
+                        "type": "mobile_identity",
+                        "sub_type": "imsi",
                         "statistics_option": "none",
                         "member_type": "item",
                         "items": [
                             {
                                 "op": "add",
                                 "expr_type": "and",
-                                "expression": '$' + parameter["test_apn"],
+                                "expression": '^{}'.format(parameter["test_imsi"])
                             }
                         ]
                     }
                 ]
-            },
-            {
-                "negate_option": False,
-                "or_conditions": [
-                {
-                    "attribute_name": "ATTR_APP_ID",
-                    "type": "application",
-                    "items": ["http"]
-                }]
             }],
             "is_enabled": 1,
             "log_option": "metadata"
@@ -135,13 +136,13 @@ def run(parameter):
         if excepted_traffic_result == False:
             return error
 
-        # 提取Manipulation_rules用于查询
+        # 提取Manipulation_rules用于查询 
         tmp_rules_list = []
         for i in range(len(rules_tuple)):
             if rules_tuple[i]["type"] == "proxy_manipulation":
                 tmp_rules_list.append(rules_tuple[i])
         tmp_rules_tuple = tuple(tmp_rules_list)
-
+		
         # 验证tsg的日志是否符合策略执行的预期
         if parameter["initiation_method"] == "ui":
             log_result = ui_client.query_rule_log(verification_result, tmp_rules_tuple, traffic_result)
