@@ -86,12 +86,12 @@ def run(parameter):
         # 创建
         if parameter["initiation_method"] == "ui":
             ui_client = UIClient()
-            objects_tuple, ui_error = ui_client.create_objects(policy_configuration)
-            if len(ui_error) > 0:
-                return ui_error
-            rules_tuple, ui_error = ui_client.create_rules(policy_configuration, objects_tuple)
-            if len(ui_error) > 0:
-                return ui_error
+            code = ui_client.create_objects(policy_configuration)
+            if code != 200:
+                return "Fail to create object."
+            code = ui_client.create_rules(policy_configuration, objects_tuple)
+            if code != 200:
+                return "Fail to create rule."
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
@@ -158,7 +158,10 @@ def run(parameter):
         # 删除
         if parameter["initiation_method"] == "ui":
             if rules_tuple:
-                ui_client.delete_rules(parameter, policy_configuration, rules_tuple)
+                ui_client.delete_rules(parameter, rules_tuple)
+            if objects_tuple:
+                ui_client.delete_objects(parameter, objects_tuple)
+            ui_client.cleanup()
         elif parameter["initiation_method"] == "api":
             if rules_tuple:
                 api_client.delete_rules(rules_tuple)

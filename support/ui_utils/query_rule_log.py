@@ -7,7 +7,7 @@ from support.packet_generator.workpath import workdir
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.map_element_position_library import *
 from support.ui_utils.log.search_log import SearchLog
-from support.ui_utils.policy.edit_rule import EditRule
+from support.ui_utils.policy.edit_rules import EditRule
 
 class QueryRuleLog:
     def __init__(self, policy_configuration, verification_result, rule_uuids_tuple, driver, element_position, traffic_result):

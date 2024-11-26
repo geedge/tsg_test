@@ -17,11 +17,11 @@ class DeleteSecurityRulesExample:
             result = ""
             
             # 删除rule
-            search_rule = SearchRule(driver)
+            search_rule = SearchRules(driver)
             element_position_map = get_element_position(policy_configuration["type"])
             search_rule_code, first_row_checkbox_element = search_rule.search(policy_configuration["type"], policy_configuration["type"], element_position_map)
             if search_rule_code == 200:
-                delete_rule = DeleteRule(driver)
+                delete_rule = DeleteRules(driver)
                 delete_rule_code = delete_rule.delete(element_position_map, first_row_checkbox_element, True)
                 if delete_rule_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Delete monitor rule successfully.", flush=True)
