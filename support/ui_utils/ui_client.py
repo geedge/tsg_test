@@ -16,6 +16,9 @@ from support.ui_utils.query_rule_log import QueryRuleLog
 from support.api_utils.log_in import LogIn
 from support.api_utils.delete_objects import DeleteObjects as DeleteObjectsAPI
 from support.api_utils.delete_rules import DeleteRules as DeleteRulesAPI
+from support.ui_utils.object.search_objects_example import SearchObjects
+from support.ui_utils.object.delete_objects_example import DeleteObjects
+from support.ui_utils.object.edit_objects_example import EditObjects
 
 class UIClient:
     def __init__(self):
@@ -55,7 +58,7 @@ class UIClient:
         rule_tuple, code = rules.search_rules(policy_configuration, self.element_position)
         self.rule_tuple = rule_tuple
         return rule_tuple, code
-    
+
     def edit_rules(self, policy_configuration):
         rules = EditRules(self.driver)
         code = rules.edit_rules(policy_configuration, self.element_position)
@@ -75,7 +78,7 @@ class UIClient:
         self.parameter = parameter
         rules = DeleteRules(self.driver)
         rules.delete_rules(parameter, rule_tuple)
-    
+
     def cleanup(self):
         # 清理环境
         support.ui_utils.env.teardown()

@@ -47,7 +47,7 @@ class CreateLibraries:
                                     if "tag" in catalog_temp[t] and len(catalog_temp[t]["tag"]) > 0:
                                         tag_temp = catalog_temp[t]["tag"]
                                         for k in range(len(tag_temp)):
-                                            tag_template_json["vsys"] = self.vsys
+                                            tag_template_json["vsys"] = int(self.vsys)
                                             tag_template_json["tag"]["category"] = tag_temp[k]["category"]
                                             if tag_temp[k]["parent_uuid"] != 0:
                                                 tag_template_json["tag"]["parent_uuid"] = self.query_tag_uuid(tag_temp[k]["parent_uuid"])

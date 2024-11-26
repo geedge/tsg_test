@@ -28,7 +28,7 @@ def run(parameter):
         policy_configuration = {
             "and_conditions": [
                 {
-                    "negate_option": False,
+                    "negate_option": True,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SOURCE_IP",

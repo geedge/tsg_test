@@ -176,7 +176,8 @@ class QueryRuleMetric:
                 hit_query_condition['rule_uuid'] = rule_uuids_list[0]["uuid"]
                 hit_query_condition['start_time'] = start_time
                 hit_query_condition['end_time'] = end_time
-                hit_query_condition['vsys'] = self.parameter["vsys"]
+                hit_query_condition['vsys'] = int(self.parameter["vsys"])
+                # hit_query_condition['vsys'] = self.parameter["vsys"]
                 response = requests.post(url, headers=headers, json=hit_query_condition, verify=False)
                 assert response.status_code == 200
                 response = json.loads(response.text)

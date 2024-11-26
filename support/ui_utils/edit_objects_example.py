@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 class EditObjectsExample:
-    def edit_objects(self, objects_tuple,object_configuration, driver):
+    def edit_objects(self, objects_tuple,first_row_checkbox_element,object_configuration, driver):
         try:
             for obj in objects_tuple:
                 # 删除object

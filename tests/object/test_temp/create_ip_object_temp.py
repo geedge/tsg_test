@@ -18,7 +18,7 @@ def run(parameter):
         object_configuration =  {
             "or_conditions": [
                 {
-                    "name": "test",
+                    "name": "create_ip_object",
                     "type": "ip",
                     "sub_type": "ip",
                     "member_type": "item",
@@ -47,7 +47,7 @@ def run(parameter):
             return "Fail to create object."
 
         # 查询
-        objects_tuple, code = ui_client.search_objects(object_configuration)
+        objects_tuple, code = ui_client.search_objects("create_ip_object",object_configuration,type="object_info")
         objects_list = list(objects_tuple)
         if len(objects_list) == 0:
             return "Fail to get object uuid."
@@ -55,13 +55,14 @@ def run(parameter):
             return "Fail to search object."
 
         # 编辑
-        # 根据object uuid或object name查询，进入编辑模式
+        object_uuid = objects_tuple[0]["uuid"]
+        first_row_checkbox_element,result = ui_client.search_objects(object_uuid,object_configuration,type="object_select")
         # 如果src_item是空，则表示该item是新加
-        code = ui_client.edit_objects(objects_tuple, "", new_item)
+        code = ui_client.edit_objects(objects_tuple,first_row_checkbox_element, src_item="", new_item="3.3.3.3")
         if code != 200:
             return "Fail to edit object."
         # 如果src_item是不是空，在item输入框，输入src_item，找到item，点击item的编辑按钮，删除src_item，输入new_item，点击保存按钮
-        code = ui_client.edit_objects(objects_tuple, src_item, new_item)
+        code = ui_client.edit_objects(objects_tuple,first_row_checkbox_element, src_item="1.1.1.1", new_item="2.2.2.2")
         if code != 200:
             return "Fail to edit object."
 
@@ -73,7 +74,7 @@ def run(parameter):
     finally:
         # 删除
         if objects_tuple:
-            ui_client.delete_objects(parameter, objects_tuple)
+            ui_client.delete_objects( objects_tuple,first_row_checkbox_element)
         
         # 统计脚本用时
         script_end_time = time.time()

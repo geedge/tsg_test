@@ -56,7 +56,7 @@ def run(parameter):
                     ]
                 },
                 {
-                    "negate_option": False,
+                    "negate_option": True,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SERVER_FQDN",
