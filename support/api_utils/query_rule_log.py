@@ -115,6 +115,10 @@ class QueryRuleLog:
                         log_filter = f"client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                         log_condition_dict['filter'] = log_filter
                         log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation['clients_start_ip']}", f"client_ip='{traffic_generation['clients_start_ip']}'")
+                    if  self.rule_type == "monitor" and self.traffic_generation["tool"] == "trex":
+                        log_filter = f"client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
+                        log_condition_dict['filter'] = log_filter
+                        log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation['clients_start_ip']}",f"client_ip='{traffic_generation['clients_start_ip']}'")
                     else:
                         log_filter = f"client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                         log_condition_dict['filter'] = log_filter
@@ -190,8 +194,8 @@ class QueryRuleLog:
                             else:
                                 temp_log_result_list.append(True)
                     elif query_field_key in {"monitor_mirrored_pkts", "monitor_mirrored_bytes"}:
-                        actual_bytes_value = self.traffic_result["total_bytes"]
-                        actual_pkts_value = self.traffic_result["total_packets"]
+                        actual_bytes_value = self.traffic_result['result']['total_bytes']
+                        actual_pkts_value = self.traffic_result['result']["total_packets"]
                         mirror_bytes_value = 0
                         mirror_pkts_value = 0
                         application = self.get_application_from_configration()
@@ -216,7 +220,8 @@ class QueryRuleLog:
                                 else:
                                     mirror_bytes_value = actual_bytes_value - 192
                                     mirror_pkts_value = actual_pkts_value - 3
-                                if len(self.policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]) > 0:
+                                # if len(self.policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]) > 0:
+                                if "mirroring_profile" in self.policy_configuration["action_parameter"]["traffic_mirroring"]:
                                     vlan_count = len(self.policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]["vlan_array"])
                                     num_vlans = vlan_count
                                     mirror_bytes_value *= num_vlans
@@ -241,7 +246,8 @@ class QueryRuleLog:
                                 else:
                                     mirror_bytes_value = actual_bytes_value - 967
                                     mirror_pkts_value = actual_pkts_value - 9
-                                if len(self.policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]) > 0:
+                                # if len(self.policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]) > 0:
+                                if "mirroring_profile" in self.policy_configuration["action_parameter"]["traffic_mirroring"]:
                                     vlan_count = len(self.policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]["vlan_array"])
                                     num_vlans = vlan_count
                                     mirror_bytes_value *= num_vlans
@@ -249,7 +255,8 @@ class QueryRuleLog:
                             elif self.is_exist_in_list(application, ["", "quic", "dns"]):
                                 mirror_bytes_value = actual_bytes_value
                                 mirror_pkts_value = actual_pkts_value
-                                if len(self.policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]) > 0:
+                                if "mirroring_profile" in self.policy_configuration["action_parameter"]["traffic_mirroring"]:
+                                # if len(self.policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]) > 0:
                                     vlan_count = len(self.policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]["vlan_array"])
                                     num_vlans = vlan_count
                                     mirror_bytes_value *= num_vlans
@@ -331,9 +338,10 @@ class QueryRuleLog:
         return log_result
     
     def get_application_from_configration(self):
-        action_parameter = self.policy_configuration["action_parameter"]
-        for i in range(len(action_parameter)):
-            or_conditions = action_parameter[i]["or_conditions"]
+        and_conditions = self.policy_configuration["and_conditions"]
+        # action_parameter = self.policy_configuration["action_parameter"]
+        for i in range(len(and_conditions)):
+            or_conditions = and_conditions[i]["or_conditions"]
             for j in range(len(or_conditions)):
                 if or_conditions[j]["attribute_name"] == "ATTR_APP_ID":
                     application = or_conditions[j]["items"]
@@ -347,16 +355,16 @@ class QueryRuleLog:
         return True
     
     def get_attribute_name_from_configration(self):
-        action_parameter_list = []
+        attribute_name_list = []
         # 只收集Protocol Filed相关的Attribute Name，所以需要根据实际情况补充exclude_list？？
         exclude_list = ["ATTR_SOURCE_IP", "ATTR_DESTINATION_IP", "ATTR_APP_ID"]
-        action_parameter = self.policy_configuration["action_parameter"]
-        for i in range(len(action_parameter)):
-            or_conditions = action_parameter[i]["or_conditions"]
+        and_conditions = self.policy_configuration["and_conditions"]
+        for i in range(len(and_conditions)):
+            or_conditions = and_conditions[i]["or_conditions"]
             for j in range(len(or_conditions)):
                 if or_conditions[j]["attribute_name"] not in exclude_list:
-                    action_parameter_list.append(or_conditions[j]["attribute_name"])
-        return action_parameter_list
+                    attribute_name_list.append(or_conditions[j]["attribute_name"])
+        return attribute_name_list
                     
     def verify_dos_log(self, log_dict, verification_result, start_time, end_time):
         self.verification_result = verification_result

@@ -114,7 +114,7 @@ def run(parameter):
             "expected_log": [
                 {"query_field_key": "decoded_as", "query_value": "FTP"},
                 {"query_field_key": "monitor_mirrored_pkts", "query_value": ""},
-                {"query_field_key": "monitor_mirrored_bytes", "query_value": ""},
+                {"query_field_key": "monitor_mirrored_bytes", "query_value": ""}
             ]
         }
 
@@ -133,7 +133,7 @@ def run(parameter):
             profile_tuple, api_error = api_client.create_profiles(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", profile_tuple)
             if len(api_error) > 0:
                 return api_error
 

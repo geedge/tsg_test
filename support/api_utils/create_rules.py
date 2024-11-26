@@ -18,6 +18,7 @@ class CreateRules:
         try:
             self.policy_configuration = policy_configuration
             object_uuids_list = list(self.object_uuids_tuple)
+            self.profile_uuids_list = list(self.profile_uuids_tuple)
             if len(self.library_uuids_tuple) > 0:
                 library_uuids_list = list(self.library_uuids_tuple)
                 for i in range(len(library_uuids_list)):
@@ -88,7 +89,7 @@ class CreateRules:
             if len(protocol_field_condition_temp_list) > 0:
                 rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(protocol_field_condition_temp_list, object_uuids_list))
             if "action_parameter" in policy_configuration.keys() and len(policy_configuration["action_parameter"]) > 0:
-                rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)        
+                rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)
             rule_type_dict = {
                 "security": "security-rules",
                 "proxy_intercept": "proxy-intercept-rules",
@@ -213,7 +214,8 @@ class CreateRules:
             action_parameter_dict["traffic_mirroring"]["enable"] = policy_configuration["action_parameter"]["traffic_mirroring"]["enable"]
             if policy_configuration["action_parameter"]["traffic_mirroring"]["enable"] == 1 and "vlanID" in policy_configuration["action_parameter"]["traffic_mirroring"]:
                 action_parameter_dict["traffic_mirroring"]["vlanID"] = policy_configuration["action_parameter"]["traffic_mirroring"]["vlanID"]
-                action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]
+                # action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]
+                action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = self.profile_uuids_list[0]["uuid"]
         elif policy_configuration["type"] == "statistics":   
             action_parameter_dict = {
                 "template_profile" : policy_configuration["action_parameter"]["template_profile"]

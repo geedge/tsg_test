@@ -38,7 +38,7 @@ def run(parameter):
                             "items": [
                                 {
                                     "op": "add",
-                                    "ip": "10.64.224.7",
+                                    "ip": "10.64.224.3",
                                     "interval": "0-65535"
                                 }
                             ]
@@ -115,7 +115,7 @@ def run(parameter):
             profile_tuple, api_error = api_client.create_profiles(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", profile_tuple)
             if len(api_error) > 0:
                 return api_error
 

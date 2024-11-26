@@ -133,7 +133,7 @@ def run(parameter):
             profile_tuple, api_error = api_client.create_profiles(policy_configuration)
             if len(api_error) > 0:
                 return api_error
-            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
+            rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", profile_tuple)
             if len(api_error) > 0:
                 return api_error
 
