@@ -105,17 +105,18 @@ class QueryRuleLog:
                 log_condition_dict['vsys'] = self.parameter["vsys"]
                 log_condition_dict['execution_mode'] = 'oneshot'
 
-                if self.rule_type == "dos_protection":
-                    attack_type = "Custom Network Attack"
-                    log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='{attack_type}'"
                 if self.is_attribute_name_exsit("ATTR_SUBSCRIBER_ID") == True:
                     log_filter = f"subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, '{rule_uuid}')"
                     log_condition_dict['filter'] = log_filter
                 else:
-                    if self.rule_type == "statistics" or (self.rule_type == "monitor" and self.traffic_generation["tool"] == "trex"):
-                        log_filter = f"client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
-                        log_condition_dict['filter'] = log_filter
-                        log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation['clients_start_ip']}", f"client_ip='{traffic_generation['clients_start_ip']}'")
+                    if self.traffic_generation["tool"] == "trex":
+                        if self.rule_type == "dos_protection":
+                            attack_type = "Custom Network Attack"
+                            log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='{attack_type}'"
+                        else:
+                            log_filter = f"client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
+                            log_condition_dict['filter'] = log_filter
+                            log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation['clients_start_ip']}",f"client_ip='{traffic_generation['clients_start_ip']}'")
                     else:
                         log_filter = f"client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                         log_condition_dict['filter'] = log_filter
