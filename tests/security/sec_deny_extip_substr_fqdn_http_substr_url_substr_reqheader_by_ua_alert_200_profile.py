@@ -123,7 +123,7 @@ def run(parameter):
                     "enable": 0
                 },
                 "send_icmp_unreachable": 0
-                },
+            },
             "is_enabled": 1,
             "log_option": "metadata",
         }
