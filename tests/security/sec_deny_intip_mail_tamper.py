@@ -31,7 +31,7 @@ def run(parameter):
                     "negate_option": False,
                     "or_conditions": [
                         {
-                            "attribute_name": "INTERNAL_IP",
+                            "attribute_name": "ATTR_INTERNAL_IP",
                             "type": "ip",
                             "sub_type": "ip",
                             "name": "sec_extip",
