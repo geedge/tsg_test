@@ -8,20 +8,29 @@ from support.ui_utils.object.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.map_element_position_library import *
-from support.ui_utils.element_position.object_element_position import *
-from datetime import datetime
-
+from support.ui_utils.object.search_objects import SearchObject
 
 class EditObjects:
     def __init__(self, driver):
         self.driver = driver
 
-    def edit(self, objects_tuple, first_row_checkbox_element,src_item, new_item):
+    def edit(self, objects_tuple,src_item, new_item):
         try:
             for object in objects_tuple:
                 element_position_library = get_element_position(object["type"])
+                page_jump_element_position = element_position_library["page_jump"]
                 edit_element_position = element_position_library["edit"]
-                first_row_checkbox_element.click()
+                search_element_position = element_position_library["search"]
+                page_jump = PageJump(self.driver)
+                time.sleep(0.5)
+                page_jump.jump_sub_object_page(page_jump_element_position)
+                time.sleep(3)
+                self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_posXpath"]).click()
+                self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_posXpath"]).send_keys(object["uuid"])
+                self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_selectID_posXpath"]).click()
+                self.driver.find_element(By.XPATH, search_element_position["objectListPage_search_button_posXpath"]).click()
+                time.sleep(2)
+                self.driver.find_element(By.XPATH,'(//input[@aria-label="Select row"])[1]').click()
                 self.driver.find_element(By.XPATH, edit_element_position["ObjectListPage_editButton_posXpath"]).click()
                 object_type = object["type"]
                 if object_type in ["keyword", "http_signature"]:
@@ -58,33 +67,34 @@ class EditObjects:
                 elif object_type in ["url", "account", "phone_number", "fqdn", "subscriberid", "apn"]:
                     if object_type == "phone_number":
                         self.driver.find_element(By.XPATH,edit_element_position["objectPage_phnoeNumberType_posXpath"]).click()
-                    for i in range(len(object["items"])):  #
+
+                    if src_item == "":  # 编辑 新增 模式
                         self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()
-                        if object["items"][i]["op"] == "add":  # 直接 新增 模式
-                            if "->" in object["items"][i]["expression"]:  # -> 存在，需要拆分
-                                item_value_str = object["items"][i]["expression"].split("->")[0].strip()
-                            else:  # -> 不存在，直接取值
-                                item_value_str = object["items"][i]["expression"].strip()
-                            # 匹配多个multiple substrings 类型
-                            if "&" in item_value_str:  # & 含有多个 and multiple substrings
-                                item_values = item_value_str.split("&")
-                            else:
-                                item_values = [item_value_str]
-                        else:  # 修改模式，未完成
-                            # print("todo modify moudle ...")
-                            item_values = [object["items"][i]["item_value"]]
-                        for j, item_value in enumerate(item_values):  # 遍历添加 multi substr，第一个元素不用点击 + 图标
-                            item_value = item_value.strip()
-                            if j == 0:
-                                # 适配24.10 版本，需要逐个字符输入
-                                input_field = self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputItem_posXpath"])
-                                for char in str(item_value):
-                                    input_field.send_keys(char)
-                                    time.sleep(0.1)
-                            else:
-                                self.driver.find_element(By.XPATH, edit_element_position["ObjectPage_sameItem_addItem_posXpath"]).click()
-                                self.driver.find_element(By.XPATH, edit_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
-                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
+                        item_value_str = new_item
+                        # 匹配多个multiple substrings 类型
+                        if "&" in item_value_str:  # & 含有多个 and multiple substrings
+                            item_values = item_value_str.split("&")
+                        else:
+                            item_values = [item_value_str]
+                    else:  # 修改模式
+                        self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_search_item_posXpath"]).send_keys(src_item + Keys.ENTER)
+                        self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_edit_item_posXpath"]).click()
+                        input_field = self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputItem_posXpath"])
+                        input_field.send_keys(Keys.CONTROL, 'a')  # 或使用 Keys.COMMAND 在 macOS
+                        input_field.send_keys(Keys.DELETE)
+                        item_values = [new_item]
+                    for j, item_value in enumerate(item_values):  # 遍历添加 multi substr，第一个元素不用点击 + 图标
+                        item_value = item_value.strip()
+                        if j == 0:
+                            # 适配24.10 版本，需要逐个字符输入
+                            input_field = self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputItem_posXpath"])
+                            for char in str(item_value):
+                                input_field.send_keys(char)
+                                time.sleep(0.1)
+                        else:
+                            self.driver.find_element(By.XPATH, edit_element_position["ObjectPage_sameItem_addItem_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, edit_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
+                    self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
                 elif object_type == "flag":
                     for i in range(len(object["items"])):  #
                         self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()

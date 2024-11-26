@@ -31,13 +31,3 @@ class DeleteObjectsExample:
                     result = result + " In addition, fail to delete {} object.".format(obj["type"])
             else:
                 result = result + " In addition, fail to search {} object.".format(obj["type"])
-        # 环境清理
-        support.ui_utils.env.teardown()
-        # 强制删除
-        log_in = LogIn()
-        pwd = log_in.encryptPwd(parameter["password"], parameter["api_server"])
-        token = log_in.login(parameter["username"], pwd, parameter["api_server"])
-        headers = {"Content-Type": "application/json", "Authorization": token}
-        objects = DeleteObjectsAPI(parameter, headers)
-        objects.delete_objects(objects_tuple)
-        return result
