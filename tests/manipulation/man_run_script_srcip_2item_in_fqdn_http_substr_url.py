@@ -72,9 +72,9 @@ def run(parameter):
                             "expression": "baidu.com"
                         },
                         {
-                            "item_operation": "add",
-                            "item_type": "fqdn",
-                            "item_value": "google.com",
+                            "op": "add",
+                            "expr_type": "and",
+                            "expression": "google.com"
                         }]
                     }]
                 },

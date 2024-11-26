@@ -86,7 +86,7 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "Wget&Windows&Win64&AppleWebKit&AppleWebKit&Gecko&Gecko"
+                        "expression": "Wget&Windows&Win64&AppleWebKit&AppleWebKit&Gecko&Gecko&Wget"
                     }]
                 }]
             }],

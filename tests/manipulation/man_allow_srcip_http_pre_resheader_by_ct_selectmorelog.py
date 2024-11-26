@@ -29,56 +29,50 @@ def run(parameter):
             "type": "proxy_manipulation",
             "action": "allow",
             "and_conditions": [
+            {
+                "negate_option": False,
+                "or_conditions": [
                 {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_SOURCE_IP",
-                            "name": "manipulation_source_ip",
-                            "type": "ip",
-                            "sub_type": "ip",
-                            "statistics_option": "none",
-                            "member_type": "item",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "ip": parameter["test_pc_ip"],
-                                    "interval": "0-65535"
-                                }
-                            ]
-                        }
-                    ]
-                },
+                    "attribute_name": "ATTR_SOURCE_IP",
+                    "name": "manipulation_source_ip",
+                    "type": "ip",
+                    "sub_type": "ip",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "ip": parameter["test_pc_ip"],
+                        "interval": "0-65535"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
                 {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_HTTP_RES_HDR",
-                            "name": "manipulation_http_resheader",
-                            "type": "keyword",
-                            "statistics_option": "none",
-                            "member_type": "item",
-                            "items": [
-                                {
-                                    "op": "add",
-                                    "expr_type": "and",
-                                    "expression": "^text/html"
-                                }
-                            ]
-                        }
-                    ]
-                },
+                    "attribute_name": "ATTR_HTTP_RES_HDR",
+                    "name": "manipulation_http_resheader",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
+                    {
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "^text/html"
+                    }]
+                }]
+            },
+            {
+                "negate_option": False,
+                "or_conditions": [
                 {
-                    "negate_option": False,
-                    "or_conditions": [
-                        {
-                            "attribute_name": "ATTR_APP_ID",
-                            "type": "application",
-                            "items": ["http"]
-                        }
-                    ]
-                }
-            ],
+                    "attribute_name": "ATTR_APP_ID",
+                    "type": "application",
+                    "items": ["http"]
+                }]
+            }],
             "is_enabled": 1,
             "log_option": "metadata",
         }

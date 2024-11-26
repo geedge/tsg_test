@@ -77,8 +77,8 @@ def run(parameter):
                 "negate_option": False,
                 "or_conditions": [
                 {
-                    "attribute_name": "ATTR_HTTP_RES_HDR",
-                    "name": "manipulation_http_resheader",
+                    "attribute_name": "ATTR_HTTP_REQ_HDR",
+                    "name": "manipulation_http_reqheader",
                     "type": "keyword",
                     "statistics_option": "none",
                     "member_type": "item",
@@ -86,12 +86,7 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "^text"
-                    },
-                    {
-                        "op": "add",
-                        "expr_type": "and",
-                        "expression": "testaass"
+                        "expression": "Wget&Windows&Chrome&Safari&Win64&AppleWebKit&KHTML&Chrome"
                     }]
                 }]
             }],

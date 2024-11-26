@@ -59,22 +59,19 @@ def run(parameter):
             {
                 "negate_option": False,
                 "or_conditions": [
+                {
+                    "attribute_name": "ATTR_HTTP_REQ_HDR",
+                    "name": "manipulation_http_reqheader",
+                    "type": "keyword",
+                    "statistics_option": "none",
+                    "member_type": "item",
+                    "items": [
                     {
-                        "attribute_name": "ATTR_GTP_IMEI",
-                        "name": "manipulation_imei",
-                        "type": "mobile_identity",
-                        "sub_type": "imei",
-                        "statistics_option": "none",
-                        "member_type": "item",
-                        "items": [
-                            {
-                                "op": "add",
-                                "expr_type": "and",
-                                "expression": '$' + parameter["test_imei"],
-                            }
-                        ]
-                    }
-                ]
+                        "op": "add",
+                        "expr_type": "and",
+                        "expression": "Safari&user-agent"
+                    }]
+                }]
             }],
             "is_enabled": 1,
             "log_option": "metadata"
@@ -82,7 +79,7 @@ def run(parameter):
 
         traffic_generation = {
             "tool": "ssl",  # or trex/http
-            "command": "curl -kv --connect-timeout 30 --max-time 60 https://www.baidu.com"
+            "command": "curl -kv --connect-timeout 30 --max-time 60 --user-agent \"Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36\" https://www.baidu.com"
         }
 
         verification_result = {
@@ -90,7 +87,7 @@ def run(parameter):
             "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key": "http_host", "query_value": "www.baidu.com"},
-                {"query_field_key": "decoded_as", "query_value": "HTTP"}
+                {"query_field_key": "http_user_agent", "query_value": "Wget (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36"}
             ]
         }
 
@@ -136,13 +133,13 @@ def run(parameter):
         if excepted_traffic_result == False:
             return error
 
-        # 提取Manipulation_rules用于查询
+        # 提取Manipulation_rules用于查询 
         tmp_rules_list = []
         for i in range(len(rules_tuple)):
             if rules_tuple[i]["type"] == "proxy_manipulation":
                 tmp_rules_list.append(rules_tuple[i])
         tmp_rules_tuple = tuple(tmp_rules_list)
-
+		
         # 验证tsg的日志是否符合策略执行的预期
         if parameter["initiation_method"] == "ui":
             log_result = ui_client.query_rule_log(verification_result, tmp_rules_tuple, traffic_result)

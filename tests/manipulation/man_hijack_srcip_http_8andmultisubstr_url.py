@@ -69,7 +69,7 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "www&.bai&du.&com/&www&baidu&com"
+                        "expression": "www&.bai&du.&com/&www&baidu&com&baidu"
                     }]
                 }]
             }],

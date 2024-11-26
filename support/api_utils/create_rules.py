@@ -306,7 +306,7 @@ class CreateRules:
                     for i in range(len(policy_configuration["action_parameter"]["rules"])):
                         rules_dict = {
                             "regex_enable" : policy_configuration["action_parameter"]["rules"][i]["regex_enable"],
-                            "_id" : policy_configuration["action_parameter"]["rules"][i]["_id"],
+                            #"_id" : policy_configuration["action_parameter"]["rules"][i]["_id"],
                             "search_in" : policy_configuration["action_parameter"]["rules"][i]["search_in"],
                             "find" : policy_configuration["action_parameter"]["rules"][i]["find"],
                             "replace_with" : policy_configuration["action_parameter"]["rules"][i]["replace_with"]

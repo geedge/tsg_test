@@ -74,7 +74,7 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
-                        "expression": "^www.google."
+                        "expression": "www.google."
                     }]
                 }]
             }],

@@ -94,23 +94,6 @@ def run(parameter):
                         "expression": "testaaa"
                     }]
                 }]
-            },
-            {
-                "negate_option": False,
-                "or_conditions": [
-                {
-                    "attribute_name": "ATTR_HTTP_REQ_HDR",
-                    "name": "manipulation_http_reqheader",
-                    "type": "keyword",
-                    "statistics_option": "none",
-                    "member_type": "item",
-                    "items": [
-                    {
-                        "op": "add",
-                        "expr_type": "and",
-                        "expression": "testaaa"
-                    }]
-                }]
             }],
             "is_enabled": 1,
             "log_option": "metadata",
