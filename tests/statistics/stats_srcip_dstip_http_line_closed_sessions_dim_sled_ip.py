@@ -99,7 +99,7 @@ def run(parameter):
                           "chart_name": "default name",
                           "visualization_type": "Line",
                           "metrics": [
-                            "closed_sessions_for_this_rule:RATE:Closed Sessions"
+                            "new_sessions_for_this_rule:RATE:sessions"
                           ],
                           "dimensions": ["sled_ip"],
                           "order_by": "",
@@ -111,7 +111,7 @@ def run(parameter):
                             "chart_name": "default name",
                             "visualization_type": "Line",
                             "metrics": [
-                                "closed_sessions_for_this_rule:SUM:Closed Sessions"
+                                "new_sessions_for_this_rule:SUM:sessions"
                             ],
                             "dimensions": ["sled_ip"],
                             "order_by": "",

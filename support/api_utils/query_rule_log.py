@@ -109,7 +109,7 @@ class QueryRuleLog:
                     attack_type = "Custom Network Attack"
                     log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='{attack_type}'"
                 if self.is_attribute_name_exsit("ATTR_SUBSCRIBER_ID") == True:
-                    log_filter = f"subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, {rule_uuid})"
+                    log_filter = f"subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, '{rule_uuid}')"
                     log_condition_dict['filter'] = log_filter
                 else:
                     if self.rule_type == "statistics":
