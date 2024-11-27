@@ -56,7 +56,7 @@ class UIClient:
 
     def search_rules(self, policy_configuration):
         rules = SearchRules(self.driver)
-        rule_tuple, code = rules.search_rules(policy_configuration, self.element_position)
+        rule_tuple, code = rules.get_rule_uuid(policy_configuration, self.element_position)
         self.rule_tuple = rule_tuple
         return rule_tuple, code
 
@@ -67,7 +67,7 @@ class UIClient:
     
     def delete_rules(self, rule_tuple):
         rules = DeleteRules(self.driver)
-        rules.delete_rules(self.parameter, rule_tuple)
+        rules.delete_rules(self.element_position, rule_tuple)
 
     def query_rule_metric(self, verification_result, traffic_result):
         query = QueryRuleMetric(self.policy_configuration, verification_result, self.driver, self.element_position, traffic_result)

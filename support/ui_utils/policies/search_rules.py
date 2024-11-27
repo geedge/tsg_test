@@ -13,10 +13,11 @@ class SearchRules:
     def __init__(self, driver):
         self.driver = driver
         
-    def search_rules(self, type, name, rule_element_position, vsys_name=""):
+    def search_rules(self, policy_configuration, element_position, vsys_name=""):
         try:
-            search_element_position = rule_element_position["search"]
-            page_jump_element_position = rule_element_position["page_jump"]
+            name = policy_configuration["name"]
+            search_element_position = element_position["search"]
+            page_jump_element_position = element_position["page_jump"]
             # 打开该列表
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_policy_page(page_jump_element_position)
@@ -50,10 +51,12 @@ class SearchRules:
         except Exception as e:
             raise
 
-    def get_rule_id(self, type, name, rule_element_position, vsys_name=""):
+    def get_rule_uuid(self, policy_configuration, element_position, vsys_name=""):
         try:
-            search_element_position = rule_element_position["search"]
-            page_jump_element_position = rule_element_position["page_jump"]
+            type = policy_configuration["type"]
+            name = policy_configuration["name"]
+            search_element_position = element_position["search"]
+            page_jump_element_position = element_position["page_jump"]
             # 打开该列表
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_policy_page(page_jump_element_position)
@@ -71,33 +74,33 @@ class SearchRules:
             self.driver.execute_script("arguments[0].click()", btn)  # 强制点击
             time.sleep(1)
             if type == "security":
-                rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
-                return 200, rule_id
+                rule_uuid = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
             elif type == "service_chaining":
-                rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault mouseSchedule el-popover__reference']//span").text
-                return 200, rule_id
+                rule_uuid = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault mouseSchedule el-popover__reference']//span").text
             elif type == "monitor":
-                rule_id = self.driver.find_element(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span").text
-                return 200, rule_id
+                rule_uuid = self.driver.find_element(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span").text
             elif type == "proxy_intercept":
-                rule_id = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
-                return 200, rule_id
+                rule_uuid = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
             elif type == "proxy_manipulation":
-                rule_id = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
-                return 200, rule_id
+                rule_uuid = self.driver.find_elements(By.XPATH,"//span[@class='idWidth cursorDefault el-popover__reference']//span")[0].text.strip()
             elif type == "statistics":
                 # 点击列设置打开列设置界面
                 self.driver.find_element(By.XPATH, ruleListPage_column_set_button_posXpath).click()
                 # 选择UUID
                 self.driver.find_element(By.XPATH, ruleListPage_column_set_field_posXpath.format(replaceFiled="UUID")).click()
-                rule_id = self.driver.find_element(By.XPATH, "//div[contains(@class,'MuiDataGrid-row')][1]//div[@data-field='uuid']").text
+                rule_uuid = self.driver.find_element(By.XPATH, "//div[contains(@class,'MuiDataGrid-row')][1]//div[@data-field='uuid']").text
                 #点击其他地方比如再次点击搜索按钮,不然影响菜单切换
                 self.driver.find_element(By.XPATH, search_element_position["policyRuleListPage_searchLabel_searchButton_posId"]).click()
-                return 200, rule_id
             elif type == "dos_protection":
-                rule_id = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
-                return 200, rule_id
-            else:
-                return 400, ""
+                rule_uuid = self.driver.find_element(By.XPATH, "//span[@class='idWidth cursorDefault el-popover__reference']//span").text
+            rule_uuids_list = []
+            rule_uuids_temp_dict = {}
+            rule_uuids_temp_dict["type"] = policy_configuration["type"]
+            rule_uuids_temp_dict["uuid"] = rule_uuid
+            rule_uuids_temp_dict["name"] = policy_configuration["name"]
+            rule_uuids_temp_dict["attribute_name"] = policy_configuration["type"].upper() + "_" + "RULE"
+            rule_uuids_list.append(rule_uuids_temp_dict)
+            rule_uuids_tuple = tuple(rule_uuids_list)
+            return rule_uuids_tuple, 200
         except Exception as e:
-            raise
+            return "", 400
