@@ -72,7 +72,7 @@ def run(parameter):
                     ]
                 },
                 {
-                    "negate_option": True,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SSL_CN",
@@ -89,7 +89,7 @@ def run(parameter):
                     ]
                 },
                 {
-                    "negate_option": True,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SSL_SAN",
