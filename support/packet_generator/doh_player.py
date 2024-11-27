@@ -6,7 +6,7 @@ import dns.message
 import dns.name
 
 class DohPlayer:
-    def send_doh_query(self, traffic_data, script_type, debug_flag):
+    def send_doh_query(self, traffic_data):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send doh query for effect verification.", flush=True)
         
         domain = traffic_data["domain"]

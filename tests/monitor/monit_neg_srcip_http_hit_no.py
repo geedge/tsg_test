@@ -54,6 +54,24 @@ def run(parameter):
                             "items": ["http"]
                         }
                     ]
+                },
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_SERVER_FQDN",
+                            "type": "fqdn",
+                            "member_type": "item",
+                            "name": "monitor_test_node",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "expr_type": "and",
+                                    "expression": "open.node.com",
+                                }
+                            ]
+                        }
+                    ],
                 }
             ],
             "action_parameter": {
@@ -163,9 +181,9 @@ def run(parameter):
             if objects_tuple:
                 api_client.delete_objects(objects_tuple)
 
-        # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
+        # 脚本结束时间和耗时
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],

@@ -69,6 +69,11 @@ def run(parameter):
                     {
                         "op": "add",
                         "expr_type": "and",
+                        "expression": "baidu"
+                    },
+                    {
+                        "op": "add",
+                        "expr_type": "and",
                         "expression": "google"
                     }]
                 }]

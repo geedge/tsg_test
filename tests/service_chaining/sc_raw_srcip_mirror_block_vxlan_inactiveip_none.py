@@ -129,7 +129,7 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": "",
-            "expected_metric": "",
+            "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key": "sc_rsp_raw", "query_value": ""},
                 {"query_field_key": "sent_pkts", "query_value": ""},

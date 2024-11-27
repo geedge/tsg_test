@@ -29,7 +29,7 @@ def run(parameter):
             "action": "service_chaining",
             "and_conditions": [
                 {
-                    "negate_option": False,
+                    "negate_option": True,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_GTP_PHONE_NUMBER",
@@ -147,19 +147,8 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": "",
-            "expected_metric": "",
-            "expected_log": [
-                {"query_field_key": "sc_rsp_raw", "query_value": ""},
-                {"query_field_key": "sent_pkts", "query_value": ""},
-                {"query_field_key": "received_pkts", "query_value": ""},
-                {"query_field_key": "sent_bytes", "query_value": ""},
-                {"query_field_key": "received_bytes", "query_value": ""},
-                {"query_field_key": "subscriber_id", "query_value": "test2425"},
-                {"query_field_key": "imei", "query_value": "1234567802"},
-                {"query_field_key": "imsi", "query_value": "43458960458"},
-                {"query_field_key": "apn", "query_value": "www.lyrawautotest.com"},
-                {"query_field_key": "phone_number", "query_value": "12345678902"}
-            ]
+            "expected_metric": {"hits": 0},
+            "expected_log": []
         } 
 
         # 创建
