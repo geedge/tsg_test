@@ -151,7 +151,7 @@ def run(parameter):
                                     ],
                                     "order_by": "",
                                     "source": "statistics_rule",
-                                    "series_limit": ""
+                                    "series_limit": "15"
                                 }
                             }
                         ]
