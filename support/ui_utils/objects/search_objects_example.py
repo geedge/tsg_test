@@ -142,7 +142,7 @@ class SearchObjects:
                 self.driver.find_element(By.XPATH, '//div[text()="Name"]').click()
                 object_uuid = self.driver.find_element(By.XPATH, '//div[@aria-rowindex="2"]//div[@data-field="uuid"]').text
                 object_description = self.driver.find_element(By.XPATH,'//div[@aria-rowindex="2"]//div[@data-field="description"]').text
-                object_uuids_temp_dict["type"] = object["type"]
+                object_uuids_temp_dict["type"] = object_type
                 object_uuids_temp_dict["uuid"] = object_uuid
                 object_uuids_temp_dict["name"] = object["name"]
                 object_uuids_temp_dict["description"] = object_description

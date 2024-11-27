@@ -21,7 +21,8 @@ def run(parameter):
                 "type": "ip",
                 "sub_type": "ip",
                 "member_type": "item",
-                "statistics_option": "",  # random
+                "description": "",
+                "statistics_option": "none",  # random
                 "items": [
                     {
                         "op": "add",

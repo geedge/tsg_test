@@ -49,7 +49,7 @@ def run(parameter):
                     ]
                 },
                 {
-                    "negate_option": False,
+                    "negate_option": True,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SOURCE_PORT",
@@ -111,8 +111,8 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": "vip",
-            "expected_metric": "",
-            "expected_log": [{"query_field_key": "sc_rsp_decrypted", "query_value": ""}]
+            "expected_metric": {"hits": 0},
+            "expected_log": []
         }
 
         # 创建

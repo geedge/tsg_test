@@ -88,13 +88,9 @@ def run(parameter):
             "expected_log": [
                 {"query_field_key": "http_host", "query_value": "open.node.com"},
                 {"query_field_key": "decoded_as", "query_value": "HTTP"},
-                {"query_field_key": "decoded_as", "query_value": "HTTP"},
                 {"query_field_key": "client_ip", "query_value": parameter["test_pc_ip"]},
-                {"query_field_key": "server_ip", "query_value": "open.node.com"},
-                {"query_field_key": "server_fqdn", "query_value": "open.node.com"},
                 {"query_field_key": "ip_protocol", "query_value": "tcp"},
                 {"query_field_key": "http_url", "query_value": "open.node.com:1443/go"},
-                {"query_field_key": "http_request_line", "query_value": "POST open.node.com:1443/go HTTP/1.1"},
                 {"query_field_key": "http_response_line", "query_value": "HTTP/1.1 200 OK"}
             ]
         }

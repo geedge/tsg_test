@@ -93,7 +93,7 @@ class QueryRuleLog:
                 log_condition_dict["intervals"].append(start_time + '/' + end_time)
                 log_condition_dict['vsys'] = self.parameter["vsys"]
                 if self.is_attribute_name_exsit("ATTR_SUBSCRIBER_ID") == True:
-                    log_filter = f"vsys_id in ({int(self.parameter["vsys"])}) AND subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, '{rule_uuid})'"
+                    log_filter = f"vsys_id in ({int(self.parameter['vsys'])}) AND subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, '{rule_uuid}')"
                     log_condition_dict['filter'] = log_filter
                 else:
                     if self.traffic_generation["tool"] == "trex":
@@ -101,12 +101,12 @@ class QueryRuleLog:
                             attack_type = "Custom Network Attack"
                             log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='{attack_type}'"
                         else:
-                            log_filter = f"vsys_id in ({int(self.parameter["vsys"])}) AND client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
+                            log_filter = f"vsys_id in ({int(self.parameter['vsys'])}) AND client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                             log_condition_dict['filter'] = log_filter
                             log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation['clients_start_ip']}",f"client_ip='{traffic_generation['clients_start_ip']}'")
                     else:
                         # log_filter = f"client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
-                        log_filter = f"vsys_id in ({int(self.parameter["vsys"])}) AND client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
+                        log_filter = f"vsys_id in ({int(self.parameter['vsys'])}) AND client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                         log_condition_dict['filter'] = log_filter
                         log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={self.parameter['test_pc_ip']}", f"client_ip='{self.parameter['test_pc_ip']}'")
                 dsl_dict["dsl"] = log_condition_dict
@@ -119,6 +119,7 @@ class QueryRuleLog:
                     "query_jobs":[{"id": job_id,"query_option":"list"}],
                     "vsys":int(self.parameter["vsys"]),"limit":20,"offset":0
                 }
+                time.sleep(2)
                 response = requests.post(url, headers=headers, json=query_list_dict, verify=False)
                 assert response.status_code == 200
                 log_list = json.loads(response.text)
@@ -188,8 +189,8 @@ class QueryRuleLog:
                             else:
                                 temp_log_result_list.append(True)
                     elif query_field_key in {"monitor_mirrored_pkts", "monitor_mirrored_bytes"}:
-                        actual_bytes_value = self.traffic_result['result']['total_bytes']
-                        actual_pkts_value = self.traffic_result['result']["total_packets"]
+                        actual_bytes_value = self.traffic_result['total_bytes']
+                        actual_pkts_value = self.traffic_result["total_packets"]
                         mirror_bytes_value = 0
                         mirror_pkts_value = 0
                         application = self.get_application_from_configration()

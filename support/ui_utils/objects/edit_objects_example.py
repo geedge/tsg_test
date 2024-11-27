@@ -34,23 +34,26 @@ class EditObjects:
                 self.driver.find_element(By.XPATH, edit_element_position["ObjectListPage_editButton_posXpath"]).click()
                 object_type = object["type"]
                 if object_type in ["keyword", "http_signature"]:
-                    for i in range(len(object["items"])):
-                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()
                         # temp_element_position = edit_element_position["objectPage_item_value_select_posXpath"].format(replaceValue=object["items"][i]["expression"])
                         # self.driver.find_element(By.XPATH, temp_element_position).click()
-                        if object["items"][i]["op"] == "add":  # 直接 新增 模式
-                            if "->" in object["items"][i]["expression"]:  # -> 存在，需要拆分
-                                item_value_str = object["items"][i]["expression"].split("->")[0].strip()
-                            else:  # -> 不存在，直接取值
-                                item_value_str = object["items"][i]["expression"].strip()
+                        if src_item == "":  # 直接 新增 模式
+                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_addItem_posXpath"]).click()
+                            item_value_str = new_item.strip()
                             # 匹配多个multiple substrings 类型
                             if "&" in item_value_str:  # & 含有多个 and multiple substrings
                                 item_values = item_value_str.split("&")
                             else:
                                 item_values = [item_value_str]
                         else:  # 修改模式，未完成
-                            # print("todo modify moudle ...")
-                            item_values = [object["items"][i]["expression"]]
+                            self.driver.find_element(By.XPATH, edit_element_position["ObjectPage_search_item_posXpath"]).send_keys(src_item + Keys.ENTER)
+                            self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_edit_item_posXpath"]).click()
+                            input_field = self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputItem_posXpath"].format(replaceValue=1))
+                            input_field.send_keys(Keys.CONTROL, 'a')  # 或使用 Keys.COMMAND 在 macOS
+                            input_field.send_keys(Keys.DELETE)
+                            if "&" in new_item:  # & 含有多个 and multiple substrings
+                                item_values = new_item.split("&")
+                            else:
+                                item_values = [new_item]
                         for j, item_value in enumerate(item_values):  # 遍历添加 multi substr，第一个元素不用点击 + 图标
                             item_value = item_value.strip()
                             temp_element_position = edit_element_position["objectPage_inputItem_posXpath"].format(replaceValue=j + 1)
@@ -59,15 +62,10 @@ class EditObjects:
                                     self.driver.find_element(By.XPATH, temp_element_position).send_keys(char)
                                     time.sleep(0.1)
                             else:
-                                self.driver.find_element(By.XPATH, edit_element_position["objectPage_item_value_plus_posXpath"]).click()
-                                for char in str(item_value):
-                                    self.driver.find_element(By.XPATH, temp_element_position).send_keys(char)
-                                    time.sleep(0.1)
+                                self.driver.find_element(By.XPATH, edit_element_position["ObjectPage_sameItem_addItem_posXpath"]).click()
+                                self.driver.find_element(By.XPATH, edit_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
                         self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
                 elif object_type in ["url", "account", "phone_number", "fqdn", "subscriberid", "apn"]:
-                    if object_type == "phone_number":
-                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_phnoeNumberType_posXpath"]).click()
-
                     if src_item == "":  # 编辑 新增 模式
                         self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()
                         item_value_str = new_item
@@ -278,7 +276,7 @@ class EditObjects:
                     # 如果修改Object的统计参数则进行操作
                     statistics_option_temp = object["statistics_option"]
                     time.sleep(1)
-                    if statistics_option_temp in {"None", "Brief", "Elaborate"}:
+                    if statistics_option_temp in {"brief", "elaborate"}:
                         self.driver.find_element(By.XPATH,edit_element_position["objectPage_statistics_select_posXpath"]).click()
                         element_dropdown_item = self.driver.find_element(By.XPATH, edit_element_position["objectPage_statistics_select_option_posXpath"].format(statistics_option_temp))
                         # 移动元素到页面，在执行点击

@@ -159,7 +159,7 @@ def run(parameter):
         
         verification_result = {
             "excepted_traffic_result": "vip.com",
-            "expected_metric": "",
+            "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key": "sc_rsp_decrypted", "query_value": ""},
                 {"query_field_key": "subscriber_id", "query_value": "test6494"},

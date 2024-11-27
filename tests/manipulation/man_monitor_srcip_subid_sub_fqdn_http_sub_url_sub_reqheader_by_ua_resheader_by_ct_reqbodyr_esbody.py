@@ -77,23 +77,6 @@ def run(parameter):
                 "negate_option": False,
                 "or_conditions": [
                 {
-                    "attribute_name": "ATTR_SERVER_FQDN",
-                    "name": "manipulation_fqdn",
-                    "type": "fqdn",
-                    "statistics_option": "none",
-                    "member_type": "item",
-                    "items": [
-                    {
-                        "op": "add",
-                        "expr_type": "and",
-                        "expression": "open.node.com"
-                    }]
-                }]
-            },
-            {
-                "negate_option": False,
-                "or_conditions": [
-                {
                     "attribute_name": "ATTR_HTTP_URL",
                     "name": "manipulation_url",
                     "type": "url",

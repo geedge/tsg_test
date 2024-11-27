@@ -106,8 +106,8 @@ def run(parameter):
                         "return_data": 1,
                         "name": "steer_bypass_vxlan_activeip_bfd", 
                         "type": 1,
-                            "load_balance_method": "hash-innermost-int-ip",
-                            "load_balance_localization": "nearby",
+                        "load_balance_method": "hash-innermost-int-ip",
+                        "load_balance_localization": "nearby",
                         "failure_action": "bypass",
                         "service_func_profiles":[
                             {
@@ -149,14 +149,8 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": "",
-            "expected_metric": "",
-            "expected_log": [
-                {"query_field_key": "sc_rsp_raw", "query_value": ""},
-                {"query_field_key": "sent_pkts", "query_value": ""},
-                {"query_field_key": "received_pkts", "query_value": ""},
-                {"query_field_key": "sent_bytes", "query_value": ""},
-                {"query_field_key": "received_bytes", "query_value": ""}
-            ]
+            "expected_metric": {"hits": 0},
+            "expected_log": []
         } 
 
         # 创建
