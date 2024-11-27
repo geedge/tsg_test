@@ -5,7 +5,7 @@ from support.ui_utils.element_position.profile_element_position import *
 from selenium.webdriver.common.by import By
 from datetime import datetime 
 
-class DeleteProfile:
+class DeleteProfiles:
     def __init__(self, driver):
         self.driver = driver
         

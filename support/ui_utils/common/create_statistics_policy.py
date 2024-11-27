@@ -9,9 +9,9 @@ from support.api_utils.log_in import LogIn
 from support.ui_utils.objects.create_objects import CreateObject
 from support.ui_utils.objects.search_objects import SearchObject
 from support.ui_utils.objects.delete_objects import DeleteObject
-from support.ui_utils.profiles.create_profile import CreateProfile
-from support.ui_utils.profiles.search_profile import SearchProfile
-from support.ui_utils.profiles.delete_profile import DeleteProfile
+from support.ui_utils.profiles.create_profiles import CreateProfile
+from support.ui_utils.profiles.search_profiles import SearchProfile
+from support.ui_utils.profiles.delete_profiles import DeleteProfile
 from support.ui_utils.policies.create_rules import CreateRule
 from support.ui_utils.policies.search_rules import SearchRule
 from support.ui_utils.policies.delete_rules import DeleteRule
