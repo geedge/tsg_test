@@ -366,8 +366,8 @@ class QueryRuleLog:
                                 else:
                                     temp_log_result_list.append(False)
                     elif query_field_key in {"sc_rsp_raw_uuid_list", "sc_rsp_decrypted_uuid_list"}:
-                        query_value = self.policy_configuration["action_parameter"]["sff_profiles"]
-                        if query_value == log_dict[query_field_key]:
+                        query_value = self.policy_configuration["action_parameter"]["sff_profiles"][0]["service_func_profiles"]
+                        if query_value == log[query_field_key]:
                             temp_log_result_list.append(True)
                         else:
                             temp_log_result_list.append(False)
@@ -380,7 +380,7 @@ class QueryRuleLog:
                             query_value = self.traffic_result["total_bytes_sent"]
                         elif query_field_key == "received_bytes":
                             query_value = self.traffic_result["total_bytes_received"]
-                        if query_value == log_dict[query_field_key]:
+                        if query_value == log[query_field_key]:
                             temp_log_result_list.append(True)
                         else:
                             temp_log_result_list.append(False)

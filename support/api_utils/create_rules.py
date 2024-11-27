@@ -18,7 +18,7 @@ class CreateRules:
         try:
             self.policy_configuration = policy_configuration
             object_uuids_list = list(self.object_uuids_tuple)
-            self.profile_uuids_list = list(self.profile_uuids_tuple)
+            profile_uuids_list = list(self.profile_uuids_tuple)
             if len(self.library_uuids_tuple) > 0:
                 library_uuids_list = list(self.library_uuids_tuple)
                 for i in range(len(library_uuids_list)):
@@ -89,7 +89,7 @@ class CreateRules:
             if len(protocol_field_condition_temp_list) > 0:
                 rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(protocol_field_condition_temp_list, object_uuids_list))
             if ("action_parameter" in policy_configuration.keys() and len(policy_configuration["action_parameter"]) > 0) or (rule_template_json["rule"]["type"] == "proxy_intercept"):
-                rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)
+                rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration, profile_uuids_list)
             if "effective_range" in policy_configuration.keys() and len(policy_configuration["effective_range"]) > 0:
                 rule_template_json["rule"]["effective_range"] = policy_configuration["effective_range"]
             # if rule_template_json["rule"]["type"] == "proxy_intercept":   # 添加action_parameter默认值
@@ -165,7 +165,7 @@ class CreateRules:
                 condition_list.append(temp_dict)
             return condition_list
 
-    def generate_rule_action_parameter(self, policy_configuration):
+    def generate_rule_action_parameter(self, policy_configuration, profile_uuids_list):
         action_parameter_dict = {}
         if policy_configuration["type"] == "security" and policy_configuration["action"] == "deny":
             action_parameter_dict["sub_action"] = policy_configuration["action_parameter"]["sub_action"]
@@ -235,7 +235,7 @@ class CreateRules:
             if policy_configuration["action_parameter"]["traffic_mirroring"]["enable"] == 1 and "vlanID" in policy_configuration["action_parameter"]["traffic_mirroring"]:
                 action_parameter_dict["traffic_mirroring"]["vlanID"] = policy_configuration["action_parameter"]["traffic_mirroring"]["vlanID"]
                 # action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]
-                action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = self.profile_uuids_list[0]["uuid"]
+                action_parameter_dict["traffic_mirroring"]["mirroring_profile"] = profile_uuids_list[0]["uuid"]
         elif policy_configuration["type"] == "statistics":   
             action_parameter_dict = {
                 "template_profile" : policy_configuration["action_parameter"]["template_profile"]
@@ -369,9 +369,11 @@ class CreateRules:
         elif policy_configuration["type"] == "service_chaining":
             action_parameter_dict = {
                 "targeted_traffic" : policy_configuration["action_parameter"]["targeted_traffic"],
-                "sff_profiles" : policy_configuration["action_parameter"]["sff_profiles"]
+                "sff_profiles" : []
             }
-
+            for profile in profile_uuids_list:
+                if profile["type"] == "service-function-forwarders":
+                    action_parameter_dict["sff_profiles"].append(profile["uuid"])
         return action_parameter_dict
 
     def create_preset_intercept_rules(self, policy_type, source_condition, enabled):
