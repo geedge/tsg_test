@@ -101,7 +101,7 @@ class QueryRuleLog:
                 else:
                     if self.traffic_generation["tool"] == "trex":
                         if self.rule_type == "dos_protection":
-                            log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='"
+                            log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'"
                         else:
                             log_filter = f"vsys_id in ({int(self.parameter['vsys'])}) AND client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                             log_condition_dict['filter'] = log_filter
