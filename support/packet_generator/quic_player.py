@@ -5,7 +5,7 @@ from datetime import datetime
 from aioquic.quic.configuration import QuicConfiguration
 from aioquic.asyncio.protocol import QuicConnectionProtocol
 
-async def send_quic_traffic(traffic_data, script_type, debug_flag):
+async def send_quic_traffic(traffic_data):
     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send quic traffic for effect verification.", flush=True)
     configuration = QuicConfiguration(is_client=True)
     # protocol = QuicConnectionProtocol("quic")

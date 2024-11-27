@@ -12,7 +12,7 @@ from scapy.layers.inet import IP, TCP
 from datetime import datetime
 
 class UnorderedTcpPlayer:
-    def send_unordered_tcp_traffic(self, traffic_data, script_type, debug_flag):
+    def send_unordered_tcp_traffic(self, traffic_data):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send tcp out of order traffic for effect verification.", flush=True)
         try:
             pcap = traffic_data["pcap_name"] + ".pcap"

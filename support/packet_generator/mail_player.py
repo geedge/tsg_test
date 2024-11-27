@@ -10,7 +10,7 @@ from email.header import Header
 from email import encoders
 
 class MailPlayer:
-    def send_mail_traffic(self, traffic_data, script_type, debug_flag):
+    def send_mail_traffic(self, traffic_data):
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to send mail traffic for effect verification.", flush=True)
         if "command" in traffic_data:
             p = subprocess.Popen(traffic_data["command"], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
