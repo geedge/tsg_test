@@ -139,7 +139,7 @@ def run(parameter):
         }
         verification_result = {
             "excepted_traffic_result": "baidu",
-            "expected_metric": "",
+            "expected_metric": {"hits": 1},
             "expected_log": []
         }
 
