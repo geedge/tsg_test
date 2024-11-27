@@ -267,7 +267,7 @@ if __name__ == '__main__':
         "test_imsi": "43458960456",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
+        "initiation_method": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,

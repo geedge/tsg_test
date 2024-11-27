@@ -261,13 +261,14 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.50.88",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
+        "initiation_method": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_negate_srcip_dstip_fqdn_ssl_steer_bypass_vxlan_activeip_bfd"
+        "test_case_name": "sc_raw_src_compliance_risk_library_dstip_fqdn_http_url_steer_bypass_vxlan_activeip_bfd"
     }
     run(parameter)
     """

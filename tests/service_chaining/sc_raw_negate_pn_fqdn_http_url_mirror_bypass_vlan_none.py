@@ -265,7 +265,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test2425",
         "test_phone_number": "12345678901",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
+        "initiation_method": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
