@@ -4,11 +4,12 @@ from support.ui_utils.element_position.profile_element_position import *
 from support.ui_utils.profiles.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 
-class SearchProfile:
+class SearchProfiles:
     def __init__(self, driver):
         self.driver = driver
 
-    def search(self, name, profile_element_position, vsys_name=""):
+    def search_profiles(self, name):
+        profile_element_position = {}
         search_element_position = profile_element_position["search"]
         page_jump_element_position = profile_element_position["page_jump"]
         # 打开该列表
