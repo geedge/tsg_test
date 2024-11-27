@@ -118,6 +118,54 @@ class QueryRuleLog:
                 response = requests.post(url, headers=headers, json=dsl_dict, verify=False)
                 job_dict = json.loads(response.text)
                 job_id = job_dict['data']['job']['job_id']
+                """
+                {"execution_mode":"oneshot","query_jobs":[{"id":"e9df1ca8-e270-427d-9baf-3c0e8fb13813","is_saved_query":0,"with_result":false}],"vsys":5}
+                {
+                    "code": 200,
+                    "msg": "Success",
+                    "data": [{
+                        "reason": null,
+                        "start_time": "2024-11-27T02:27:21Z",
+                        "is_done": true,
+                        "job_id": "e9df1ca8-e270-427d-9baf-3c0e8fb13813",
+                        "is_canceled": false,
+                        "done_progress": 1,
+                        "end_time": "2024-11-27T02:27:21Z",
+                        "links": {
+                            "status": "/v1/query/job/e9df1ca8-e270-427d-9baf-3c0e8fb13813",
+                            "count": "/v1/query/job/e9df1ca8-e270-427d-9baf-3c0e8fb13813/count",
+                            "list": "/v1/query/job/e9df1ca8-e270-427d-9baf-3c0e8fb13813/list",
+                            "timeline": "/v1/query/job/e9df1ca8-e270-427d-9baf-3c0e8fb13813/timeline"
+                        },
+                        "is_failed": false
+                    }],
+                    "success": true
+                }
+                query_job_dict = {
+                    "query_jobs": [{"id": job_id, "is_saved_query":0, "with_result":False}],
+                    "vsys": int(self.parameter["vsys"]), "limit": 20, "offset": 0
+                }
+                response = requests.post(url, headers=headers, json=query_job_dict, verify=False)
+                if response.status_code == 200:
+                    query_job_dict = json.loads(response.text)
+                    is_done = query_job_dict['data'][0]['is_done']
+                    is_failed = query_job_dict['data'][0]['is_failed']
+                    reason = query_job_dict['data'][0]["reason"]
+                if is_done and not is_failed:
+                    query_list_dict = {
+                        "query_jobs":[{"id": job_id,"query_option":"list"}],
+                        "vsys":int(self.parameter["vsys"]),"limit":20,"offset":0
+                    }
+                    response = requests.post(url, headers=headers, json=query_list_dict, verify=False)
+                    assert response.status_code == 200
+                    log_list = json.loads(response.text)
+                    log_list = log_list['data']['list']
+                    return log_list, ""
+                elif is_done and is_failed:
+                    return "", reason
+                else:
+                    return [], ""                
+                """
                 query_list_dict = {
                     "query_jobs":[{"id": job_id,"query_option":"list"}],
                     "vsys":int(self.parameter["vsys"]),"limit":20,"offset":0
