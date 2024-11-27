@@ -4,8 +4,8 @@ from selenium.webdriver.common.by import By
 
 from support.ui_utils.element_position.map_element_position_library import get_element_position
 from support.ui_utils.element_position.object_element_position import *
-from support.ui_utils.object.page_jump import PageJump
-from support.ui_utils.object.search_objects_example import SearchObjects
+from support.ui_utils.objects.page_jump import PageJump
+from support.ui_utils.objects.search_objects_example import SearchObjects
 class DeleteObjects:
 
     def __init__(self,driver):
