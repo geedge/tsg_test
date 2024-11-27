@@ -125,11 +125,11 @@ def run(parameter):
                         "certificate_checks": {
                             "approach": {
                                 "cn": 1,
-                                "issuer": 1,
-                                "self-signed": 1,
-                                "expiration": 1
+                                "issuer": 0,
+                                "self-signed": 0,
+                                "expiration": 0
                             },
-                            "fail_action": "pass-through"  #fail-close
+                            "fail_action": "fail-close"
                         },
                         "dynamic_bypass": {
                             "ev_cert": 0,

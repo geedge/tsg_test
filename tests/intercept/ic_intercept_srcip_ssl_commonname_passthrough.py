@@ -90,8 +90,10 @@ def run(parameter):
                             "trusted_root_cert_is_not_installed_on_client": 0
                         },
                         "protocol_version": {
-                            "mirror_client": 0,
-                            "allow_http2": 1
+                            "mirror_client": 1,
+                            "allow_http2": 1,
+                            "min": "tls12",
+                            "max": "tls13"
                         }
                     }
                 }

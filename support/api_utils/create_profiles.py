@@ -88,7 +88,7 @@ class CreateProfiles:
                 profile_uuids_temp_dict["uuid"] = mirroring_uuids
                 profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"]["name"]
                 profile_uuids_list.append(profile_uuids_temp_dict)
-                # policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"] = mirroring_uuids
+                policy_configuration["action_parameter"]["traffic_mirroring"]["mirroring_profile"] = mirroring_uuids
             elif "replacement_file" in policy_configuration["action_parameter"].keys():
                 profile_type = "proxy-replacement-files"
                 replacement_uuids, replacement_temp = self.create_file_upload_profiles(
@@ -145,48 +145,49 @@ class CreateProfiles:
                     profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["profile_chain"]["name"]
                     profile_uuids_list.append(profile_uuids_temp_dict)
                 policy_configuration["action_parameter"]["profile_chain"] = traffic_shaping_profile_list
-            elif "tcp_option_profile" in policy_configuration["action_parameter"].keys():
-                profile_type = "proxy-tcp-option-profiles"
-                tcp_option_uuids, tcp_option_temp = self.create_text_profiles(policy_configuration["action_parameter"]["tcp_option_profile"], profile_type)
-                profile_uuids_temp_dict = {}
-                profile_uuids_temp_dict["type"] = profile_type
-                profile_uuids_temp_dict["uuid"] = tcp_option_uuids
-                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["tcp_option_profile"]["name"]
-                profile_uuids_list.append(profile_uuids_temp_dict)
-                policy_configuration["action_parameter"]["tcp_option_profile"] = tcp_option_uuids
-            elif "keyring_for_trusted" in policy_configuration["action_parameter"].keys():
-                profile_type = "decryption-keyrings"
-                keyring_for_trusted_uuids, keyring_for_trusted_temp = self.create_file_upload_profiles(
-                    policy_configuration["action_parameter"]["keyring_for_trusted"], profile_type,
-                    policy_configuration["action_parameter"]["keyring_for_trusted"]["public_file"],
-                    policy_configuration["action_parameter"]["keyring_for_trusted"]["private_file"])
-                profile_uuids_temp_dict = {}
-                profile_uuids_temp_dict["type"] = profile_type
-                profile_uuids_temp_dict["uuid"] = keyring_for_trusted_uuids
-                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["keyring_for_trusted"]["name"]
-                profile_uuids_list.append(profile_uuids_temp_dict)
-                policy_configuration["action_parameter"]["keyring_for_trusted"] = keyring_for_trusted_uuids
-            elif "keyring_for_untrusted" in policy_configuration["action_parameter"].keys():
-                profile_type = "decryption-keyrings"
-                keyring_for_untrusted_uuids, keyring_for_untrusted_temp = self.create_file_upload_profiles(
-                    policy_configuration["action_parameter"]["keyring_for_untrusted"], profile_type,
-                    policy_configuration["action_parameter"]["keyring_for_untrusted"]["public_file"],
-                    policy_configuration["action_parameter"]["keyring_for_untrusted"]["private_file"])
-                profile_uuids_temp_dict = {}
-                profile_uuids_temp_dict["type"] = profile_type
-                profile_uuids_temp_dict["uuid"] = keyring_for_untrusted_uuids
-                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["keyring_for_trusted"]["name"]
-                profile_uuids_list.append(profile_uuids_temp_dict)
-                policy_configuration["action_parameter"]["keyring_for_untrusted"] = keyring_for_untrusted_uuids
-            elif "decryption_profile" in policy_configuration["action_parameter"].keys():
-                profile_type = "decryption-profiles"
-                decryption_uuids, decryption_temp = self.create_text_profiles(policy_configuration["action_parameter"]["decryption_profile"], profile_type)
-                profile_uuids_temp_dict = {}
-                profile_uuids_temp_dict["type"] = profile_type
-                profile_uuids_temp_dict["uuid"] = decryption_uuids
-                profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["keyring_for_trusted"]["name"]
-                profile_uuids_list.append(profile_uuids_temp_dict)
-                policy_configuration["action_parameter"]["decryption_profile"] = decryption_uuids
+            if policy_configuration["type"] == "proxy_intercept":
+                if "tcp_option_profile" in policy_configuration["action_parameter"].keys():
+                    profile_type = "proxy-tcp-option-profiles"
+                    tcp_option_uuids, tcp_option_temp = self.create_text_profiles(policy_configuration["action_parameter"]["tcp_option_profile"], profile_type)
+                    profile_uuids_temp_dict = {}
+                    profile_uuids_temp_dict["type"] = profile_type
+                    profile_uuids_temp_dict["uuid"] = tcp_option_uuids
+                    profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["tcp_option_profile"]["name"]
+                    profile_uuids_list.append(profile_uuids_temp_dict)
+                    policy_configuration["action_parameter"]["tcp_option_profile"] = tcp_option_uuids
+                if "keyring_for_trusted" in policy_configuration["action_parameter"].keys():
+                    profile_type = "decryption-keyrings"
+                    keyring_for_trusted_uuids, keyring_for_trusted_temp = self.create_file_upload_profiles(
+                        policy_configuration["action_parameter"]["keyring_for_trusted"], profile_type,
+                        policy_configuration["action_parameter"]["keyring_for_trusted"]["public_file"],
+                        policy_configuration["action_parameter"]["keyring_for_trusted"]["private_file"])
+                    profile_uuids_temp_dict = {}
+                    profile_uuids_temp_dict["type"] = profile_type
+                    profile_uuids_temp_dict["uuid"] = keyring_for_trusted_uuids
+                    profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["keyring_for_trusted"]["name"]
+                    profile_uuids_list.append(profile_uuids_temp_dict)
+                    policy_configuration["action_parameter"]["keyring_for_trusted"] = keyring_for_trusted_uuids
+                if "keyring_for_untrusted" in policy_configuration["action_parameter"].keys():
+                    profile_type = "decryption-keyrings"
+                    keyring_for_untrusted_uuids, keyring_for_untrusted_temp = self.create_file_upload_profiles(
+                        policy_configuration["action_parameter"]["keyring_for_untrusted"], profile_type,
+                        policy_configuration["action_parameter"]["keyring_for_untrusted"]["public_file"],
+                        policy_configuration["action_parameter"]["keyring_for_untrusted"]["private_file"])
+                    profile_uuids_temp_dict = {}
+                    profile_uuids_temp_dict["type"] = profile_type
+                    profile_uuids_temp_dict["uuid"] = keyring_for_untrusted_uuids
+                    profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["keyring_for_untrusted"]["name"]
+                    profile_uuids_list.append(profile_uuids_temp_dict)
+                    policy_configuration["action_parameter"]["keyring_for_untrusted"] = keyring_for_untrusted_uuids
+                if "decryption_profile" in policy_configuration["action_parameter"].keys():
+                    profile_type = "decryption-profiles"
+                    decryption_uuids, decryption_temp = self.create_text_profiles(policy_configuration["action_parameter"]["decryption_profile"], profile_type)
+                    profile_uuids_temp_dict = {}
+                    profile_uuids_temp_dict["type"] = profile_type
+                    profile_uuids_temp_dict["uuid"] = decryption_uuids
+                    profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["decryption_profile"]["name"]
+                    profile_uuids_list.append(profile_uuids_temp_dict)
+                    policy_configuration["action_parameter"]["decryption_profile"] = decryption_uuids
             profile_uuids_tuple = tuple(profile_uuids_list)
             return profile_uuids_tuple, ""
         except Exception as e:
