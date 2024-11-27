@@ -18,11 +18,12 @@ from support.ui_utils.profiles.create_tcp_proxy_profile import CreateTcpProxyPro
 from support.ui_utils.profiles.create_traffic_mirroring_profile import CreateMonitorProfile
 from datetime import datetime
 
-class CreateProfile:
+class CreateProfiles:
     def __init__(self, driver):
         self.driver = driver
 
-    def create(self, profile_data, profile_element_position):
+    def create_profiles(self, policy_configuration):
+        profile_element_position = {}
         page_jump_element_position = profile_element_position["page_jump"]
         create_element_position = profile_element_position["create"]
         try:
@@ -31,24 +32,24 @@ class CreateProfile:
             page_jump.jump_sub_profile_page(page_jump_element_position)
             # 点击create
             self.driver.find_element(By.XPATH, create_element_position["profileListPage_createButton_posXpath"]).click()
-            if profile_data["profile_type"] == "response_page":  # response page创建
-                self._create_response_page(profile_data["profile_file"])
-            elif profile_data["profile_type"] == "statistics_template":  # response page创建
-                self._create_statistics_template_page(profile_data)
-            elif profile_data["profile_type"] == "hijack_file":    # hijack file 创建
-                self._create_hijack_file(profile_data["profile_file"])
-            elif profile_data["profile_type"] == "insert_script":    # insert script 创建
-                self._create_insert_script(profile_data["profile_file"])
-            elif profile_data["profile_type"] == "run_script":    # run script 创建
-                self._create_run_script(profile_data["profile_file"])
-            elif profile_data["profile_type"] == "ssl_keyring":    # ssl decrpytion keyring 创建
-                self._create_run_ssl_decryption_keyring(profile_data["profile_file"])
-            elif profile_data["profile_type"] == "ssl_decryption":    # ssl decrpytion profile 创建
-                self._create_run_ssl_decryption_profile(profile_data["profile_file"])
-            elif profile_data["profile_type"] == "tcp_option":  # tcp proxy 创建
-                self._create_run_tcp_proxy_profile(profile_data["profile_file"])
-            elif profile_data["profile_type"] == "traffic_mirror":  # traffic mirror 创建
-                self._create_traffic_mirroring_profile(profile_data["profile_file"])
+            if policy_configuration["profile_type"] == "response_page":  # response page创建
+                self._create_response_page(policy_configuration["profile_file"])
+            elif policy_configuration["profile_type"] == "statistics_template":  # response page创建
+                self._create_statistics_template_page(policy_configuration)
+            elif policy_configuration["profile_type"] == "hijack_file":    # hijack file 创建
+                self._create_hijack_file(policy_configuration["profile_file"])
+            elif policy_configuration["profile_type"] == "insert_script":    # insert script 创建
+                self._create_insert_script(policy_configuration["profile_file"])
+            elif policy_configuration["profile_type"] == "run_script":    # run script 创建
+                self._create_run_script(policy_configuration["profile_file"])
+            elif policy_configuration["profile_type"] == "ssl_keyring":    # ssl decrpytion keyring 创建
+                self._create_run_ssl_decryption_keyring(policy_configuration["profile_file"])
+            elif policy_configuration["profile_type"] == "ssl_decryption":    # ssl decrpytion profile 创建
+                self._create_run_ssl_decryption_profile(policy_configuration["profile_file"])
+            elif policy_configuration["profile_type"] == "tcp_option":  # tcp proxy 创建
+                self._create_run_tcp_proxy_profile(policy_configuration["profile_file"])
+            elif policy_configuration["profile_type"] == "traffic_mirror":  # traffic mirror 创建
+                self._create_traffic_mirroring_profile(policy_configuration["profile_file"])
             # 其它 profile创建
             return 200
         except Exception as e:

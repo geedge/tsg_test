@@ -134,7 +134,7 @@ def run(parameter):
         }
 
         verification_result = {
-            "excepted_traffic_result": "",
+            "excepted_traffic_result": {'total_packets': 175, 'total_packets_sent': 45, 'total_packets_received': 130, 'total_bytes': 180025, 'total_bytes_sent': 5799, 'total_bytes_received': 174226, 'total_syn_pkt': 1},
             "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key": "sc_rsp_raw_uuid_list", "query_value": ""},
@@ -256,7 +256,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": ""
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)
     """

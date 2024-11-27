@@ -19,6 +19,10 @@ from support.api_utils.delete_rules import DeleteRules as DeleteRulesAPI
 from support.ui_utils.objects.search_objects_example import SearchObjects
 from support.ui_utils.objects.delete_objects_example import DeleteObjects
 from support.ui_utils.objects.edit_objects_example import EditObjects
+from support.ui_utils.profiles.create_profiles import CreateProfiles
+from support.ui_utils.profiles.search_profiles import SearchProfiles
+from support.ui_utils.profiles.edit_profiles import EditProfiles
+from support.ui_utils.profiles.delete_profiles import DeleteProfiles
 
 class UIClient:
     def __init__(self, parameter):
@@ -46,7 +50,18 @@ class UIClient:
     def delete_objects(self, objects_tuple):
         objects = DeleteObjects(self.driver)
         objects.delete(self.parameter, objects_tuple)
-    
+
+    def create_profiles(self, policy_configuration):
+        profiles = CreateProfiles(self.driver)
+        code = profiles.create_profiles(policy_configuration)
+        return code
+
+    def search_profiles(self, policy_configuration):
+        profiles = SearchProfiles(self.driver)
+        profile_tuple, code = profiles.search_profiles(policy_configuration)
+        self.profile_tuple = profile_tuple
+        return profile_tuple, code
+
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration
         rules = CreateRules(self.driver)

@@ -91,7 +91,7 @@ def run(parameter):
 
         traffic_generation = {
             "tool": "ssl",  # or trex/http
-             "command": "curl -kv https://www.youtube.com"
+            "command": "curl -kv https://www.youtube.com"
         }
 
         verification_result = {

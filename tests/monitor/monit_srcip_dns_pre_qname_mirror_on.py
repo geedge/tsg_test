@@ -136,13 +136,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        # print(current_utc_time)
-        # 减去 10 秒
-        # adjusted_time = current_utc_time - timedelta(seconds=25)
-        # start_time = adjusted_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-        # print(start_time)
         start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-        print(start_time)
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
