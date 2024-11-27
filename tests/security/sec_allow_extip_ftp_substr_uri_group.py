@@ -62,8 +62,9 @@ def run(parameter):
                             "attribute_name": "ATTR_FTP_URI",
                             "type": "url",
                             "statistics_option": "brief",
-                            "name": "sec_url_group",
-                            "included_sub_object_uuids":[
+                            "member_type": "subordinate",
+                            "name": "sec_url_group",     # "included_sub_object_uuids"
+                            "included_sub_objects":[
                                 {
                                     "attribute_name": "ATTR_FTP_URI",
                                     "type": "url",
@@ -77,7 +78,7 @@ def run(parameter):
                                     ],
                                 }
                             ],
-                            "excluded_sub_object_uuids": [
+                            "excluded_sub_objects": [
                                 {
                                     "attribute_name": "ATTR_FTP_URI",
                                     "type": "url",
