@@ -4,6 +4,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 import time
 import pytz
 from datetime import datetime
+from support.ui_utils.element_position.map_element_position_library import replace_paras
 from support.ui_utils.workpath import workdir
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
@@ -41,7 +42,7 @@ def run(parameter):
                             "items": [
                                 {
                                     "op": "add",
-                                    "ip": "10.64.224.25",
+                                    "ip": "10.64.224.3",
                                     "interval": "0-65535"
                                 }
                             ]
@@ -153,7 +154,7 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": "",
-            "expected_metric": "",
+            "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key": "sc_rsp_raw", "query_value": ""},
                 {"query_field_key": "sent_pkts", "query_value": ""},
@@ -248,13 +249,11 @@ def run(parameter):
             if profiles_tuple:
                 api_client.delete_profiles(profiles_tuple)
 
-        # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Finish test case: " + parameter["test_case_name"], flush=True)
+        # 脚本结束时间和耗时
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
 
         # 生成csv报告
         update = ReportUpdate()
@@ -267,15 +266,16 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.50.88",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
+        "initiation_method": "api",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys": 5,
         "is_log": 1,
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
         "test_case_name": ""
     }
+    parameter = replace_paras(parameter)
     run(parameter)
     """
     # 在测试文件的当前路径执行如下命令执行测试用例：

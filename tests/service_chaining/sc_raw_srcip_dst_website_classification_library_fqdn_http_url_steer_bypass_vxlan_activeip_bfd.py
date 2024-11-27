@@ -176,7 +176,7 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": "",
-            "expected_metric": "",
+            "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key": "sc_rsp_raw", "query_value": ""},
                 {"query_field_key": "sent_pkts", "query_value": ""},
@@ -209,7 +209,7 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.50.88",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "initiation_method": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,

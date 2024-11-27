@@ -41,10 +41,19 @@ def local_run():
 
     all_list = os.listdir()
     man_list = []    # 要执行的测试文件名称
+    tmp_no = ["pre_reqheader", "xly_reqheader", "suff_reqheader", "pre_resheader", "xly_resheader", "pre_resheader", "doh"]
     for i in all_list:
         if "man_" in i:
             i_1 = i[:-3]
-            man_list.append(i_1)
+            # 临时过滤掉不执行header的其它匹配
+            flag_1 = 0
+            for j in range(len(tmp_no)):
+                if tmp_no[j] in i_1:
+                    flag_1 = 1
+                    break
+            if flag_1 == 0:
+                man_list.append(i_1)
+
 
     n = 1
     sum_all = len(man_list)
@@ -962,10 +971,10 @@ if __name__ == '__main__':
     file_endswith = ".py"
 
     # 本地运行所有用例
-    #local_run()
+    local_run()
 
     # 对比MS工具
-    diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
+    # diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
     # 生成excle使用数据工具
     #get_excel_formate_from_case(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
