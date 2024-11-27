@@ -5,9 +5,9 @@ from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.object_element_position import *
 from support.ui_utils.element_position.profile_element_position import *
 from support.ui_utils.element_position.log_element_position import *
-from support.ui_utils.policy.create_rules import CreateRules
-from support.ui_utils.policy.search_rules import SearchRules
-from support.ui_utils.policy.delete_rules import DeleteRules
+from support.ui_utils.policies.create_rules import CreateRules
+from support.ui_utils.policies.search_rules import SearchRules
+from support.ui_utils.policies.delete_rules import DeleteRules
 from support.packet_generator.workpath import workdir
 import configparser
 import os

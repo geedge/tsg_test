@@ -4,11 +4,11 @@ import sys
 import time
 from traceback import print_tb
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.ui_utils.object.page_jump import PageJump
+from support.ui_utils.objects.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.map_element_position_library import *
-from support.ui_utils.object.search_objects import SearchObject
+from support.ui_utils.objects.search_objects import SearchObject
 
 class EditObjects:
     def __init__(self, driver):

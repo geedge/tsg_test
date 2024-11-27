@@ -5,7 +5,7 @@ import time
 from datetime import datetime
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
-from support.ui_utils.policy.edit_rules import EditRules
+from support.ui_utils.policies.edit_rules import EditRules
 from support.packet_generator.workpath import workdir
 
 class QueryRuleMetric:

@@ -6,16 +6,16 @@ from support.common_utils.data_translation import DataTranslation
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.api_utils.log_in import LogIn
-from support.ui_utils.object.create_objects import CreateObject
-from support.ui_utils.object.search_objects import SearchObject
-from support.ui_utils.object.delete_objects import DeleteObject
-from support.ui_utils.profile.create_profile import CreateProfile
-from support.ui_utils.profile.search_profile import SearchProfile
-from support.ui_utils.profile.delete_profile import DeleteProfile
-from support.ui_utils.policy.create_rules import CreateRule
-from support.ui_utils.policy.search_rules import SearchRule
-from support.ui_utils.policy.delete_rules import DeleteRule
-from support.ui_utils.policy.edit_rules import EditRule
+from support.ui_utils.objects.create_objects import CreateObject
+from support.ui_utils.objects.search_objects import SearchObject
+from support.ui_utils.objects.delete_objects import DeleteObject
+from support.ui_utils.profiles.create_profile import CreateProfile
+from support.ui_utils.profiles.search_profile import SearchProfile
+from support.ui_utils.profiles.delete_profile import DeleteProfile
+from support.ui_utils.policies.create_rules import CreateRule
+from support.ui_utils.policies.search_rules import SearchRule
+from support.ui_utils.policies.delete_rules import DeleteRule
+from support.ui_utils.policies.edit_rules import EditRule
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verify_deprecated import Verify

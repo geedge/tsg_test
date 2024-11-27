@@ -6,7 +6,7 @@ from selenium.webdriver import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.ui_utils.profile.page_jump import PageJump
+from support.ui_utils.profiles.page_jump import PageJump
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 from selenium.webdriver.common.action_chains import ActionChains
