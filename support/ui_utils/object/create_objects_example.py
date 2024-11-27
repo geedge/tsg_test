@@ -25,7 +25,7 @@ class CreateObjects:
         #     if isinstance(temp_object_configuration, dict):
         #         object_configuration.append(temp_object_configuration)
         code_list = []
-        if "and_conditions" in configuration.keys():
+        if isinstance(configuration,dict) and "and_conditions" in configuration.keys():
             and_conditions = configuration["and_conditions"]
             for i in range(len(and_conditions)):
                 or_conditions = and_conditions[i]["or_conditions"]

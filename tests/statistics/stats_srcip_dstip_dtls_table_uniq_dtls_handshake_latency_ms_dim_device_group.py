@@ -207,7 +207,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        traffic_start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
@@ -238,7 +238,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, traffic_start_time,
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time,
                                                          traffic_result)
         if metric_result == True:
             test_summary["metric"] = "Pass."
@@ -277,9 +277,9 @@ def run(parameter):
                 print("No Profiles to be delete!")
             else:
                 api_client.delete_profiles(profiles_tuple)
-        # 统计脚本用时
+        # 脚本结束时间和耗时
         end_time = time.time()
-        # 统计脚本用时
+        # 脚本结束时间和耗时
         end_time = time.time()
         duration = end_time - datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ').timestamp()
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],

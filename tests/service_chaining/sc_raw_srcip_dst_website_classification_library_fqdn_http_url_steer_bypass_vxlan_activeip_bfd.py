@@ -1,163 +1,189 @@
-# -*- coding: UTF-8 -*-
-import time
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-import traceback
+import time
+import pytz
 from datetime import datetime
-from support.common_utils.create_policy import CreatePolicy
+from support.ui_utils.workpath import workdir
+from support.ui_utils.ui_client import UIClient
+from support.api_utils.api_client import APIClient
+from support.packet_generator.traffic_generator import *
 from support.report_update import ReportUpdate
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
+
         # 参数初始化
-        exception_result = ""
-        result = {}
-        
+        result, exception_result = "", ""
+        test_summary = {}
+
         # 脚本启动时间
         script_start_time = time.time()
 
         # 测试数据
-        test_data = {
-            "is_multi_priority": False,
-            "rule_num": 1,
-            "policy_type": "service_chaining",
-            "rule_name": "sc_raw_srcip_dst_website_classification_library_fqdn_http_url_steer_bypass_vxlan_activeip_bfd",
-            "rule_action": "service_chaining",
-            "targeted_traffic": "raw",
-            "rule_type": "create",
-            "condition": {
-                "source_ip": [
-                    {
-                        "name": "service_chaining_source_ip",
-                        "object_type": "ip",
-                        "select_type": False,
-                        "negate": False,
-                        "item": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "ipv4",
-                                "item_value": "10.64.224.25"
-                            }
-                        ]
-                    }
-                ],
-                "source_port": [],
-                "destination_ip": [],
-                "destination_library":[
-                    {
-                        "category":"website_classification",
-                        "catalogs":[
-                            {
-                                "op":"add",
-                                "ip_entries":"1.1.1.1-2.2.2.2"
-                            }
-                        ],
-                        "tags":[
-                            {
-                                "tag_key":"AutoTest",
-                                "tag_value":"Website Classification",
-                                "op":"add"
-                            }
-                        ],
-                        "negate": False,
-                    }  
-                ],
-                "destination_port": [],
-                "internal_ip": [],
-                "internal_port": [],
-                "external_ip": [],
-                "external_port": [],
-                "geography": [],
-                "sub_id": [],
-                "device": [],
-                "tunnel": [],
-                "tunnel_level": [],
-                "flag": [],
-                "application": [
-                    {
-                        "name": "http",  
-                        "object_type": "application",
-                        "negate": False
-                    }
-                ],
-                "server_fqdn": [
-                    {
-                        "name": "service_chaining_fqdn",
-                        "object_type": "fqdn",
-                        "select_type": False,
-                        "negate": False,
-                        "plus": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_value": "ct.cn",
-                            }
-                        ]
-                    }
-                ],
-
-                "protocol_filed": [
-                    {
-                        "name": "service_chaining_url",
-                        "object_type": "url",
-                        "item_operation": "add",
-                        "select_type": False,
-                        "negate": False,
-                        "items": [
-                            {
-                                "item_operation": "add",
-                                "item_type": "url",
-                                "item_value": "ct.cn/"
-                            }
-                        ],
-                    },
-                ],
-                "sub_action_override": False,
-                "sub_action": [],
-                "packet_capture": [],
-            },
-            "multiProfile": True,
-            "profile": [
+        policy_configuration = {
+            
+            "type": "service_chaining",
+            "name": os.path.basename(__file__)[:-3],
+            "action": "service_chaining",
+            "and_conditions": [
                 {
-                    "name": "steer_bypass_vxlan_activeip_bfd",
-                    "profile_type": "create",
-                    "type": "steering",
-                    "load_balance_method": "hash_int-ip",
-                    "load_balance_localization": "nearby",
-                    "failure_action": "Bypass",
-                    "service_functions": [
+                    "negate_option": False,
+                    "or_conditions": [
                         {
-                            "name": "vxlan_activeip_bfd",
-                            "profile_type": "create",
-                            "device_group": "Device_Group:group-xxg-tsgx",
-                            "connectivity": "VXLAN-G:2.2.2.53",
-                            "health_check": "BFD:200:5",
-                            "enable": "on"
+                            "attribute_name": "ATTR_SOURCE_IP",
+                            "type": "ip",
+                            "sub_type": "ip",
+                            "statistics_option": "none",
+                            "member_type": "item",
+                            "name": "service_chaining_source_ip",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "ip": "10.64.224.25",
+                                    "interval": "0-65535"
+                                }
+                            ]
                         }
                     ]
-                }
-            ],
-            "log_query_param": [{"query_field_key": "sc_rsp_raw", "query_value": ""},
-                                {"query_field_key": "sent_pkts", "query_value": ""},
-                                {"query_field_key": "received_pkts", "query_value": ""},
-                                {"query_field_key": "sent_bytes", "query_value": ""},
-                                {"query_field_key": "received_bytes", "query_value": ""}],
-            "traffic":{
-                    "protocol": "",
-                    "type": "trex",
-                    "clients_start_ip": "192.168.64.86",
-                    "clients_end_ip": "192.168.64.86",
-                    "servers_start_ip": "2.1.1.1",
-                    "servers_end_ip": "2.1.1.2",
-                    "m": 1,
-                    "d": 1,
-                    "yaml_name": "test",
-                    "pcap_name": "http_get_347pkts"
+                }, 
+                {
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_DESTINATION_IP",
+                            "type":"library",
+                            "catalog":[
+                                {
+                                    "category" : "website_classification",
+                                    "ip_entries":[
+                                         {
+                                            "op" : "add",
+                                            "ip" : "1.1.1.1-2.2.2.2"
+                                         }
+                                    ],
+                                    "tag": [
+                                        {
+                                            "category": "website_classification",
+                                            "parent_uuid": 0,
+                                            "tag_key": "AutoTest",
+                                            "tag_value": "Website Classification"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 },
-            "expected_return":"",
-            "token": ""
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_APP_ID",
+                            "type": "application",
+                            "items": ["http"]
+                        }
+                    ]
+                },
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_SERVER_FQDN",
+                            "type": "fqdn",
+                            "member_type": "item",
+                            "name": "service_chaining_fqdn",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "expr_type": "and",
+                                    "expression": "ct.cn",
+                                }
+                            ]
+                        }
+                    ],
+                },
+                
+                {
+                    "negate_option": False,
+                    "or_conditions": [
+                        {
+                            "attribute_name": "ATTR_HTTP_URL",
+                            "type": "url",
+                            "member_type": "item",
+                            "name": "service_chaining_http_url",
+                            "items": [
+                                {
+                                    "op": "add",
+                                    "expr_type": "and",
+                                    "expression": "ct.cn/"
+                                }
+                            ]
+                        }
+                    ]
+                },
+            ],
+            "action_parameter": {
+                "targeted_traffic": "raw", 
+                "sff_profiles":
+                [
+                    {
+                        "vsys": 1,
+                        "return_data": 1,
+                        "name": "steer_bypass_vxlan_activeip_bfd", 
+                        "type": 1,
+                        "load_balance_method": "hash-int-ip",
+                        "load_balance_localization": "nearby",
+                        "failure_action": "bypass",
+                        "service_func_profiles":[
+                            {
+                                "name":"vxlan_activeip_bfd",
+                                "admin_status": 1,
+                                "device_group":{
+                                    "value": "group-xxg-tsgx",
+                                    "tag": "device_group"
+                                },
+                                "connectivity": {
+                                    "method": "vxlan_g",
+                                    "dest_ip" : "2.2.2.53"
+                                },    
+                                "health_check": {
+                                    "method": "bfd",
+                                    "interval_ms": 200,
+                                    "retires": 5
+                                }
+                            }
+                        ]
+                    }
+                ]
+            },
+            "is_enabled": 1,
+            "log_option": "metadata",
+        }
+
+        traffic_generation = {
+            "tool": "trex",  # or trex/http
+            "clients_start_ip": "10.64.225.22",
+            "clients_end_ip": "10.64.225.22",
+            "servers_start_ip": "10.64.226.22",
+            "servers_end_ip": "10.64.226.22",
+            "m": 1,
+            "d": 1,
+            "yaml_name": "test",
+            "pcap_name": "http_get_347pkts"
+        }
+
+        verification_result = {
+            "excepted_traffic_result": "",
+            "expected_metric": "",
+            "expected_log": [
+                {"query_field_key": "sc_rsp_raw", "query_value": ""},
+                {"query_field_key": "sent_pkts", "query_value": ""},
+                {"query_field_key": "received_pkts", "query_value": ""},
+                {"query_field_key": "sent_bytes", "query_value": ""},
+                {"query_field_key": "received_bytes", "query_value": ""}
+            ]
         }
 
         # 测试用例实例化
@@ -171,17 +197,7 @@ def run(parameter):
               "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
-        return result
-    except Exception as e:
-        exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
-              flush=True)
-        traceback.print_exc()
-        return "Error: " + str(e)
-    finally:
-        # 清理环境
-        if isinstance(create, CreatePolicy):
-            create.clean_up()
+
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
@@ -193,14 +209,14 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.50.88",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "initiation_method": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_srcip_dst_website_classification_library_fqdn_http_url_steer_bypass_vxlan_activeip_bfd"
+        "test_case_name": "schttp_url_steer_bypass_vxlan_activeip_bfd"
     }
     run(parameter)
     """

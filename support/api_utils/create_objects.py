@@ -33,29 +33,29 @@ class CreateObjects:
                                     object_template_json["object"]["member_type"] = "tunnel"
                                 else:
                                     object_template_json["object"]["member_type"] = "item"
-                                if "excluded_sub_object_uuids" in  object_temp[j]:
+                                if "excluded_sub_objects" in  object_temp[j]:
                                     object_template_json["object"]["excluded_sub_object_uuids"] = []
-                                    excluded_object_temp = object_temp[j]["excluded_sub_object_uuids"]
+                                    excluded_object_temp = object_temp[j]["excluded_sub_objects"]
                                     for v in range(len(excluded_object_temp)):
                                         object_uuids_list.append(self.create_common_objects(object_template_json, excluded_object_temp[v], ""))
                                     filter_object_uuids_list = [item for item in object_uuids_list if "type" in item and item["type"] == object_temp[j]["type"]] 
                                     object_template_json["object"]["excluded_sub_object_uuids"].append(filter_object_uuids_list[0]["uuid"])
-                                if "included_sub_object_uuids" in  object_temp[j]:
+                                if "included_sub_objects" in  object_temp[j]:
                                     object_template_json["object"]["included_sub_object_uuids"] = []
-                                    include_object_temp = object_temp[j]["included_sub_object_uuids"]
+                                    include_object_temp = object_temp[j]["included_sub_objects"]
                                     for u in range(len(include_object_temp)):
                                         object_uuids_list.append(self.create_common_objects(object_template_json, include_object_temp[u], ""))
                                     filter_object_uuids_list = [item for item in object_uuids_list if "type" in item and item["type"] == object_temp[j]["type"]]  
                                     object_template_json["object"]["included_sub_object_uuids"].append(filter_object_uuids_list[1]["uuid"])
                                     # included_sub_object_uuids 在group 中必定会存在
-                                    object_template_json["object"]["member_type"] = "subordinate"
+                                    object_template_json["object"]["member_type"] = object_temp[j]["member_type"]
                                     object_template_json["object"]["statistics_option"] = object_temp[j]["statistics_option"]
                                     if "items" in object_template_json["object"]:
                                         del object_template_json["object"]["items"]
                                     if object_temp[j]["type"] not in ["ip", "mobile_identity"]:
                                         del object_template_json["object"]["sub_type"]
                                     object_uuids_list.append(self.create_common_objects(object_template_json, object_temp[u], ""))
-                                if object_temp[j]["type"] != "tunnel" and "included_sub_object_uuids" not in object_temp[j]:
+                                if object_temp[j]["type"] != "tunnel" and "included_sub_objects" not in object_temp[j]:
                                     object_uuids_list.append(self.create_common_objects(object_template_json, object_temp[j], ""))
                                 elif object_temp[j]["type"] == "tunnel":
                                     tunnel = {}
@@ -82,10 +82,10 @@ class CreateObjects:
                                 object_template_json["object"]["type"] = object_temp[j]["type"]
                                 if "sub_type" in object_temp[j]:
                                     object_template_json["object"]["sub_type"] = object_temp[j]["sub_type"]
-                                if "excluded_sub_object_uuids" in object_temp[j]:
+                                if "excluded_sub_objects" in object_temp[j]:
                                     object_uuids_temp_dict = {}
                                     object_template_json["object"]["excluded_sub_object_uuids"] = []
-                                    excluded_object_temp = object_temp[j]["excluded_sub_object_uuids"]
+                                    excluded_object_temp = object_temp[j]["excluded_sub_objects"]
                                     for x in range(len(excluded_object_temp)):
                                         item_temp = excluded_object_temp[x]["items"]
                                         object_uuids_temp_dict["uuid"] = self.query_uuids_by_sql(item_temp, excluded_object_temp[x]["type"])
@@ -94,10 +94,10 @@ class CreateObjects:
                                         object_uuids_list.append(object_uuids_temp_dict)
                                     filter_object_uuids_list = [item for item in object_uuids_list if "type" in item and item["type"] == object_temp[j]["type"]] 
                                     object_template_json["object"]["excluded_sub_object_uuids"] = filter_object_uuids_list[0]["uuid"]
-                                if "included_sub_object_uuids" in object_temp[j]:
+                                if "included_sub_objects" in object_temp[j]:
                                     object_uuids_temp_dict = {}
                                     object_template_json["object"]["included_sub_object_uuids"] = []
-                                    include_object_temp = object_temp[j]["included_sub_object_uuids"]
+                                    include_object_temp = object_temp[j]["included_sub_objects"]
                                     for w in range(len(include_object_temp)):
                                         item_temp = include_object_temp[w]["items"]
                                         object_uuids_temp_dict["uuid"] = self.query_uuids_by_sql(item_temp, object_temp[w]["type"])
@@ -106,14 +106,14 @@ class CreateObjects:
                                         object_uuids_list.append(object_uuids_temp_dict)
                                     filter_object_uuids_list = [item for item in object_uuids_list if "type" in item and item["type"] == object_temp[j]["type"]]  
                                     object_template_json["object"]["included_sub_object_uuids"]= filter_object_uuids_list[1]["uuid"]
-                                    object_template_json["object"]["member_type"] = "subordinate"
+                                    object_template_json["object"]["member_type"] = object_temp[j]["member_type"]
                                     object_template_json["object"]["statistics_option"] = object_temp[j]["statistics_option"]
                                     if "items" in object_template_json["object"]:
                                         del object_template_json["object"]["items"]
                                     if "sub_type" in object_template_json["object"]:
                                         del object_template_json["object"]["sub_type"]
                                     object_uuids_list.append(self.create_common_objects(object_template_json, object_temp[j], ""))
-                                if "included_sub_object_uuids" not in object_temp[j]:
+                                if "included_sub_objects" not in object_temp[j]:
                                     item_temp = object_temp[j]["items"]
                                     object_uuids_temp_dict = {}
                                     object_uuids_temp_dict["uuid"] = self.query_uuids_by_sql(item_temp, object_temp[j]["type"])
@@ -265,7 +265,7 @@ class CreateObjects:
                     "tunnel_level": "tunnel-levels",
                 }
             object_type = object_temp["type"]
-            if object_type not in ["tunnel", "application", "signature", "user_defined_attribute"] and "included_sub_object_uuids" not in object_temp:
+            if object_type not in ["tunnel", "application", "signature", "user_defined_attribute"] and "included_sub_objects" not in object_temp:
                 item_temp = object_temp["items"]
                 item_list = []
                 if object_type == "ip":
@@ -293,7 +293,7 @@ class CreateObjects:
                 object_template_json["object"]["items"] = item_list
                 object_template_json["object"]["type"] = object_temp["type"]
                 object_template_json["object"]["name"] = object_temp["name"]
-            elif "included_sub_object_uuids" in object_temp:
+            elif "included_sub_objects" in object_temp:
                 object_template_json["object"]["type"] = object_temp["type"]
                 object_template_json["object"]["name"] = object_temp["name"]
                 # object_template_json["object"]["member_type"] = "application"
@@ -329,9 +329,9 @@ class CreateObjects:
                 del temp_headers["Content-Type"]
                 response = requests.post(url=url, data=user_defined_attribute_data, headers=self.headers, files=files, verify=False)
             if response.status_code == 200:
-                if "included_sub_object_uuids" not in object_temp:
+                if "included_sub_objects" not in object_temp:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object successfully.".format(object_type), flush=True)
-                elif "included_sub_object_uuids" in object_temp:
+                elif "included_sub_objects" in object_temp:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Create {} object group successfully.".format(object_type), flush=True)
                 response_dict = json.loads(response.text)
                 object_uuids = self.get_uuids(response_dict, object_type)
@@ -345,7 +345,7 @@ class CreateObjects:
                 object_uuids_temp_dict["uuid"] = object_uuids
                 if object_type == "user_defined_attribute":
                     object_uuids_temp_dict["name"] = user_defined_attribute_data["name"]
-                elif object_type == "application" and "included_sub_object_uuids" not in object_temp:
+                elif object_type == "application" and "included_sub_objects" not in object_temp:
                     object_uuids_temp_dict["name"] = object_temp["application"]["app_name"]
                 else:
                     object_uuids_temp_dict["name"] = object_temp["name"]
