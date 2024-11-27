@@ -2113,7 +2113,7 @@ def get_name_list(test_data):
 
 def create_pre_policy(data, driver):
     "manipulition创建前添加前置策略，security deny quic 和 intercept"
-    create_rule = CreateRule(driver)
+    create_rule = CreateRules(driver)
     test_data = data
     security_temp_deny_quic = {
             "is_multi_priority": False,
@@ -2242,9 +2242,9 @@ def delete_pre_policy(name_list, driver):
         policy_type = name_list[i]["type"]
         policy_name = name_list[i]["name"]
         element_position = get_element_position(policy_type)
-        search_rule = SearchRule(driver)
+        search_rule = SearchRules(driver)
         search_rule_code, first_row_checkbox_element = search_rule.search(policy_type, policy_name, element_position)
-        delete_rule = DeleteRule(driver)
+        delete_rule = DeleteRules(driver)
         delete_rule_code = delete_rule.delete(element_position, first_row_checkbox_element, True)
         if policy_type == "proxy_intercept":
             policy_type = "intercept"

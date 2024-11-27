@@ -141,15 +141,8 @@ def run(parameter):
         
         verification_result = {
             "excepted_traffic_result": "vip.com",
-            "expected_metric": "",
-            "expected_log": [
-                {"query_field_key": "sc_rsp_decrypted", "query_value": ""},
-                {"query_field_key": "subscriber_id", "query_value": "test6494"},
-                {"query_field_key": "imei", "query_value": "1234567801"},
-                {"query_field_key": "imsi", "query_value": "43458960456"},
-                {"query_field_key": "apn", "query_value": "www.lyautotest.com"},
-                {"query_field_key": "phone_number", "query_value": "12345678901"}
-            ]
+            "expected_metric": {"hits": 0},
+            "expected_log": []
         }  
 
         # 创建
@@ -237,13 +230,11 @@ def run(parameter):
             if profiles_tuple:
                 api_client.delete_profiles(profiles_tuple)
 
-        # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Finish test case: " + parameter["test_case_name"], flush=True)
+        # 脚本结束时间和耗时
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
 
         # 生成csv报告
         update = ReportUpdate()
@@ -257,7 +248,7 @@ if __name__ == '__main__':
         "test_subcriber_id": "test6776",
         "test_imei":"434589604510",
         "api_server": "http://192.168.44.72",
-        "script_type": "ui",
+        "initiation_method": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,

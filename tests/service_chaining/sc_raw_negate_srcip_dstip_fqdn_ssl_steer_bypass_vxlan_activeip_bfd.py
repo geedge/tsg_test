@@ -106,8 +106,8 @@ def run(parameter):
                         "return_data": 1,
                         "name": "steer_bypass_vxlan_activeip_bfd", 
                         "type": 1,
-                            "load_balance_method": "hash-innermost-int-ip",
-                            "load_balance_localization": "nearby",
+                        "load_balance_method": "hash-innermost-int-ip",
+                        "load_balance_localization": "nearby",
                         "failure_action": "bypass",
                         "service_func_profiles":[
                             {
@@ -149,14 +149,8 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": "",
-            "expected_metric": "",
-            "expected_log": [
-                {"query_field_key": "sc_rsp_raw", "query_value": ""},
-                {"query_field_key": "sent_pkts", "query_value": ""},
-                {"query_field_key": "received_pkts", "query_value": ""},
-                {"query_field_key": "sent_bytes", "query_value": ""},
-                {"query_field_key": "received_bytes", "query_value": ""}
-            ]
+            "expected_metric": {"hits": 0},
+            "expected_log": []
         } 
 
         # 创建
@@ -244,13 +238,11 @@ def run(parameter):
             if profiles_tuple:
                 api_client.delete_profiles(profiles_tuple)
 
-        # 统计脚本用时
-        end_time = time.time()
-        duration = end_time - start_time
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "Finish test case: " + parameter["test_case_name"], flush=True)
+        # 脚本结束时间和耗时
+        script_end_time = time.time()
+        duration = script_end_time - script_start_time
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Finish test case: " + parameter["test_case_name"], flush=True)
 
         # 生成csv报告
         update = ReportUpdate()
@@ -263,13 +255,14 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.50.88",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
+        "initiation_method": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_negate_srcip_dstip_fqdn_ssl_steer_bypass_vxlan_activeip_bfd"
+        "test_case_name": "sc_raw_src_compliance_risk_library_dstip_fqdn_http_url_steer_bypass_vxlan_activeip_bfd"
     }
     run(parameter)
     """
