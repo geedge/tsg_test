@@ -88,10 +88,22 @@ class CreateRules:
                 rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(application_condition_temp_list, object_uuids_list))
             if len(protocol_field_condition_temp_list) > 0:
                 rule_template_json["rule"]["and_conditions"].extend(self.generate_rule_condition_list(protocol_field_condition_temp_list, object_uuids_list))
-            if "action_parameter" in policy_configuration.keys() and len(policy_configuration["action_parameter"]) > 0:
+            if ("action_parameter" in policy_configuration.keys() and len(policy_configuration["action_parameter"]) > 0) or (rule_template_json["rule"]["type"] == "proxy_intercept"):
                 rule_template_json["rule"]["action_parameter"] = self.generate_rule_action_parameter(policy_configuration)
             if "effective_range" in policy_configuration.keys() and len(policy_configuration["effective_range"]) > 0:
                 rule_template_json["rule"]["effective_range"] = policy_configuration["effective_range"]
+            # if rule_template_json["rule"]["type"] == "proxy_intercept":   # 添加action_parameter默认值
+            #     root_path = self.parameter["root_path"]
+            #     proxy_intercept_template_path = root_path + "/support/api_utils/template/pre_intercept_template.json"
+            #     with open(proxy_intercept_template_path, 'r', encoding='utf-8') as f:
+            #         proxy_intercept_template_json = json.load(f)
+            #     action_parameter_default = proxy_intercept_template_json["rule"]["action_parameter"]
+            #     if "action_parameter" not in policy_configuration.keys():
+            #         rule_template_json["rule"]["action_parameter"] = action_parameter_default
+            #     else:
+            #         if "keyring_for_untrusted" not in rule_template_json["rule"]["action_parameter"]:
+            #             rule_template_json["rule"]["action_parameter"]["keyring_for_untrusted"] = action_parameter_default["keyring_for_untrusted"]
+
             rule_type_dict = {
                 "security": "security-rules",
                 "proxy_intercept": "proxy-intercept-rules",
@@ -272,16 +284,19 @@ class CreateRules:
                 "traffic_mirroring" : {
                     "enable" : traffic_mirror_enable
                 }
-            } 
-            for key in policy_configuration["action_parameter"].keys():
-                if key in {"keyring_for_trusted","keyring_for_untrusted","tcp_option_profile","decryption_profile"}:
-                    action_parameter_dict[key] = policy_configuration["action_parameter"][key]
-                elif key == "traffic_mirroring" and policy_configuration["action_parameter"][key]["enable"] == 1:
-                    action_parameter_dict[key]["enable"] = policy_configuration["action_parameter"][key]["enable"]
-                    action_parameter_dict[key]["vlanID"] = policy_configuration["action_parameter"][key]["vlanID"]
-                    action_parameter_dict[key]["mirroring_profile"] = policy_configuration["action_parameter"][key]["mirroring_profile"]
-                else:
-                    continue
+            }
+            if "action_parameter" in policy_configuration.keys():
+                for key in policy_configuration["action_parameter"].keys():
+                    if key in {"keyring_for_trusted","keyring_for_untrusted","tcp_option_profile","decryption_profile"}:
+                        action_parameter_dict[key] = policy_configuration["action_parameter"][key]
+                    elif key == "traffic_mirroring" and policy_configuration["action_parameter"][key]["enable"] == 1:
+                        action_parameter_dict[key]["enable"] = policy_configuration["action_parameter"][key]["enable"]
+                        action_parameter_dict[key]["vlanID"] = policy_configuration["action_parameter"][key]["vlanID"]
+                        action_parameter_dict[key]["mirroring_profile"] = policy_configuration["action_parameter"][key]["mirroring_profile"]
+                    else:
+                        continue
+            else:
+                pass
         elif policy_configuration["type"] == "proxy_manipulation":
             if policy_configuration["action"] == "deny":
                 action_parameter_dict = {

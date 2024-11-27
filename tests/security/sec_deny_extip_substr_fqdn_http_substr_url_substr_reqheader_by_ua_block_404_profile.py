@@ -112,7 +112,7 @@ def run(parameter):
                 }
             ],
             "action_parameter": {
-                "sub_action": "alert",
+                "sub_action": "block",
                 "code": 404,
                 "html_profile": {
                     "name": "test",

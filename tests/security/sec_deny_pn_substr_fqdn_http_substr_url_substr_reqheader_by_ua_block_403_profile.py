@@ -112,7 +112,7 @@ def run(parameter):
                 }
             ],
             "action_parameter": {
-                "sub_action": "alert",
+                "sub_action": "block",
                 "code": 403,
                 "html_profile": {
                     "name": "test",
@@ -162,6 +162,10 @@ def run(parameter):
             api_client = APIClient(parameter)
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
+            if len(api_error) > 0:
+                return api_error
+            # 处理Profiles
+            profiles_tuple, api_error = api_client.create_profiles(policy_configuration)
             if len(api_error) > 0:
                 return api_error
             rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")

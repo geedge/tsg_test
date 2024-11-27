@@ -28,7 +28,7 @@ def run(parameter):
             "action": "deny",
             "and_conditions": [
                 {
-                    "negate_option": True,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SOURCE_IP",
@@ -74,7 +74,7 @@ def run(parameter):
                 }
             ],
             "action_parameter": {
-                "sub_action": "alert",
+                "sub_action": "block",
                 "code": 403,
                 "message": "deny_autest_403",
                 "packet_capture": {

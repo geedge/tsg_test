@@ -28,7 +28,7 @@ def run(parameter):
             "action": "deny",
             "and_conditions": [
                 {
-                    "negate_option": True,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SOURCE_IP",

@@ -16,7 +16,7 @@ class QueryRuleLog:
     def query_rule_log(self, traffic_generation, verification_result, rule_uuids_tuple, start_time):
         try:
             self.rule_type = self.policy_configuration["type"]
-            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" :
+            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" or self.rule_type == "service_chaining":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 log_result = None
                 for _ in range(int(90)):
@@ -90,6 +90,9 @@ class QueryRuleLog:
                     log_query_rule_type = 'statistics_rule_uuid_list'
                 elif self.rule_type == "dos_protection":
                     schema_type = log_source = "dos_event"
+                elif self.rule_type == "service_chaining":
+                    schema_type = log_source = 'session_record'
+                    log_query_rule_type = 'sc_rule_uuid_list'
                 fields = self.get_log_schema(self.token, schema_type, self.parameter["api_server"], self.parameter["vsys"])
                 log_condition_dict['fields'] = fields
                 log_condition_dict['data_source'] = log_source
@@ -118,6 +121,54 @@ class QueryRuleLog:
                 response = requests.post(url, headers=headers, json=dsl_dict, verify=False)
                 job_dict = json.loads(response.text)
                 job_id = job_dict['data']['job']['job_id']
+                """
+                {"execution_mode":"oneshot","query_jobs":[{"id":"e9df1ca8-e270-427d-9baf-3c0e8fb13813","is_saved_query":0,"with_result":false}],"vsys":5}
+                {
+                    "code": 200,
+                    "msg": "Success",
+                    "data": [{
+                        "reason": null,
+                        "start_time": "2024-11-27T02:27:21Z",
+                        "is_done": true,
+                        "job_id": "e9df1ca8-e270-427d-9baf-3c0e8fb13813",
+                        "is_canceled": false,
+                        "done_progress": 1,
+                        "end_time": "2024-11-27T02:27:21Z",
+                        "links": {
+                            "status": "/v1/query/job/e9df1ca8-e270-427d-9baf-3c0e8fb13813",
+                            "count": "/v1/query/job/e9df1ca8-e270-427d-9baf-3c0e8fb13813/count",
+                            "list": "/v1/query/job/e9df1ca8-e270-427d-9baf-3c0e8fb13813/list",
+                            "timeline": "/v1/query/job/e9df1ca8-e270-427d-9baf-3c0e8fb13813/timeline"
+                        },
+                        "is_failed": false
+                    }],
+                    "success": true
+                }
+                query_job_dict = {
+                    "query_jobs": [{"id": job_id, "is_saved_query":0, "with_result":False}],
+                    "vsys": int(self.parameter["vsys"]), "limit": 20, "offset": 0
+                }
+                response = requests.post(url, headers=headers, json=query_job_dict, verify=False)
+                if response.status_code == 200:
+                    query_job_dict = json.loads(response.text)
+                    is_done = query_job_dict['data'][0]['is_done']
+                    is_failed = query_job_dict['data'][0]['is_failed']
+                    reason = query_job_dict['data'][0]["reason"]
+                if is_done and not is_failed:
+                    query_list_dict = {
+                        "query_jobs":[{"id": job_id,"query_option":"list"}],
+                        "vsys":int(self.parameter["vsys"]),"limit":20,"offset":0
+                    }
+                    response = requests.post(url, headers=headers, json=query_list_dict, verify=False)
+                    assert response.status_code == 200
+                    log_list = json.loads(response.text)
+                    log_list = log_list['data']['list']
+                    return log_list, ""
+                elif is_done and is_failed:
+                    return "", reason
+                else:
+                    return [], ""                
+                """
                 query_list_dict = {
                     "query_jobs":[{"id": job_id,"query_option":"list"}],
                     "vsys":int(self.parameter["vsys"]),"limit":20,"offset":0
@@ -318,6 +369,26 @@ class QueryRuleLog:
                                     temp_log_result_list.append(True)
                                 else:
                                     temp_log_result_list.append(False)
+                    elif query_field_key in {"sc_rsp_raw_uuid_list", "sc_rsp_decrypted_uuid_list"}:
+                        query_value = self.policy_configuration["action_parameter"]["sff_profiles"]
+                        if query_value == log_dict[query_field_key]:
+                            temp_log_result_list.append(True)
+                        else:
+                            temp_log_result_list.append(False)
+                    elif query_field_key in {"sent_pkts", "received_pkts", "sent_bytes", "received_bytes"}:
+                        if query_field_key == "sent_pkts":
+                            query_value = self.traffic_result["total_packets_sent"]
+                        elif query_field_key == "received_pkts":
+                            query_value = self.traffic_result["total_packets_received"]
+                        elif query_field_key == "sent_bytes":
+                            query_value = self.traffic_result["total_bytes_sent"]
+                        elif query_field_key == "received_bytes":
+                            query_value = self.traffic_result["total_bytes_received"]
+                        if query_value == log_dict[query_field_key]:
+                            temp_log_result_list.append(True)
+                        else:
+                            temp_log_result_list.append(False)
+
                     else:
                         temp_log_result_list.append(False)
                 if self.rule_type == 'proxy_intercept' and len(temp_log_result_list) < len(log_query):

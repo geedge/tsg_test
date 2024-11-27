@@ -310,7 +310,7 @@ class ApiVerification:
             
             return True, log_result, metric_result, my_driver
         elif policy_type == "shaping":
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added.")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "todo.")
             return True, True, True, my_driver
 
     def is_in(self, full_str, sub_str, debug_flag):

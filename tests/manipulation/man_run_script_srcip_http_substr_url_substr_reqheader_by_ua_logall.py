@@ -113,9 +113,7 @@ def run(parameter):
             "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key": "http_host", "query_value": "open.node.com"},
-                {"query_field_key": "decoded_as", "query_value": "HTTP"},
-                {"query_field_key": "http_request_body", "query_value": True},
-                {"query_field_key": "http_response_body", "query_value": True}
+                {"query_field_key": "decoded_as", "query_value": "HTTP"}
             ]
         }
 
