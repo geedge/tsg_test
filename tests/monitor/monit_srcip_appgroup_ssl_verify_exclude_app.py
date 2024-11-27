@@ -52,15 +52,16 @@ def run(parameter):
                             "attribute_name": "ATTR_APP_ID",
                             "type": "application",
                             "statistics_option": "brief",
+                            "member_type": "subordinate",
                             "name": "monitor_application_group",
-                            "included_sub_object_uuids": [
+                            "included_sub_objects": [
                                 {
                                     "attribute_name": "ATTR_APP_ID",
                                     "type": "application",
                                     "items": ["ssl"],
                                 }
                             ],
-                            "excluded_sub_object_uuids": [
+                            "excluded_sub_objects": [
                                 {
                                     "attribute_name": "ATTR_APP_ID",
                                     "type": "application",
@@ -87,7 +88,7 @@ def run(parameter):
         }
 
         traffic_generation = {
-            "tool": "ssl",  # or trex/http
+            "tool": "http",  # or trex/http
             "command": "curl -kv http://www.yumi.com"
         }
 
