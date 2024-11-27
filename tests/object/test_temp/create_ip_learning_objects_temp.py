@@ -46,10 +46,15 @@ def run(parameter):
         if code != 200:
             return "Fail to create object."
         else:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Create Object successful ")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                  "Create Object successful ")
 
+        search_type = {
+            "is_fuzzy": False,
+            "type": "",
+        }
         # 查询
-        objects_tuple, code = ui_client.search_objects("create_ip_learing_object", object_configuration, "")
+        objects_tuple, code = ui_client.search_objects("create_ip_learing_object", object_configuration, search_type)
         objects_list = list(objects_tuple)
         if len(objects_list) == 0:
             return "Fail to get object uuid."
@@ -58,8 +63,23 @@ def run(parameter):
         else:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search Object successful ")
 
-        return ""
+        # 编辑
+        # 如果src_item是空，则表示该item是新加
+        code = ui_client.edit_objects(objects_tuple, src_item="", new_item="")
+        if code != 200:
+            return "Fail to edit object."
+        else:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                  "Edit Object successful ")
+        # 如果src_item是不是空，在item输入框，输入src_item，找到item，点击item的编辑按钮，删除src_item，输入new_item，点击保存按钮
+        code = ui_client.edit_objects(objects_tuple, src_item="acdcd$", new_item="^xrwom.fu$")
+        if code != 200:
+            return "Fail to edit object."
+        else:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                  "Edit Object successful ")
 
+        return ""
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"When running test case, the exception error: ", str(e), flush=True)
@@ -69,7 +89,8 @@ def run(parameter):
         # 删除
         if objects_tuple:
             ui_client.delete_objects(objects_tuple)
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Delete Object successful ")
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+                  "Delete Object successful ")
         # ui_client.cleanup()
         # 统计脚本用时
         script_end_time = time.time()

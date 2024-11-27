@@ -5,7 +5,7 @@
 import time
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
-from support.ui_utils.policy.page_jump import PageJump
+from support.ui_utils.policies.page_jump import PageJump
 import traceback
 from datetime import datetime 
 

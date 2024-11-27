@@ -3,7 +3,7 @@ import time
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.log_element_position import *
-from support.ui_utils.log.page_jump import PageJump
+from support.ui_utils.logs.page_jump import PageJump
 
 class SearchLog:
     def __init__(self, driver):

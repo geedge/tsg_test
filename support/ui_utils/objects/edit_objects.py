@@ -1,7 +1,7 @@
 import time
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.object_element_position import *
-from support.ui_utils.object.page_jump import PageJump
+from support.ui_utils.objects.page_jump import PageJump
 from datetime import datetime 
 
 class EditObject:

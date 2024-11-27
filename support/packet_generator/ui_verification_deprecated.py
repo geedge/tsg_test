@@ -4,11 +4,11 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import time
 import configparser
-from support.ui_utils.policy.edit_rules import EditRule
+from support.ui_utils.policies.edit_rules import EditRule
 from support.packet_generator.workpath import workdir
 from support.ui_utils.element_position.log_element_position import *
 from support.ui_utils.element_position.map_element_position_library import *
-from support.ui_utils.log.search_log import SearchLog
+from support.ui_utils.logs.search_log import SearchLog
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from datetime import datetime

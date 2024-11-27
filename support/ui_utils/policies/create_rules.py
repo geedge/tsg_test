@@ -13,7 +13,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.element_position.map_element_position_library import *
-from support.ui_utils.policy.page_jump import PageJump
+from support.ui_utils.policies.page_jump import PageJump
 
 class CreateRules:
     def __init__(self, driver):
@@ -21,6 +21,8 @@ class CreateRules:
         
     def create_rules(self, policy_configuration):
         try:
+            # 目前所有object类型都是一个值？？
+            
             # 根据rule type获取增删改查全部元素定位库，若有需要补充的，在下面或在map_element_position_library中追加
             element_position_library = get_element_position(policy_configuration["type"])
             page_jump_element_position = element_position_library["page_jump"]
@@ -59,7 +61,8 @@ class CreateRules:
                 #     self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectInsert_posXpath"]).click()
                 # elif policy_configuration["action"] == "edit_element":
                 #     self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectEditElement_posXpath"]).click()
-                else:   # run script
+                else:
+                    # run script
                     self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectRunScript_posXpath"]).click()
             elif policy_configuration["type"]== "monitor":
                 if policy_configuration["action_parameter"]["traffic_mirroring"]["enable"] == 1:
@@ -68,146 +71,100 @@ class CreateRules:
                     self.driver.find_element(By.XPATH,monitorRulePage_logOptions_all_posXpath).click()
 
             # 添加ip
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_SOURCE_IP")[0] and self.is_group_exsit(policy_configuration, "member_type")[0] == False:
-                src_ip_data = self.is_attribute_name_exsit(policy_configuration, "ATTR_SOURCE_IP")[1]
-                self.add_ip(src_ip_data, "SrcIP", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_SOURCE_IP")[0] and self.is_group_exsit(policy_configuration, "member_type")[0]:
-                src_ip_group_data = self.is_group_exsit(policy_configuration, "ATTR_SOURCE_IP")[1]
-                self.add_ip(src_ip_group_data, "SrcIP", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_DESTINATION_IP")[0] and self.is_group_exsit(policy_configuration, "member_type")[0] == False:
-                dst_ip_data = self.is_attribute_name_exsit(policy_configuration, "ATTR_DESTINATION_IP")[1]
-                self.add_ip(dst_ip_data, "DstIP", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_DESTINATION_IP")[0] and self.is_group_exsit(policy_configuration, "member_type")[0]:
-                dst_ip_group_data = self.is_group_exsit(policy_configuration, "ATTR_DESTINATION_IP")[1]
-                self.add_ip(dst_ip_group_data, "DstIP", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_INTERNAL_IP")[0] and self.is_group_exsit(policy_configuration, "member_type")[0] == False:
-                internal_ip_data = self.is_attribute_name_exsit(policy_configuration, "ATTR_INTERNAL_IP")[1]
-                self.add_ip(internal_ip_data, "InternalIP", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_INTERNAL_IP")[0] and self.is_group_exsit(policy_configuration, "member_type")[0]:
-                internal_ip_group_data = self.is_group_exsit(policy_configuration, "ATTR_INTERNAL_IP")[1]
-                self.add_ip(internal_ip_group_data, "InternalIP", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_EXTERNAL_IP")[0] and self.is_group_exsit(policy_configuration, "member_type")[0] == False:
-                external_ip_data = self.is_attribute_name_exsit(policy_configuration, "ATTR_EXTERNAL_IP")[1]
-                self.add_ip(external_ip_data, "ExternalIP", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_EXTERNAL_IP")[0] and self.is_group_exsit(policy_configuration, "member_type")[0]:
-                external_ip_group_data = self.is_group_exsit(policy_configuration, "member_type")[1]
-                self.add_ip(external_ip_group_data, "ExternalIP", creation_element_position)
-                
-            # 添加port
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_SOURCE_PORT")[0] and self.is_group_exsit(policy_configuration, "member_type")[0] == False:
-                src_port_data = self.is_attribute_name_exsit(policy_configuration, "ATTR_SOURCE_PORT")[1]
-                self.add_port(src_port_data, "SrcPort", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_SOURCE_PORT")[0] and self.is_group_exsit(policy_configuration, "member_type")[0]:
-                src_port_group_data = self.is_group_exsit(policy_configuration, "member_type")[1]
-                self.add_port(src_port_group_data, "SrcPort", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_DESTINATION_PORT")[0] and self.is_group_exsit(policy_configuration, "member_type")[0] == False:
-                dst_port_data = self.is_attribute_name_exsit(policy_configuration, "ATTR_DESTINATION_PORT")[1]
-                self.add_port(dst_port_data, "DstPort", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_DESTINATION_PORT")[0] and self.is_group_exsit(policy_configuration, "member_type")[0]:
-                dst_port_group_data = self.is_group_exsit(policy_configuration, "member_type")[1]
-                self.add_port(dst_port_group_data, "DstPort", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_INTERNAL_PORT")[0] and self.is_group_exsit(policy_configuration, "member_type")[0] == False:
-                internal_port_data = self.is_attribute_name_exsit(policy_configuration, "ATTR_INTERNAL_PORT")[1]
-                self.add_port(internal_port_data, "InternalPort", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_INTERNAL_PORT")[0] and self.is_group_exsit(policy_configuration, "member_type")[0]:
-                internal_port_group_data = self.is_group_exsit(policy_configuration, "member_type")[1]
-                self.add_port(internal_port_group_data, "InternalPort", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_EXTERNAL_PORT")[0] and self.is_group_exsit(policy_configuration, "member_type")[0] == False:
-                external_port_data = self.is_attribute_name_exsit(policy_configuration, "ATTR_EXTERNAL_PORT")[1]
-                self.add_port(external_port_data, "ExternalPort", creation_element_position)
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_EXTERNAL_PORT")[0] and self.is_group_exsit(policy_configuration, "member_type")[0]:
-                external_port_group_data = self.is_group_exsit(policy_configuration, "member_type")[1]
-                self.add_port(external_port_group_data, "ExternalPort", creation_element_position)
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_SOURCE_IP")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_ip(object_configuration, "SrcIP", creation_element_position, negate_option)
+            if attribute_flag and group_flag:
+                self.add_ip(object_group_configuration, "SrcIP", creation_element_position, negate_option)
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_DESTINATION_IP")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_ip(object_configuration, "DstIP", creation_element_position, negate_option)
+            if attribute_flag and group_flag:
+                self.add_ip(object_group_configuration, "DstIP", creation_element_position, negate_option)
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_INTERNAL_IP")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_ip(object_configuration, "InternalIP", creation_element_position, negate_option)
+            if attribute_flag and group_flag:
+                self.add_ip(object_group_configuration, "InternalIP", creation_element_position, negate_option)
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_EXTERNAL_IP")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_ip(object_configuration, "ExternalIP", creation_element_position, negate_option)
+            if attribute_flag and group_flag:
+                self.add_ip(object_group_configuration, "ExternalIP", creation_element_position, negate_option)
 
-            if self.is_attribute_name_exsit(policy_configuration, "ATTR_SUBSCRIBER_ID")[0] and self.is_group_exsit(policy_configuration, "member_type")[0] == False:
-                subid_data = self.is_attribute_name_exsit(policy_configuration, "ATTR_SUBSCRIBER_ID")[1]
-                self.add_subid(subid_data, "User", creation_element_position)
+            # 添加library作为ip
+            
+            # 添加port
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_SOURCE_PORT")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_port(object_configuration, "SrcPort", creation_element_position, negate_option)
+            if attribute_flag and group_flag:
+                self.add_port(object_group_configuration, "SrcPort", creation_element_position, negate_option)
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_DESTINATION_PORT")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_port(object_configuration, "DstPort", creation_element_position, negate_option)
+            if attribute_flag and group_flag:
+                self.add_port(object_group_configuration, "DstPort", creation_element_position, negate_option)
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_INTERNAL_PORT")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_port(object_configuration, "InternalPort", creation_element_position, negate_option)
+            if attribute_flag and group_flag:
+                self.add_port(object_group_configuration, "InternalPort", creation_element_position, negate_option)
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_EXTERNAL_PORT")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_port(object_configuration, "ExternalPort", creation_element_position, negate_option)
+            if attribute_flag and group_flag:
+                self.add_port(object_group_configuration, "ExternalPort", creation_element_position, negate_option)
+                
+            # 添加subscriber id
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_SUBSCRIBER_ID")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_subid(object_configuration, "User", creation_element_position, negate_option)
+            if attribute_flag and group_flag:
+                self.add_subid(object_group_configuration, "User", creation_element_position, negate_option)
 
             # 添加device
-            if "device" in policy_configuration["condition"] and len(policy_configuration["condition"]["device"]) != 0:
-                device_data = policy_configuration["condition"]["device"]
-                for t in range(len(device_data)):
-                    if device_data[t]['item'][0]["item_type"] == "imsi":
-                        # 点add condition的+
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"]).click()
-                        # 选中imsi
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-                        # 点imsi的+，因为dst ip已经是第一层且t初始值是0，所以要+2
-                        temp_element_position = creation_element_position["policyRulePage_addImsi_posXpath"]
-                        self.driver.find_element(By.XPATH, temp_element_position).click()
-                        # 通过imsi搜索并选中
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(device_data[t]["name"])
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_closeImsi_posXpath"]).click()
-                    elif device_data[t]['item'][0]["item_type"] == "phone_number":
-                        # 点add condition的+
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"]).click()
-                        # 都属于device，所以调用imsi的定位即可
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-                        # 点device的+
-                        temp_element_position = creation_element_position["policyRulePage_addImsi_posXpath"]
-                        self.driver.find_element(By.XPATH, temp_element_position).click()
-                        # 选中phone number
-                        temp_element_position = creation_element_position["policyRulePage_choosePhoneNumber_posXpath"]
-                        self.driver.find_element(By.XPATH, temp_element_position).click()
-                        # 通过phone number搜索并选中(与imsi共用)
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(device_data[t]["name"])
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_closeImsi_posXpath"]).click()
-                    elif device_data[t]['item'][0]["item_type"] ==  "imei":
-                        # 点add condition的+
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"]).click()
-                        # 都属于device，所以调用imsi的定位即可
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-                        # 点device的+
-                        temp_element_position = creation_element_position["policyRulePage_addImsi_posXpath"]
-                        self.driver.find_element(By.XPATH, temp_element_position).click()
-                        # 选中phone number
-                        temp_element_position = creation_element_position["policyRulePage_chooseImei_posXpath"]
-                        self.driver.find_element(By.XPATH, temp_element_position).click()
-                        # 通过phone number搜索并选中(与imsi共用)
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(device_data[t]["name"])
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_closeImsi_posXpath"]).click()
-                    for j in range(len(device_data)):
-                            if device_data[j]["negate"] == True:
-                                time.sleep(1)  # 暂停1秒
-                                negate_element = self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_negateImsi_posXpath"])
-                                ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
-                                negate_element.click()
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_GTP_IMSI")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_device(creation_element_position, object_configuration["name"], negate_option)
+            if attribute_flag and group_flag:
+                print("todo")
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_GTP_PHONE_NUMBER")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_device(creation_element_position, object_configuration["name"], negate_option)
+            if attribute_flag and group_flag:
+                print("todo")
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_GTP_IMEI")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_device(creation_element_position, object_configuration["name"], negate_option)
+            if attribute_flag and group_flag:
+                print("todo")
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_GTP_APN")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                self.add_device(creation_element_position, object_configuration["name"], negate_option)
+            if attribute_flag and group_flag:
+                print("todo")
             
-            # 添加apn
-            if "apn" in policy_configuration["condition"] and len(policy_configuration["condition"]["apn"]) != 0:
-                device_data = policy_configuration["condition"]["apn"]
-                for t in range(len(device_data)):
-                    if device_data[t]['items'][0]["item_type"] == "apn":
-                        # 点add condition的+
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"]).click()
-                        # 都属于device，所以调用apn的定位即可
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-                        # 点device的+
-                        temp_element_position = creation_element_position["policyRulePage_addImsi_posXpath"]
-                        self.driver.find_element(By.XPATH, temp_element_position).click()
-                        # 选中apn
-                        temp_element_position = creation_element_position["policyRulePage_chooseApn_posXpath"]
-                        self.driver.find_element(By.XPATH, temp_element_position).click()
-                        # 通过apn搜索并选中(与imsi共用)
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(device_data[t]["name"])
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_closeImsi_posXpath"]).click()
-
             # 添加application
-            if "application" in policy_configuration["condition"] and len(policy_configuration["condition"]["application"]) != 0:
+            # if "application" in policy_configuration["condition"] and len(policy_configuration["condition"]["application"]) != 0:
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_APP_ID")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
                 if policy_configuration["type"] == "proxy_manipulation":
-                    if  policy_configuration["condition"]["application"][0]["name"].lower() == "doh":  # doh需要操作application
+                    if object_configuration["items"][0].lower() == "doh":  # doh需要操作application
                         self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addApplication_posXpath"]).click()
                         self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchDoHApplication_posXpath"], find_before_wait_time=0.5).click()
                         self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_closeApplication_posXpath"]).click()
@@ -228,43 +185,45 @@ class CreateRules:
                             self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchApplication_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
                             self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectApplication_posXpath"].format(replaceValue = application_data[j]["name"]), find_after_wait_time=0.5).click()
                     self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_closeApplication_posXpath"]).click()
-
+            if attribute_flag and group_flag:
+                print("todo")
+                
             # 添加server fqdn
-            if "server_fqdn" in policy_configuration["condition"] and len(policy_configuration["condition"]["server_fqdn"]) != 0:
-                server_fqdn_data = policy_configuration["condition"]["server_fqdn"]
-                for t in range(len(server_fqdn_data)):
-                    if server_fqdn_data[t]["object_type"] == "fqdn":
-                        # 点add condition的+
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"]).click()
-                        time.sleep(1)
-                        # 选中server fqdn
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addConditionServerFqdn_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_close_posXpath"]).click()
-                        # 点server fqdn的+，因为dst ip已经是第一层且t初始值是0，所以要+2
-                        # temp = t + 2
-                        # temp_element_position = creation_element_position["policyRulePage_addServerFqdn_posXpath"].format(replaceValue=temp)
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addServerFqdn_posXpath"]).click()
-                        time.sleep(1)
-                        # 通过server fqdn name搜索并选中
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=1).send_keys(server_fqdn_data[t]["name"])
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
-                        btn = self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectServerFqdn_posXpath"].format(replaceValue=server_fqdn_data[t]["name"]), find_after_wait_time= 1)
-                        self.driver.execute_script("arguments[0].click()", btn)
-                        # self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time=0.5).click()
-                        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
-                        if server_fqdn_data[t]["negate"] == True:
-                            time.sleep(1)  # 暂停1秒
-                            negate_element = self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_negateServerFqdn_posXpath"])
-                            # 使用JavaScript确保元素完全进入视图
-                            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", negate_element)
-                            # 使用JavaScript执行悬停
-                            self.driver.execute_script("var evt = new MouseEvent('mouseover', {'view': window, 'bubbles': true, 'cancelable': true}); arguments[0].dispatchEvent(evt);",negate_element)
-                            # 确保元素可点击后进行点击
-                            self.driver.execute_script("arguments[0].click();", negate_element)
-                            # ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
-                            # negate_element.click()
-                    elif server_fqdn_data[t]["object_type"] == "category":
-                        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
+            attribute_flag, object_configuration, negate_option = self.is_attribute_name_exsit(policy_configuration, "ATTR_SERVER_FQDN")
+            group_flag, object_group_configuration, negate_option = self.is_group_exsit(policy_configuration, "member_type")
+            if attribute_flag and group_flag == False:
+                # 点add condition的+
+                self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"]).click()
+                time.sleep(1)
+                # 选中server fqdn
+                self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addConditionServerFqdn_posXpath"]).click()
+                self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+                # 点server fqdn的+，因为dst ip已经是第一层且t初始值是0，所以要+2
+                # temp = t + 2
+                # temp_element_position = creation_element_position["policyRulePage_addServerFqdn_posXpath"].format(replaceValue=temp)
+                self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addServerFqdn_posXpath"]).click()
+                time.sleep(1)
+                # 通过server fqdn name搜索并选中
+                self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=1).send_keys(object_configuration["name"])
+                self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchServerFqdn_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+                btn = self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectServerFqdn_posXpath"].format(replaceValue=fqdn_name), find_after_wait_time=1)
+                self.driver.execute_script("arguments[0].click()", btn)
+                # self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectServerFqdn_posXpath"], find_after_wait_time=0.5).click()
+                self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_closeServerFqdn_posXpath"]).click()
+                if negate_option == True:
+                    time.sleep(1)  # 暂停1秒
+                    negate_element = self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_negateServerFqdn_posXpath"])
+                    # 使用JavaScript确保元素完全进入视图
+                    self.driver.execute_script("arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", negate_element)
+                    # 使用JavaScript执行悬停
+                    self.driver.execute_script("var evt = new MouseEvent('mouseover', {'view': window, 'bubbles': true, 'cancelable': true}); arguments[0].dispatchEvent(evt);",negate_element)
+                    # 确保元素可点击后进行点击
+                    self.driver.execute_script("arguments[0].click();", negate_element)
+                    # ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+                    # negate_element.click()
+            if attribute_flag and group_flag:
+                print("todo")
+            # 添加library作为fqdn
 
             #添加ip_protocol
             if "ip_protocol" in policy_configuration["condition"] and len(policy_configuration["condition"]["ip_protocol"]) != 0:
@@ -931,7 +890,7 @@ class CreateRules:
             raise
             #return 400, None
         
-    def add_ip(self, ip_data, ip_condition_type, creation_element_position):
+    def add_ip(self, ip_data, ip_condition_type, creation_element_position, negate_option):
         try:
             if ip_condition_type != "SrcIP" and ip_condition_type != "DstIP":
                 # 点add condition的+
@@ -966,7 +925,7 @@ class CreateRules:
         except Exception as e:
             raise
     
-    def add_port(self, port_data, port_condition_type, creation_element_position):
+    def add_port(self, port_data, port_condition_type, creation_element_position, negate_option):
         try:
             # 点add condition的+
             btn = self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"])
@@ -992,9 +951,29 @@ class CreateRules:
         except Exception as e:
             raise
 
+    def add_device(self, creation_element_position, name, negate_option):
+        # 点add condition的+
+        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"]).click()
+        # 选中imsi
+        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addConditionImsi_posXpath"]).click()
+        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_close_posXpath"]).click()
+        # 点imsi的+，因为dst ip已经是第一层且t初始值是0，所以要+2
+        temp_element_position = creation_element_position["policyRulePage_addImsi_posXpath"]
+        self.driver.find_element(By.XPATH, temp_element_position).click()
+        # 通过imsi搜索并选中
+        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=1).send_keys(name)
+        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_searchImsi_posXpath"], find_after_wait_time=0.5).send_keys(Keys.ENTER)
+        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_selectImsi_posXpath"], find_after_wait_time=0.5).click()
+        self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_closeImsi_posXpath"]).click()
+        if negate_option == True:
+            time.sleep(1)  # 暂停1秒
+            negate_element = self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_negateImsi_posXpath"])
+            ActionChains(self.driver).move_to_element(negate_element).perform()  # 悬停以使元素可见
+            negate_element.click()
+    
     add_subid = add_port
 
-    def add_protocol_field(self, protocol_field_data, filed_type, creation_element_position, num):
+    def add_protocol_field(self, protocol_field_data, filed_type, creation_element_position, num, negate_option):
         try:
             # 强制点击add condition的+
             btn = self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"])
@@ -1013,7 +992,7 @@ class CreateRules:
         except Exception as e:
             raise
 
-    def add_bool_type_protocol_field(self, protocol_field_data, filed_type, creation_element_position, num):
+    def add_bool_type_protocol_field(self, protocol_field_data, filed_type, creation_element_position, num, negate_option):
         try:
             for x in range(len(protocol_field_data)):
                 self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"]).click()
@@ -1034,7 +1013,7 @@ class CreateRules:
         except Exception as e:
             raise
 
-    def add_ip_protocol(self, ip_protocol_data, filed_type, creation_element_position):
+    def add_ip_protocol(self, ip_protocol_data, filed_type, creation_element_position, negate_option):
         try:
             # 点add condition的+
             self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_addCondition_posXpath"]).click()
@@ -1078,8 +1057,8 @@ class CreateRules:
                 or_conditions = and_conditions[i]["or_conditions"]
                 for j in range(len(or_conditions)):
                     if or_conditions[j]["attribute_name"] == attribute_name:
-                        return [True, or_conditions[j]]
-        return [False, ""]
+                        return [True, or_conditions[j], or_conditions["negate_option"]]
+        return [False, "", ""]
     
     def is_group_exsit(self, policy_configuration):
         if "and_conditions" in policy_configuration:
@@ -1088,7 +1067,5 @@ class CreateRules:
                 or_conditions = and_conditions[i]["or_conditions"]
                 for j in range(len(or_conditions)):
                     if "member_type" in or_conditions[j].keys and or_conditions[j]["member_type"] != "":
-                        return [True, or_conditions[j]]
-        return [False, ""]
-
-
+                        return [True, or_conditions[j], or_conditions["negate_option"]]
+        return [False, "", ""]

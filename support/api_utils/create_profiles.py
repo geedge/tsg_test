@@ -74,7 +74,7 @@ class CreateProfiles:
                         profile_uuids_temp_dict = {}
                         profile_uuids_temp_dict["type"] = profile_type
                         profile_uuids_temp_dict["uuid"] = record_uuids
-                        profile_uuids_temp_dict["name"] = policy_configuration["action_parameter"]["record_profile"]["name"]
+                        profile_uuids_temp_dict["name"] = record_profile["record_profile"]["name"]
                         profile_uuids_list.append(profile_uuids_temp_dict)
                         record_profile["record_profile"] = record_uuids
             elif "traffic_mirroring" in policy_configuration["action_parameter"].keys():

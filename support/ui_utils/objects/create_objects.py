@@ -3,7 +3,7 @@ import sys
 import time
 from traceback import print_tb
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.ui_utils.object.page_jump import PageJump
+from support.ui_utils.objects.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.object_element_position import *

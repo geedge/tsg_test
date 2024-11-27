@@ -94,27 +94,13 @@ def run(parameter):
                                     "table_type": ""
                                 },
                                 "uuid": "",
-                                "name": "RATE(Closed Sessions) Distributed by Time, Application",
+                                "name": "BITRATE(Incoming Bytes, Outgoing Bytes), BITRATE(Incoming Bytes) and BITRATE(Outgoing Bytes) Distributed by Time",
                                 "threshold": {
                                     "in_bytes": 0,
                                     "out_bytes": 0
                                 },
                                 "query": {
                                     "dimensions": [
-                                        {
-                                            "source_fields": [
-                                                "app"
-                                            ],
-                                            "function": {
-                                                "name": "",
-                                                "expression": "",
-                                                "variables": [
-
-                                                ]
-                                            },
-                                            "label": "Application",
-                                            "is_drill_down": 0
-                                        },
                                         {
                                             "source_fields": [
                                                 "__time"
@@ -134,10 +120,11 @@ def run(parameter):
                                     "metrics": [
                                         {
                                             "source_fields": [
-                                                "closed_sessions_for_this_rule"
+                                                "in_bytes",
+                                                "out_bytes"
                                             ],
                                             "function": {
-                                                "name": "RATE",
+                                                "name": "BITRATE",
                                                 "expression": "",
                                                 "variables": [
 
@@ -145,13 +132,45 @@ def run(parameter):
                                             },
                                             "metric_type": "count",
                                             "metric_name": "count_1",
-                                            "label": "RATE(Closed Sessions)",
-                                            "unit": "sps"
+                                            "label": "BITRATE(Incoming Bytes, Outgoing Bytes)",
+                                            "unit": "bps"
+                                        },
+                                        {
+                                            "source_fields": [
+                                                "in_bytes"
+                                            ],
+                                            "function": {
+                                                "name": "BITRATE",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_2",
+                                            "label": "BITRATE(Incoming Bytes)",
+                                            "unit": "bps"
+                                        },
+                                        {
+                                            "source_fields": [
+                                                "out_bytes"
+                                            ],
+                                            "function": {
+                                                "name": "BITRATE",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_3",
+                                            "label": "BITRATE(Outgoing Bytes)",
+                                            "unit": "bps"
                                         }
                                     ],
                                     "order_by": "",
                                     "source": "statistics_rule",
-                                    "series_limit": "5"
+                                    "series_limit": ""
                                 }
                             },
                             {
@@ -165,27 +184,13 @@ def run(parameter):
                                     "table_type": ""
                                 },
                                 "uuid": "",
-                                "name": "SUM(Closed Sessions) Distributed by Time, Application",
+                                "name": "RATE(Incoming Bytes, Outgoing Bytes), RATE(Incoming Bytes) and RATE(Outgoing Bytes) Distributed by Time",
                                 "threshold": {
                                     "in_bytes": 0,
                                     "out_bytes": 0
                                 },
                                 "query": {
                                     "dimensions": [
-                                        {
-                                            "source_fields": [
-                                                "app"
-                                            ],
-                                            "function": {
-                                                "name": "",
-                                                "expression": "",
-                                                "variables": [
-
-                                                ]
-                                            },
-                                            "label": "Application",
-                                            "is_drill_down": 0
-                                        },
                                         {
                                             "source_fields": [
                                                 "__time"
@@ -205,7 +210,98 @@ def run(parameter):
                                     "metrics": [
                                         {
                                             "source_fields": [
-                                                "closed_sessions_for_this_rule"
+                                                "in_bytes",
+                                                "out_bytes"
+                                            ],
+                                            "function": {
+                                                "name": "RATE",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_1",
+                                            "label": "RATE(Incoming Bytes, Outgoing Bytes)",
+                                            "unit": "Bps"
+                                        },
+                                        {
+                                            "source_fields": [
+                                                "in_bytes"
+                                            ],
+                                            "function": {
+                                                "name": "RATE",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_2",
+                                            "label": "RATE(Incoming Bytes)",
+                                            "unit": "Bps"
+                                        },
+                                        {
+                                            "source_fields": [
+                                                "out_bytes"
+                                            ],
+                                            "function": {
+                                                "name": "RATE",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_3",
+                                            "label": "RATE(Outgoing Bytes)",
+                                            "unit": "Bps"
+                                        }
+                                    ],
+                                    "order_by": "",
+                                    "source": "statistics_rule",
+                                    "series_limit": ""
+                                }
+                            },
+                            {
+                                "id": "",
+                                "display": {
+                                    "page_x": None,
+                                    "page_y": None,
+                                    "height": "",
+                                    "width": "",
+                                    "type": "line",
+                                    "table_type": ""
+                                },
+                                "uuid": "",
+                                "name": "SUM(Incoming Bytes, Outgoing Bytes), SUM(Incoming Bytes) and SUM(Outgoing Bytes) Distributed by Time",
+                                "threshold": {
+                                    "in_bytes": 0,
+                                    "out_bytes": 0
+                                },
+                                "query": {
+                                    "dimensions": [
+                                        {
+                                            "source_fields": [
+                                                "__time"
+                                            ],
+                                            "function": {
+                                                "name": "DATETIME_FLOOR_WITH_FILL",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "label": "Time",
+                                            "is_drill_down": 0
+                                        }
+                                    ],
+                                    "limit": 65536,
+                                    "metrics": [
+                                        {
+                                            "source_fields": [
+                                                "in_bytes",
+                                                "out_bytes"
                                             ],
                                             "function": {
                                                 "name": "SUM",
@@ -216,13 +312,45 @@ def run(parameter):
                                             },
                                             "metric_type": "count",
                                             "metric_name": "count_1",
-                                            "label": "SUM(Closed Sessions)",
-                                            "unit": "sessions"
+                                            "label": "SUM(Incoming Bytes, Outgoing Bytes)",
+                                            "unit": "bytes"
+                                        },
+                                        {
+                                            "source_fields": [
+                                                "in_bytes"
+                                            ],
+                                            "function": {
+                                                "name": "SUM",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_2",
+                                            "label": "SUM(Incoming Bytes)",
+                                            "unit": "bytes"
+                                        },
+                                        {
+                                            "source_fields": [
+                                                "out_bytes"
+                                            ],
+                                            "function": {
+                                                "name": "SUM",
+                                                "expression": "",
+                                                "variables": [
+
+                                                ]
+                                            },
+                                            "metric_type": "count",
+                                            "metric_name": "count_3",
+                                            "label": "SUM(Outgoing Bytes)",
+                                            "unit": "bytes"
                                         }
                                     ],
                                     "order_by": "",
                                     "source": "statistics_rule",
-                                    "series_limit": "20"
+                                    "series_limit": ""
                                 }
                             }
                         ]
@@ -323,8 +451,8 @@ def run(parameter):
             test_summary["metric"] = "The failure reason: the returned metric is empty."
         elif len(metric_result) > 0:
             test_summary["metric"] = metric_result
-        if rules_tuple:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBUG:Case:{},rule:{},log_result:{},excepted_traffic_result:{},metric_result:{}".format(os.path.basename(__file__)[:-3], list(rules_tuple)[0]["uuid"], log_result, excepted_traffic_result, metric_result), flush=True)
+        #if rules_tuple:
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBUG:Case:{},rule:{},log_result:{},excepted_traffic_result:{},metric_result:{}".format(os.path.basename(__file__)[:-3], list(rules_tuple)[0]["uuid"], log_result, excepted_traffic_result, metric_result), flush=True)
         return test_summary
     except Exception as e:
         exception_result = str(e)
@@ -343,7 +471,7 @@ def run(parameter):
                 api_client.delete_profiles(profiles_tuple)
             if objects_tuple:
                 api_client.delete_objects(objects_tuple)
-		# 脚本结束时间和耗时
+        # 脚本结束时间和耗时
         script_end_time = time.time()
         duration = script_end_time - script_start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
