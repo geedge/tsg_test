@@ -107,7 +107,7 @@ def run(parameter):
         
         verification_result = {
             "excepted_traffic_result": "aaa.bbb.ccc",
-            "expected_metric": {"hits": 1},
+            "expected_metric": {"hits": 2},
             "expected_log": [
                 {"query_field_key":"server_ip", "query_value": "8.8.8.8"},
                 {"query_field_key":"decoded_as", "query_value": "DNS"},
