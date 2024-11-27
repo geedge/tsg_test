@@ -92,21 +92,21 @@ class QueryRuleMetric:
                 active_dst_ip_list = conf.get("sc_active_dst_ip", "ip_list")
                 effective_device_tag_list = ["group-xxg-tsgx", "center-xxg-tsgx"]
                 sff_configuration = self.policy_configuration["action_parameter"]["sff_profiles"]
-                sf_configuration = self.policy_configuration["action_parameter"]["sff_profiles"][0]["service_func_profiles"]
+                sf_configuration = self.policy_configuration["action_parameter"]["sf_configuration"]
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 n = 0
                 while n <= 4:
                     utc_tz = pytz.timezone('UTC')
                     current_utc_time = datetime.now(utc_tz)
                     end_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
-                    metic_dict, code = self.get_sc_metric(self.token, rule_uuids_tuple, start_time, end_time)
+                    metric_dict, code = self.get_sc_metric(self.token, rule_uuids_tuple, start_time, end_time)
                     if code == 333 or code == 444:
                         metric_result = code
                     else:
                         if self.policy_configuration["action_parameter"]["targeted_traffic"] == "raw":
-                            metric_result = self.verify_sc_metric(sff_configuration, sf_configuration, active_dst_ip_list, metic_dict, self.traffic_result)
+                            metric_result = self.verify_sc_metric(sff_configuration, sf_configuration, active_dst_ip_list, metric_dict, self.traffic_result)
                         elif self.policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted":
-                            metric_result = self.verify_sc_metric(sff_configuration, sf_configuration, active_dst_ip_list, metic_dict, "")
+                            metric_result = self.verify_sc_metric(sff_configuration, sf_configuration, active_dst_ip_list, metric_dict, "")
                     if metric_result == True:
                         break
                     time.sleep(15)
@@ -794,7 +794,7 @@ class QueryRuleMetric:
         post_data_ori_dict["start_time"] = start_time
         post_data_ori_dict["end_time"] = end_time
         rule_uuids_list = list(rule_uuids_tuple)
-        post_data_ori_dict["rule_uuid"] = rule_uuids_list["uuid"]
+        post_data_ori_dict["rule_uuid"] = rule_uuids_list[0]["uuid"]
         post_data_ori_dict["vsys"] = self.parameter["vsys"]
         response = requests.post(url, json=post_data_ori_dict, headers=headers, verify=False)
         r_dict = response.json()
@@ -802,15 +802,15 @@ class QueryRuleMetric:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric query failed.", flush=True)
             return "", 444
         else:  # 返回正常结果
-            if r_dict["data"]["result"] == []:  # 为空
+            if r_dict["data"]["list"] == []:  # 为空
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Service chaining metric is empty.", flush=True)
                 return "", 333
             else:  # metric不为空时，验证返回结果
-                result_list = r_dict["data"]["result"]
+                result_list = r_dict["data"]["list"]
                 sc_value = copy.deepcopy(result_list[0])
                 return sc_value, ""
     
-    def verify_sc_metric(self, sff_configuration, sf_configuration, active_dst_ip_list, metic_dict, traffic_result):
+    def verify_sc_metric(self, sff_configuration, sf_configuration, active_dst_ip_list, metric_dict, traffic_result):
         metric_result = False
         # 只考虑了一个Application的场景？？
         application = self.get_application_from_configration()
@@ -835,13 +835,13 @@ class QueryRuleMetric:
                     byte_value -= lost_byte
                 traffic_result["total_bytes"] = byte_value + 50 * pkt_value
                 traffic_result["total_packets"] = pkt_value
-                if sff_configuration["type"] == 1:
-                    if metic_dict["sent_bytes"] == metic_dict["received_bytes"] == traffic_result["total_bytes"] and metic_dict["sent_packets"] == metic_dict["received_packets"] == pkt_value:
+                if sff_configuration[0]["type"] == 1:
+                    if metric_dict["sent_bytes"] == metric_dict["received_bytes"] == traffic_result["total_bytes"] and metric_dict["sent_packets"] == metric_dict["received_packets"] == pkt_value:
                         metric_result = True
                     else:
                         metric_result = False
-                elif sff_configuration["type"] == 2:
-                    if metic_dict["sent_bytes"] == traffic_result["total_bytes"] and metic_dict["sent_packets"] == pkt_value and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
+                elif sff_configuration[0]["type"] == 2:
+                    if metric_dict["sent_bytes"] == traffic_result["total_bytes"] and metric_dict["sent_packets"] == pkt_value and metric_dict["received_bytes"] == metric_dict["received_packets"] == 0:
                         metric_result = True
                     else:
                         metric_result = False
@@ -865,8 +865,8 @@ class QueryRuleMetric:
                     byte_value -= lost_byte
                 traffic_result["total_bytes"] = byte_value + 4 * pkt_value
                 traffic_result["total_packets"] = pkt_value
-                if sff_configuration["type"] == 2:
-                    if metic_dict["sent_bytes"] == traffic_result["total_bytes"] and metic_dict["sent_packets"] == pkt_value and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
+                if sff_configuration[0]["type"] == 2:
+                    if metric_dict["sent_bytes"] == traffic_result["total_bytes"] and metric_dict["sent_packets"] == pkt_value and metric_dict["received_bytes"] == metric_dict["received_packets"] == 0:
                         metric_result = True
                     else:
                         metric_result = False
@@ -874,21 +874,21 @@ class QueryRuleMetric:
                     metric_result = False
         elif self.policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted":
             if sf_configuration[0]["connectivity"]["method"] == "vxlan_g" and sf_configuration[0]["connectivity"]["sf_dest_ip"] in active_dst_ip_list:
-                if sff_configuration["type"] == 1:
-                    if metic_dict["sent_bytes"] == metic_dict["received_bytes"] and metic_dict["sent_packets"] == metic_dict["received_packets"]:
+                if sff_configuration[0]["type"] == 1:
+                    if metric_dict["sent_bytes"] == metric_dict["received_bytes"] and metric_dict["sent_packets"] == metric_dict["received_packets"]:
                         metric_result = True
                     else:
                         metric_result = False
-                elif sff_configuration["type"] == 2:
-                    if metic_dict["sent_bytes"] != 0 and metic_dict["sent_packets"] != 0 and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
+                elif sff_configuration[0]["type"] == 2:
+                    if metric_dict["sent_bytes"] != 0 and metric_dict["sent_packets"] != 0 and metric_dict["received_bytes"] == metric_dict["received_packets"] == 0:
                        metric_result = True
                     else:
                         metric_result = False
                 else:
                     metric_result = False
             elif sf_configuration[0]["connectivity"]["method"] == "layer2_switch":
-                if sff_configuration["type"] == 2 and len(metic_dict) != 0:
-                    if metic_dict["sent_bytes"] != 0 and metic_dict["sent_packets"] != 0 and metic_dict["received_bytes"] == metic_dict["received_packets"] == 0:
+                if sff_configuration[0]["type"] == 2 and len(metric_dict) != 0:
+                    if metric_dict["sent_bytes"] != 0 and metric_dict["sent_packets"] != 0 and metric_dict["received_bytes"] == metric_dict["received_packets"] == 0:
                         metric_result = True
                     else:
                         metric_result = False
@@ -897,9 +897,9 @@ class QueryRuleMetric:
         return metric_result
     
     def get_application_from_configration(self):
-        action_parameter = self.policy_configuration["action_parameter"]
-        for i in range(len(action_parameter)):
-            or_conditions = action_parameter[i]["or_conditions"]
+        and_conditions = self.policy_configuration["and_conditions"]
+        for i in range(len(and_conditions)):
+            or_conditions = and_conditions[i]["or_conditions"]
             for j in range(len(or_conditions)):
                 if or_conditions[j]["attribute_name"] == "ATTR_APP_ID":
                     application = or_conditions[j]["items"]
@@ -907,10 +907,10 @@ class QueryRuleMetric:
     
     def get_negate_option_from_configration(self):
         negate_option_list = []
-        action_parameter = self.policy_configuration["action_parameter"]
-        for i in range(len(action_parameter)):
-            negate_option_list.append(action_parameter[i]["negate_option"])
+        and_conditions = self.policy_configuration["and_conditions"]
+        for i in range(len(and_conditions)):
+            negate_option_list.append(and_conditions[i]["negate_option"])
         for value in negate_option_list:
-            if value == 1:
+            if value == True:
                 return 1
         return 0

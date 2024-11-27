@@ -28,7 +28,7 @@ def run(parameter):
             "action": "deny",
             "and_conditions": [
                 {
-                    "negate_option": True,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SOURCE_IP",
@@ -74,8 +74,13 @@ def run(parameter):
                 }
             ],
             "action_parameter": {
-                "sub_action": "alert",
-                "code": 204,
+                "sub_action": "block",
+                "code": 404,
+                "html_profile": {
+                    "name": "test",
+                    "format": "html",
+                    "file_path": "Response-Pages_1.html"
+                },
                 "packet_capture": {
                     "enable": 0
                 },
@@ -91,7 +96,7 @@ def run(parameter):
         }
         
         verification_result = {
-            "excepted_traffic_result": "204",
+            "excepted_traffic_result": "403",
             "expected_metric": {"hits": 1},
             "expected_log": [
                 {"query_field_key":"server_fqdn", "query_value": "www.example.com"},

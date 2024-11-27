@@ -33,12 +33,14 @@ class CreateProfiles:
                 for sff_profile in policy_configuration["action_parameter"]["sff_profiles"]:
                     sff_profile_list = []
                     sf_profile_list = []
+                    policy_configuration["action_parameter"]["sf_configuration"] = []
                     for sf_profile in sff_profile["service_func_profiles"]:
                         if "connectivity" in sf_profile.keys():
                             if "int_vlan_tag" in sf_profile["connectivity"].keys() and "random" == sf_profile["connectivity"]["int_vlan_tag"]:
                                    sf_profile["connectivity"]["int_vlan_tag"] = self.generate_random_vlan_id()
                             if "ext_vlan_tag" in sf_profile["connectivity"].keys() and "random" == sf_profile["connectivity"]["ext_vlan_tag"]:
                                    sf_profile["connectivity"]["ext_vlan_tag"] = self.generate_random_vlan_id()
+                        policy_configuration["action_parameter"]["sf_configuration"].append(sf_profile)
                         profile_type = "service-functions"
                         sf_uuids, sf_temp = self.create_text_profiles(sf_profile, profile_type)
                         sf_profile_list.append(sf_uuids)
@@ -56,7 +58,6 @@ class CreateProfiles:
                     sff_uuids_temp_dict["name"] = sff_profile["name"]
                     profile_uuids_list.append(sff_uuids_temp_dict)
                     sff_profile_list.append(sff_uuids)
-                policy_configuration["action_parameter"]["sff_profiles"] = sff_profile_list
             elif "html_profile" in policy_configuration["action_parameter"].keys():
                 profile_type = "response-pages"
                 html_uuids, html_temp = self.create_file_upload_profiles(policy_configuration["action_parameter"]["html_profile"], profile_type, policy_configuration["action_parameter"]["html_profile"]["file_path"])
