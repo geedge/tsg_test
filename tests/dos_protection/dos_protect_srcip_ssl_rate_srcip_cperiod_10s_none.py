@@ -1,6 +1,11 @@
 # -*- coding: UTF-8 -*-
 import os
 import sys
+
+from support.organize_config import OrganizeConfig
+
+from support.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
 import pytz
@@ -113,6 +118,12 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
@@ -120,6 +131,7 @@ def run(parameter):
             rules_tuple, api_error = api_client.create_rules(policy_configuration, objects_tuple, "", "")
             if len(api_error) > 0:
                 return api_error
+
 
         # 等待下发配置生效
         time.sleep(3)
@@ -144,6 +156,11 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
         elif parameter["initiation_method"] == "api":
+            print(traffic_generation)
+            print(verification_result)
+            print(rules_tuple)
+            print(start_time)
+            print(traffic_result)
             log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time,
                                                    traffic_result)
         if log_result == True:
@@ -202,7 +219,7 @@ if __name__ == '__main__':
     parameter = {
         "username": "lina2024",
         "password": "lina2024",
-        "test_pc_ip": "192.168.64.96",
+        "test_pc_ip": "192.168.64.136",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
@@ -211,6 +228,9 @@ if __name__ == '__main__':
         "root_path": workdir,
         "path": workdir + "/tests",
         "module_name": "dos_protection",
-        "test_case_name": os.path.basename(__file__)[:-3]
+        "test_case_name": os.path.basename(__file__)[:-3],
+        "is_log": 1,
+        "policy_type":"dos_protection"
+
     }
     run(parameter)

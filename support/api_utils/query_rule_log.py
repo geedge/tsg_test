@@ -16,7 +16,7 @@ class QueryRuleLog:
     def query_rule_log(self, traffic_generation, verification_result, rule_uuids_tuple, start_time):
         try:
             self.rule_type = self.policy_configuration["type"]
-            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" :
+            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" or self.rule_type == "dos_protection" :
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 log_result = None
                 for _ in range(int(90)):
@@ -105,10 +105,7 @@ class QueryRuleLog:
                 log_condition_dict['vsys'] = self.parameter["vsys"]
                 log_condition_dict['execution_mode'] = 'oneshot'
 
-                if self.rule_type == "dos_protection":
-                    attack_type = "Custom Network Attack"
-                    log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='{attack_type}'"
-                if self.is_attribute_name_exsit("ATTR_SUBSCRIBER_ID") == True:
+                if self.is_attribute_name_exsit("ATTR_SUBSCRIBER_ID") == True :
                     log_filter = f"subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, '{rule_uuid}')"
                     log_condition_dict['filter'] = log_filter
                 else:
@@ -120,6 +117,8 @@ class QueryRuleLog:
                         log_filter = f"client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                         log_condition_dict['filter'] = log_filter
                         log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation['clients_start_ip']}",f"client_ip='{traffic_generation['clients_start_ip']}'")
+                    if self.rule_type == "dos_protection":
+                        log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'"
                     else:
                         log_filter = f"client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                         log_condition_dict['filter'] = log_filter
@@ -383,6 +382,7 @@ class QueryRuleLog:
                     ]
                     if query_field_key in dos_verification_fields:
                         temp_log_result_list = self.verify_value_from_dos_event(log, query_field_key, count, start_time, end_time)
+                        print(temp_log_result_list)
                 if len(temp_log_result_list) < len(log_query):
                     if True in temp_log_result_list:
                         log_result = True
