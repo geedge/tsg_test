@@ -218,7 +218,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": ""
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)
     """
