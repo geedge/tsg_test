@@ -16,7 +16,7 @@ class DeleteObjects:
         try:
             for object in objects_tuple:
                 element_position_library = get_element_position(object["type"])
-                delete_element_position = element_position_library["delete"]
+                deletion_element_position = element_position_library["delete"]
                 page_jump_element_position = element_position_library["page_jump"]
                 search_element_position = element_position_library["search"]
                 page_jump = PageJump(self.driver)
@@ -30,8 +30,8 @@ class DeleteObjects:
                 time.sleep(2)
                 self.driver.find_element(By.XPATH, '(//input[@aria-label="Select row"])[1]').click()
                 #点击删除按钮
-                self.driver.find_element(By.XPATH, delete_element_position["objectListPage_deleteButton_posXpath"]).click()
-                self.driver.find_element(By.XPATH,delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
+                self.driver.find_element(By.XPATH, deletion_element_position["objectListPage_deleteButton_posXpath"]).click()
+                self.driver.find_element(By.XPATH,deletion_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
                 time.sleep(3)
                 return 200
         except Exception as e:
@@ -39,11 +39,11 @@ class DeleteObjects:
             return 400
 
     def delete_sub_object(self,object_element_position,first_row_checkbox_element):
-        delete_element_position = object_element_position["delete"]
+        deletion_element_position = object_element_position["delete"]
         try:
             first_row_checkbox_element.click()
-            self.driver.find_element(By.ID, delete_element_position["objectListPage_deleteButton_posId"]).click()
-            self.driver.find_element(By.XPATH,delete_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
+            self.driver.find_element(By.ID, deletion_element_position["objectListPage_deleteButton_posId"]).click()
+            self.driver.find_element(By.XPATH,deletion_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
             time.sleep(3)
             return 200
         except Exception as e:
