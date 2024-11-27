@@ -96,7 +96,7 @@ class TrafficGenerator:
                 result = player.send_unordered_tcp_traffic(traffic_generation)
             elif traffic_generation["tool"] == "vxlan":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate vxlan traffic by tcpreplay.", flush=True)
-                print("to be added")
+                print("todo")
             elif traffic_generation["tool"] == "trex":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use trex to replay traffic.", flush=True)
                 pcap_name = traffic_generation.get("pcap_name") + ".pcap"
