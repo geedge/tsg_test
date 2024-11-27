@@ -173,7 +173,7 @@ def run(parameter):
             "excepted_traffic_result": "vip.com",
             "expected_metric": {"hits": 1},
             "expected_log": [
-                {"query_field_key": "sc_rsp_decrypted", "query_value": ""},
+                {"query_field_key": "sc_rsp_decrypted_uuid_list", "query_value": ""},
                 {"query_field_key": "subscriber_id", "query_value": "test6494"},
                 {"query_field_key": "imei", "query_value": "1234567801"},
                 {"query_field_key": "imsi", "query_value": "43458960456"},
