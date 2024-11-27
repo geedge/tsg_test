@@ -23,7 +23,7 @@ from datetime import datetime
 class TrafficGenerator:
     def run(self, policy_configuration, traffic_generation):
         self.traffic_generation = traffic_generation
-        debug = "local"
+        debug = "traffic"
         if debug == "local":
             #traffic_generation["type"]=traffic_generation["tool"]
             traffic_generation_json_str = json.dumps(traffic_generation)
