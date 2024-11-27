@@ -129,7 +129,94 @@ class EditObjects:
                                 self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[16]").click()
                             elif key_flag == "Tunneling" and new_item[key_flag] == True:
                                 self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
-                    self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
+                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
+                    elif src_item != "":
+                        self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_edit_item_posXpath"]).click()
+                        #对源item双击取消
+                        for key_flag in src_item:
+                            if key_flag == "Bulky":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[2]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[2]").click()
+                            elif key_flag == "CBR Streaming":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[3]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[3]").click()
+                            elif key_flag == "Client is Local" :
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[4]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[4]").click()
+                            elif key_flag == "Server is Local":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[5]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[5]").click()
+                            elif key_flag == "Download":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[6]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[6]").click()
+                            elif key_flag == "Interactive":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[7]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[7]").click()
+                            elif key_flag == "Inbound" :
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[8]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[8]").click()
+                            elif key_flag == "Outbound":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[9]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[9]").click()
+                            elif key_flag == "Pseudo Unidirectional":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[10]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[10]").click()
+                            elif key_flag == "Streaming":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[11]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[11]").click()
+                            elif key_flag == "Unidirectional":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[12]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[12]").click()
+                            elif key_flag == "Random looking":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[13]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[13]").click()
+                            elif key_flag == "C2S":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[14]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[14]").click()
+                            elif key_flag == "S2C":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[15]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[15]").click()
+                            elif key_flag == "Bidirectional" :
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[16]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[16]").click()
+                            elif key_flag == "Tunneling":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
+                        #添加新item
+                        for key_flag in new_item:
+                            if key_flag == "Bulky" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[2]").click()
+                            elif key_flag == "CBR Streaming":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[3]").click()
+                            elif key_flag == "Client is Local" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[4]").click()
+                            elif key_flag == "Server is Local" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[5]").click()
+                            elif key_flag == "Download" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[6]").click()
+                            elif key_flag == "Interactive" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[7]").click()
+                            elif key_flag == "Inbound" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[8]").click()
+                            elif key_flag == "Outbound" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[9]").click()
+                            elif key_flag == "Pseudo Unidirectional" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[10]").click()
+                            elif key_flag == "Streaming" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[11]").click()
+                            elif key_flag == "Unidirectional" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[12]").click()
+                            elif key_flag == "Random looking" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[13]").click()
+                            elif key_flag == "C2S" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[14]").click()
+                            elif key_flag == "S2C" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[15]").click()
+                            elif key_flag == "Bidirectional" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[16]").click()
+                            elif key_flag == "Tunneling" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
+                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
                 elif object_type == "interval":
                     if src_item == "":
                         data_int = new_item.split("-")
@@ -152,76 +239,81 @@ class EditObjects:
                         self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputItem_upBoundary_posXpath"]).send_keys(eval(str(data_int))[1])  # 于item 下up_boundary value输入框键入item_value
                         self.driver.find_element(By.XPATH, edit_element_position["objectPage_button_saveItem_posXpath"]).click()  # 点击保存按钮
                 elif object_type == "application":
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputLongName_posXpath"]).send_keys(object["application"]["app_longname"])  # input long name
-                    # self.driver.find_element(By.XPATH, edit_element_position[""]).send_keys("Your description")  # input description
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_select_category_dropwmn_posXpath"]).click()  # category
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_category_xpath"].format(replaceValue=object["application"]["app_properties"]["category"])).click()  #
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_select_subcategory_dropwmn_posXpath"]).click()  # subcategory
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_sub_category_xpath"].format(replaceValue=object["application"]["app_properties"]["subcategory"])).click()  #
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_select_content_dropwmn_posXpath"]).click()  # content
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_content_xpath"].format(replaceValue=object["application"]["app_properties"]["content"])).click()  #
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_select_risk_dropwmn_posXpath"]).click()  # risk 0
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_risi_xpath"].format(replaceValue=object["application"]["app_properties"]["risk"])).click()
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_characteristics_xpath"].format(replaceValue=object["application"]["app_properties"]["characteristics"])).click()
-                    #添加signature
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_create_signature_posXpath"]).click()
-                    for m in range(len(object["app_surrogates"])):
-                        app_surrogates= object["app_surrogates"][m]
-                        for i in range(len(app_surrogates["signature_sequence"])):
-                            app_signature= app_surrogates["signature_sequence"][i]
-                            self.driver.find_element(By.XPATH,edit_element_position["signature_inputName_posXpath"]).send_keys(app_signature["signature"]["name"])
-                            self.driver.find_element(By.XPATH, edit_element_position["signature_add_artibutem_posXpath"]).click()
-                            for j in range(len(app_signature["signature"]["and_conditions"])):
-                                app_and_condition= app_signature["signature"]["and_conditions"][j]
-                                self.driver.find_element(By.XPATH, edit_element_position["signature_condition_select_up_posXpath"]).click()
-                                if app_and_condition["negate_option"] == False:
-                                    self.driver.find_element(By.XPATH, edit_element_position["signature_new_condition__posXpath"]).click()
-                                else:self.driver.find_element(By.XPATH, edit_element_position["signature_new_not_condition__posXpath"]).click()
-                                self.driver.find_element(By.XPATH, edit_element_position["signature_add_artibute_button_posXpath"]).click()
-                                for n in range(len(app_and_condition["or_conditions"])):
-                                    app_or_condition= app_and_condition["or_conditions"][n]
-                                    self.driver.find_element(By.XPATH,"//li[@class = 'MuiTreeItem-root css-105mfs8']//div[text()='common']").click()
-                                    self.driver.find_element(By.XPATH,edit_element_position["signature_artibute_protocols"].format(replaceValue=app_or_condition["attribute_name"])).click()
-                                    self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[4]//button[text()='Cancel']").click()
-                                    self.driver.find_element(By.XPATH,edit_element_position["attribute_add_object_posXpath"]).click()
-                                    self.driver.find_element(By.XPATH,edit_element_position["objectPage_create_signature_posXpath"]+"[2]").click()
-                                    common_object_element_position = get_element_position(app_or_condition["type"])
-                                    self.create_common_objects(app_or_condition,common_object_element_position)
-                                    self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"]+"[4]").click()
-                                    self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[4]//button[text()='Cancel']").click()
-                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"]+"[3]").click()
-                    self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"]+"[2]").click()
-                    self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[1]//button[text()='Cancel']").click()
-                elif object_type == "tunnel":
-                    if len(object["tunnel"]["and_conditions"]) == 1:
-                        tunnel_endition_a = object["tunnel"]["and_conditions"][0]
-                    elif len(object["tunnel"]["and_conditions"]) == 2:
-                        tunnel_endition_a = object["tunnel"]["and_conditions"][0]
-                        tunnel_endition_b = object["tunnel"]["and_conditions"][1]
-    
-                    self.driver.find_element(By.XPATH, edit_element_position["objectPage_edit_tunnel_type_posXpath"]).click()
-                    if object["tunnel"]["action_parameter"]["type"] == "IP":
-                        self.driver.find_element(By.XPATH, edit_element_position["objectListPage_type_ip_posXpath"]).click()
-                    elif object["tunnel"]["action_parameter"]["type"] == "GRE":
-                        self.driver.find_element(By.XPATH, edit_element_position["objectListPage_type_gre_posXpath"]).click()
-    
-                    for i in range(len(tunnel_endition_a["or_conditions"])):
-                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_endition_a_addItem_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_side_slic_create_button_posXpath"]).click()
-                        common_object_element_position = get_element_position(tunnel_endition_a["or_conditions"][i]["type"])
-                        self.create_common_objects(tunnel_endition_a["or_conditions"][i],common_object_element_position)
+                    if src_item == "":
+                        #添加signature
+                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_create_signature_posXpath"]).click()
+                        for m in range(len(new_item)):
+                            app_surrogates= new_item[m]
+                            for i in range(len(app_surrogates["signature_sequence"])):
+                                app_signature= app_surrogates["signature_sequence"][i]
+                                self.driver.find_element(By.XPATH,edit_element_position["signature_inputName_posXpath"]).send_keys(app_signature["signature"]["name"])
+                                self.driver.find_element(By.XPATH, edit_element_position["signature_add_artibutem_posXpath"]).click()
+                                for j in range(len(app_signature["signature"]["and_conditions"])):
+                                    app_and_condition= app_signature["signature"]["and_conditions"][j]
+                                    self.driver.find_element(By.XPATH, edit_element_position["signature_condition_select_up_posXpath"]).click()
+                                    if app_and_condition["negate_option"] == False:
+                                        self.driver.find_element(By.XPATH, edit_element_position["signature_new_condition__posXpath"]).click()
+                                    else:self.driver.find_element(By.XPATH, edit_element_position["signature_new_not_condition__posXpath"]).click()
+                                    self.driver.find_element(By.XPATH, edit_element_position["signature_add_artibute_button_posXpath"]).click()
+                                    for n in range(len(app_and_condition["or_conditions"])):
+                                        app_or_condition= app_and_condition["or_conditions"][n]
+                                        self.driver.find_element(By.XPATH,"//li[@class = 'MuiTreeItem-root css-105mfs8']//div[text()='common']").click()
+                                        self.driver.find_element(By.XPATH,edit_element_position["signature_artibute_protocols"].format(replaceValue=app_or_condition["attribute_name"])).click()
+                                        self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[4]//button[text()='Cancel']").click()
+                                        self.driver.find_element(By.XPATH,edit_element_position["attribute_add_object_posXpath"]).click()
+                                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_create_signature_posXpath"]+"[2]").click()
+                                        common_object_element_position = get_element_position(app_or_condition["type"])
+                                        self.create_objects_by_side_slide(app_or_condition,common_object_element_position)
+                                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"]+"[4]").click()
+                                        self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[4]//button[text()='Cancel']").click()
+                                self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"]+"[3]").click()
                         self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"]+"[2]").click()
-                        self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_side_slic_Cancel_posXpath"]).click()
-                    if len(object["tunnel"]["and_conditions"]) == 2:
-                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_endition_b_addItem_posXpath"]).click()
-                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_endition_b_addItem_posXpath"]).click()
-                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_side_slic_create_button_posXpath"]).click()
-    
-                        for i in range(len(tunnel_endition_b["or_conditions"])):
-                            self.create_common_objects(tunnel_endition_b["or_conditions"][i], common_object_element_position)
-                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"] + "[2]").click()
+                        self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[1]//button[text()='Cancel']").click()
+                    elif src_item != "":
+                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()
+                        self.driver.find_element(By.XPATH,"//input[@class='MuiInput-input css-za5rna']").send_keys(src_item["signature_sequence"][0]["signature"]["name"] + Keys.ENTER)
+                        self.driver.find_element(By.XPATH,"//i[@class='iconfont icon-Edit !text-[var(--color-text)]']").click()
+                        name_input_field = self.driver.find_element(By.XPATH, edit_element_position["signature_inputName_posXpath"])
+                        name_input_field.send_keys(Keys.CONTROL, 'a')  # 或使用 Keys.COMMAND 在 macOS
+                        name_input_field.send_keys(Keys.DELETE)
+                        name_input_field.send_keys("signature_edit_name")
+                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"] + "[2]").click()
+
+                elif object_type == "tunnel":
+                    if src_item == "":
+                        if len(new_item) == 1:
+                            tunnel_endition_a = new_item[0]
+                        elif len(new_item) == 2:
+                            tunnel_endition_a = new_item[0]
+                            tunnel_endition_b = new_item[1]
+
+                        for i in range(len(tunnel_endition_a["or_conditions"])):
+                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_endition_a_addItem_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, edit_element_position["objectPage_side_slic_create_button_posXpath"]).click()
+                            time.sleep(1)
+                            common_object_element_position = get_element_position(tunnel_endition_a["or_conditions"][i]["type"])
+                            self.create_objects_by_side_slide(tunnel_endition_a["or_conditions"][i],common_object_element_position)
+                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"]+"[2]").click()
                             self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_side_slic_Cancel_posXpath"]).click()
+                        if len(new_item) == 2:
+                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_endition_b_addItem_posXpath"]).click()
+                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_endition_b_addItem_posXpath"]).click()
+                            self.driver.find_element(By.XPATH, edit_element_position["objectPage_side_slic_create_button_posXpath"]).click()
+
+                            for i in range(len(tunnel_endition_b["or_conditions"])):
+                                self.create_objects_by_side_slide(tunnel_endition_b["or_conditions"][i], common_object_element_position)
+                                self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"] + "[2]").click()
+                                self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_side_slic_Cancel_posXpath"]).click()
+                    elif src_item != "":
+                        if len(src_item) == 1:
+                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_endition_a_editItem_posXpath"]).click()
+                            name_input_field = self.driver.find_element(By.XPATH,"//div[@class='ip-object-name']//input")
+                            name_input_field.send_keys(Keys.CONTROL, 'a')  # 或使用 Keys.COMMAND 在 macOS
+                            name_input_field.send_keys(Keys.DELETE)
+                            name_input_field.send_keys("tunnel_edit_A")
+                            self.driver.find_element(By.XPATH, edit_element_position["objectPage_okButton_posXpath"] + "[2]").click()
+                            self.driver.find_element(By.XPATH, edit_element_position["ObjectPage_side_slic_Cancel_posXpath"]).click()
                 elif object_type == "ip_learning":
                     self.driver.find_element(By.XPATH,edit_element_position["objectPage_ipLearningType_posXpath"]).click()
                     if object["op"] == "add":
@@ -243,13 +335,6 @@ class EditObjects:
                     self.driver.find_element(By.XPATH,edit_element_position["objectPage_voteClients_posXpath"]).send_keys(object["learning_plan"]["fqdn_ip_learning_plan"]["vote_client_num"])
                     self.driver.find_element(By.XPATH,edit_element_position["objectPage_learnedIPLimits_posXpath"]).send_keys(object["learning_plan"]["fqdn_ip_learning_plan"]["goal_upper_limit"])
                 else:
-                    # if object_type == "ip":
-                    #     send_data = object["items"]["ip"]
-                    #     edit_data = object["items"][i]["edit_ip"]
-                    # if object_type == "imsi":
-                    #     send_data = object["items"][i]["expression"]
-                    # elif object_type == "imei":
-                    #     send_data = object["items"][i]["expression"]
                     if src_item == "":
                         self.driver.find_element(By.XPATH,edit_element_position["objectPage_addItem_posXpath"]).click()
                         # 适配24.10 版本，需要逐个字符输入
@@ -372,7 +457,7 @@ class EditObjects:
             # return 400
 
 
-    def create_common_objects(self,object,common_object_element_position):
+    def create_objects_by_side_slide(self,object,common_object_element_position):
         object_type = object["type"]
         edit_element_position = common_object_element_position["create"]
         self.driver.find_element(By.XPATH,'//ul[@class="base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-131n2dh"]/li[1]').click()
