@@ -127,7 +127,7 @@ def run(parameter):
                     ]
                 }
             ],
-            "log_query_param": [{"query_field_key": "sc_rsp_decrypted", "query_value": ""}],
+            "log_query_param": [{"query_field_key": "sc_rsp_decrypted_uuid_list", "query_value": ""}],
             "traffic":{
                 "protocol": "ssl",
                 "type": "curl",

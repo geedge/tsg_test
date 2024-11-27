@@ -16,7 +16,7 @@ class QueryRuleLog:
     def query_rule_log(self, traffic_generation, verification_result, rule_uuids_tuple, start_time):
         try:
             self.rule_type = self.policy_configuration["type"]
-            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" :
+            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" or self.rule_type == "service_chaining":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 log_result = None
                 for _ in range(int(90)):
@@ -87,6 +87,9 @@ class QueryRuleLog:
                     log_query_rule_type = 'statistics_rule_uuid_list'
                 elif self.rule_type == "dos_protection":
                     schema_type = log_source = "dos_event"
+                elif self.rule_type == "service_chaining":
+                    schema_type = log_source = 'session_record'
+                    log_query_rule_type = 'sc_rule_uuid_list'
                 fields = self.get_log_schema(self.token, schema_type, self.parameter["api_server"], self.parameter["vsys"])
                 log_condition_dict['fields'] = fields
                 log_condition_dict['data_source'] = log_source
@@ -315,6 +318,26 @@ class QueryRuleLog:
                                     temp_log_result_list.append(True)
                                 else:
                                     temp_log_result_list.append(False)
+                    elif query_field_key in {"sc_rsp_raw_uuid_list", "sc_rsp_decrypted_uuid_list"}:
+                        query_value = self.policy_configuration["action_parameter"]["sff_profiles"]
+                        if query_value == log_dict[query_field_key]:
+                            temp_log_result_list.append(True)
+                        else:
+                            temp_log_result_list.append(False)
+                    elif query_field_key in {"sent_pkts", "received_pkts", "sent_bytes", "received_bytes"}:
+                        if query_field_key == "sent_pkts":
+                            query_value = self.traffic_result["total_packets_sent"]
+                        elif query_field_key == "received_pkts":
+                            query_value = self.traffic_result["total_packets_received"]
+                        elif query_field_key == "sent_bytes":
+                            query_value = self.traffic_result["total_bytes_sent"]
+                        elif query_field_key == "received_bytes":
+                            query_value = self.traffic_result["total_bytes_received"]
+                        if query_value == log_dict[query_field_key]:
+                            temp_log_result_list.append(True)
+                        else:
+                            temp_log_result_list.append(False)
+
                     else:
                         temp_log_result_list.append(False)
                 if self.rule_type == 'proxy_intercept' and len(temp_log_result_list) < len(log_query):
