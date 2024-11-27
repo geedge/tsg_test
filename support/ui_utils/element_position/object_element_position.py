@@ -82,7 +82,7 @@ ipObjectListPage_editButton_posXpath = "//span[@class='action-edit inline-flex m
 ipObjectListPage_dropDown_createButton_posXpath = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[1]"  # 从下拉菜单中选择Address
 ipObjectListPage_dropDown_createGroupButton_posId = "//ul[@class='base-Popper-root MuiMenu-root Mui-expanded MuiMenu-variantOutlined MuiMenu-colorNeutral MuiMenu-sizeMd css-1iuehdr']//li[2]"
 ipObjectListPage_searchLabel_posXpath = '//*[@class="MuiAutocomplete-wrapper MuiAutocomplete-multiple css-1h1ala5"]/input' # 查询框id
-ipObjectListPage_searchLabel_selectName_posXpath = '//*[@class="MuiInput-input css-1u0jcuo"]'  # 查询Name
+ipObjectListPage_searchLabel_selectName_posXpath = objectListPage_search_select_Name_posXpath  # 查询Name
 ipObjectListPage_deleteButton_posXpath = '//*[@class="action-delete inline-flex mr-[8px] "]'
 ipObjectListPage_deleteButton_warningYes_posXpath = '//button[normalize-space(text())="Yes"]'
 ipObjectListPage_deleteButton_warningNo_posCss = "body>.el-dialog__wrapper .delComponents-close span"
@@ -410,8 +410,10 @@ application_ok_button_posXpath = "(//div[@class='form-action bg-[--color-backgro
 #tunnel
 tunnelObjectListPage_createButton_posXpath = "//div[@class='flex justify-start items-center mr-[20px]']//span[text()='Create']"
 tunnelObjectListPage_inputName_posXpath ="//*[@class='tunnel-object-name']//input"
-tunnelObjectListPage_endition_a_add_item_button="//div[@class='tunnel-object-endpointA']//i[@class='iconfont icon-Create1 font-[700]']"
-tunnelObjectListPage_endition_b_add_item_button="//div[@class='tunnel-object-endpointB']//i[@class='iconfont icon-Create1 font-[700]']"
+tunnelObjectListPage_endition_a_add_item_button="//div[@class='tunnel-object-endpointA']//i[contains(@class,'iconfont icon-Create1')]"
+tunnelObjectListPage_endition_b_add_item_button="//div[@class='tunnel-object-endpointB']//i[contains(@class,'iconfont icon-Create1')]"
+tunnelObjectListPage_endition_a_edit_item_button = "//div[@class='tunnel-object-endpointA']//i[@class='iconfont icon-Edit absolute right-[24px] cursor-pointer']"
+tunnelObjectListPage_endition_b_edit_item_button = "//div[@class='tunnel-object-endpointB']//i[@class='iconfont icon-Edit absolute right-[24px] cursor-pointer']"
 tunnelObjectListPage_edit_Type_posXpath="//div[@class='tunnel-object-type']//button[@class='MuiSelect-button css-1qmzz5g']"
 tunnelObjectListPage_type_gre_posXpath="//ul[@class='base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1']//*[normalize-space(text())='GRE']"
 tunnelObjectListPage_type_ip_posXpath="//ul[@class='base-Popper-root MuiSelect-listbox Mui-expanded css-icfck1']//*[normalize-space(text())='IPv4/IPv6']"
