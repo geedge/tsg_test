@@ -1139,9 +1139,19 @@ object_port_object_element_position = {
         "objectPage_okButton_posXpath": portObjectPage_okButton_posXpath,
         "objectPage_okButton_warningYes_posXpath": portObjectPage_okButton_warningYes_posXpath
     },
+    "edit": {
+        "ObjectListPage_editButton_posXpath": ipObjectListPage_editButton_posXpath,
+        "objectPage_addItem_posXpath": portObjectPage_addItem_posXpath,
+        "ObjectPage_edit_item_posXpath": ipObjectPage_edit_item_posXpath,
+        "ObjectPage_search_item_posXpath": ipObjectPage_search_item_posXpath,
+        "objectPage_inputItem_posXpath": portObjectPage_inputItem_posXpath,
+        "objectPage_button_saveItem_posXpath": portObjectPage_button_saveItem_posXpath,
+        "objectPage_okButton_posXpath": portObjectPage_okButton_posXpath,
+    },
     "search": {
         "objectListPage_searchLabel_posXpath": portObjectListPage_searchLabel_posXpath,
         "objectListPage_searchLabel_selectName_posXpath": portObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_searchLabel_selectID_posXpath": objectListPage_search_select_Id_posXpath,
         "objectListPage_tableTbody_posXpath": portObjectListPage_tableTbody_posXpath,
         "objectListPage_search_input_posXpath": portObjectListPage_search_input_posXpath,
         "objectListPage_search_dropDown_item_posXpath": portObjectListPage_search_dropDown_item_posXpath,
@@ -1725,9 +1735,20 @@ object_interval_object_element_position = {
         "objectPage_okButton_posXpath": intObjectPage_okButton_posXpath,
         "objectPage_okButton_warningYes_posXpath": intObjectPage_okButton_warningYes_posXpath
     },
+    "edit": {
+        "ObjectListPage_editButton_posXpath": ipObjectListPage_editButton_posXpath,
+        "objectPage_addItem_posXpath": intObjectPage_addItem_posXpath,
+        "ObjectPage_edit_item_posXpath": ipObjectPage_edit_item_posXpath,
+        "ObjectPage_search_item_posXpath": ipObjectPage_search_item_posXpath,
+        "objectPage_inputItem_lowBoundary_posXpath": intObjectDetailPage_itemValueInput_lowBoundary_poXpath,
+        "objectPage_inputItem_upBoundary_posXpath":intObjectDetailPage_itemValueInput_upBoundary_poXpath,
+        "objectPage_button_saveItem_posXpath": intObjectDetailPage_itemSaveButton_poXpath,
+        "objectPage_okButton_posXpath": intObjectPage_okButton_posXpath,
+    },
     "search": {
-        "objectListPage_searchLabel_posId": ipObjectListPage_searchLabel_posId,
+        "objectListPage_searchLabel_posXpath": imsiObjectListPage_searchLabel_posXpath,
         "objectListPage_searchLabel_selectName_posXpath": ipObjectListPage_searchLabel_selectName_posXpath,
+        "objectListPage_searchLabel_selectID_posXpath": objectListPage_search_select_Id_posXpath,
         "objectListPage_tableTbody_posXpath": ipObjectListPage_tableTbody_posXpath,
         "objectListPage_search_input_posXpath": ipObjectListPage_search_input_posXpath,
         "objectListPage_search_dropDown_item_posXpath": ipObjectListPage_search_dropDown_item_posXpath,

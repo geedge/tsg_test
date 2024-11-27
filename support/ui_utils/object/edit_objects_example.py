@@ -94,50 +94,62 @@ class EditObjects:
                             self.driver.find_element(By.XPATH, edit_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
                     self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
                 elif object_type == "flag":
-                    for i in range(len(object["items"])):  #
-                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()
-                        if object["items"][i]["op"] == "add":  # 直接 新增 模式
-                            for key_flag in object["items"][i]["flag"]:
-                                if key_flag == "Bulky" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[2]").click()
-                                elif key_flag == "CBR Streaming":
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[3]").click()
-                                elif key_flag == "Client is Local" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[4]").click()
-                                elif key_flag == "Server is Local" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[5]").click()
-                                elif key_flag == "Download" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[6]").click()
-                                elif key_flag == "Interactive" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[7]").click()
-                                elif key_flag == "Inbound" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[8]").click()
-                                elif key_flag == "Outbound" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[9]").click()
-                                elif key_flag == "Pseudo Unidirectional" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[10]").click()
-                                elif key_flag == "Streaming" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[11]").click()
-                                elif key_flag == "Unidirectional" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[12]").click()
-                                elif key_flag == "Random looking" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[13]").click()
-                                elif key_flag == "C2S" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[14]").click()
-                                elif key_flag == "S2C" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[15]").click()
-                                elif key_flag == "Bidirectional" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[16]").click()
-                                elif key_flag == "Tunneling" and object["items"][i]["flag"][key_flag] == True:
-                                    self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
-                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
+                    if src_item == "":  # 直接 新增 模式
+                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_addItem_posXpath"]).click()
+                        for key_flag in new_item:
+                            if key_flag == "Bulky" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[2]").click()
+                            elif key_flag == "CBR Streaming":
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[3]").click()
+                            elif key_flag == "Client is Local" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[4]").click()
+                            elif key_flag == "Server is Local" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[5]").click()
+                            elif key_flag == "Download" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[6]").click()
+                            elif key_flag == "Interactive" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[7]").click()
+                            elif key_flag == "Inbound" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[8]").click()
+                            elif key_flag == "Outbound" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[9]").click()
+                            elif key_flag == "Pseudo Unidirectional" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[10]").click()
+                            elif key_flag == "Streaming" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[11]").click()
+                            elif key_flag == "Unidirectional" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[12]").click()
+                            elif key_flag == "Random looking" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[13]").click()
+                            elif key_flag == "C2S" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[14]").click()
+                            elif key_flag == "S2C" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[15]").click()
+                            elif key_flag == "Bidirectional" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[16]").click()
+                            elif key_flag == "Tunneling" and new_item[key_flag] == True:
+                                self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
+                    self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
                 elif object_type == "interval":
-                    for i in range(len(object["items"])):
-                        data_int = object["items"][i]["interval"].split("-")
+                    if src_item == "":
+                        data_int = new_item.split("-")
                         self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()  # 点击“+”按钮
                         # 在空内容的输入框中，输入新增的数据
                         self.driver.find_element(By.XPATH,edit_element_position["objectPage_inputItem_lowBoundary_posXpath"]).send_keys(eval(str(data_int))[0])  # 于item 下low_boundary value输入框键入item_value
                         self.driver.find_element(By.XPATH,edit_element_position["objectPage_inputItem_upBoundary_posXpath"]).send_keys(eval(str(data_int))[1])  # 于item 下up_boundary value输入框键入item_value
+                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_button_saveItem_posXpath"]).click()  # 点击保存按钮
+                    elif src_item != "":
+                        data_int = new_item.split("-")
+                        self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_search_item_posXpath"]).send_keys(src_item + Keys.ENTER)
+                        self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_edit_item_posXpath"]).click()
+                        # 清空内容：模拟 Ctrl + A 全选后删除
+                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_inputItem_lowBoundary_posXpath"]).send_keys(Keys.CONTROL, 'a')  # 或使用 Keys.COMMAND 在 macOS
+                        self.driver.find_element(By.XPATH,edit_element_position["objectPage_inputItem_lowBoundary_posXpath"]).send_keys(Keys.DELETE)
+                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputItem_upBoundary_posXpath"]).send_keys(Keys.CONTROL,'a')  # 或使用 Keys.COMMAND 在 macOS
+                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputItem_upBoundary_posXpath"]).send_keys(Keys.DELETE)
+                        time.sleep(0.5)
+                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputItem_lowBoundary_posXpath"]).send_keys(eval(str(data_int))[0])  # 于item 下low_boundary value输入框键入item_value
+                        self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputItem_upBoundary_posXpath"]).send_keys(eval(str(data_int))[1])  # 于item 下up_boundary value输入框键入item_value
                         self.driver.find_element(By.XPATH, edit_element_position["objectPage_button_saveItem_posXpath"]).click()  # 点击保存按钮
                 elif object_type == "application":
                     self.driver.find_element(By.XPATH, edit_element_position["objectPage_inputLongName_posXpath"]).send_keys(object["application"]["app_longname"])  # input long name
@@ -210,17 +222,6 @@ class EditObjects:
                             self.create_common_objects(tunnel_endition_b["or_conditions"][i], common_object_element_position)
                             self.driver.find_element(By.XPATH,edit_element_position["objectPage_okButton_posXpath"] + "[2]").click()
                             self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_side_slic_Cancel_posXpath"]).click()
-                elif object_type == "port":
-                    for i in range(len(object["items"])):
-                        if object["items"][i]["op"] == "add":
-                            self.driver.find_element(By.XPATH, edit_element_position["objectPage_addItem_posXpath"]).click()
-                            # 适配24.10 版本，需要逐个字符输入
-                            send_data = object["items"][i]["interval"]
-                            input_field = self.driver.find_element(By.XPATH,edit_element_position["objectPage_inputItem_posXpath"])
-                            for char in str(send_data):
-                                input_field.send_keys(char)
-                                time.sleep(0.1)
-                            self.driver.find_element(By.XPATH,edit_element_position["objectPage_button_saveItem_posXpath"]).click()
                 elif object_type == "ip_learning":
                     self.driver.find_element(By.XPATH,edit_element_position["objectPage_ipLearningType_posXpath"]).click()
                     if object["op"] == "add":
@@ -261,8 +262,6 @@ class EditObjects:
                         self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_search_item_posXpath"]).send_keys(src_item + Keys.ENTER)
                         self.driver.find_element(By.XPATH,edit_element_position["ObjectPage_edit_item_posXpath"]).click()
                         input_field = self.driver.find_element(By.XPATH,edit_element_position["objectPage_inputItem_posXpath"])
-                        # self.driver.execute_script("arguments[0].setAttribute('aria-autocomplete', 'none');",input_field)
-                        # self.driver.execute_script("arguments[0].value = '';", input_field)
                         # 清空内容：模拟 Ctrl + A 全选后删除
                         input_field.send_keys(Keys.CONTROL, 'a')  # 或使用 Keys.COMMAND 在 macOS
                         input_field.send_keys(Keys.DELETE)
