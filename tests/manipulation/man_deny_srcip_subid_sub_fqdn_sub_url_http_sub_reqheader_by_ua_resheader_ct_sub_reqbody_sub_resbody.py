@@ -51,23 +51,6 @@ def run(parameter):
                 "negate_option": False,
                 "or_conditions": [
                 {
-                    "attribute_name": "ATTR_SUBSCRIBER_ID",
-                    "name": "manipulation_subid",
-                    "type": "subscriberid",
-                    "statistics_option": "none",
-                    "member_type": "item",
-                    "items": [
-                    {
-                        "op": "add",
-                        "expr_type": "and",
-                        "expression": "^{}$".format(parameter["test_subcriber_id"])
-                    }]
-                }]
-            },
-            {
-                "negate_option": False,
-                "or_conditions": [
-                {
                     "attribute_name": "ATTR_APP_ID",
                     "type": "application",
                     "items": ["http"]
