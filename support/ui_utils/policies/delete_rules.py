@@ -13,16 +13,16 @@ class DeleteRules:
         self.driver = driver
         
     def delete_rules(self, rule_element_position, first_row_checkbox_element, is_del_all):
-        delete_element_position = rule_element_position["delete"]
+        deletion_element_position = rule_element_position["delete"]
         try:
             time.sleep(0.3)
             if is_del_all == True:
-                self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_allSelect_posXpath"]).click()
+                self.driver.find_element(By.XPATH, deletion_element_position["policyRuleListPage_allSelect_posXpath"]).click()
             else:
                 first_row_checkbox_element.click()
             time.sleep(0.3)
-            self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_deleteButton_posXpath"]).click()
-            self.driver.find_element(By.XPATH, delete_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
+            self.driver.find_element(By.XPATH, deletion_element_position["policyRuleListPage_deleteButton_posXpath"]).click()
+            self.driver.find_element(By.XPATH, deletion_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
             time.sleep(2)
             return 200
         except Exception as e:

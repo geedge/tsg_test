@@ -25,7 +25,7 @@ def run(parameter):
         # 测试数据
         policy_configuration = {
             "type": "service_chaining",
-            "name": "sc_decrypted_srcip_fqdn_ssl_mirror_bypass_disabled_vxlan_activeip_bfd",
+            "name": os.path.basename(__file__)[:-3],
             "action": "service_chaining",
             "and_conditions": [
                 {
@@ -78,7 +78,7 @@ def run(parameter):
                 }
             ],
             "action_parameter": {
-                "targeted_traffic": "decrypted",   
+                "targeted_traffic": "decrypted", 
                 "sff_profiles":
                 [
                     {
@@ -93,7 +93,7 @@ def run(parameter):
                             {
                                 "name":"vxlan_activeip_bfd",
                                 "admin_status": 0,
-                                "device_group": {
+                                "device_group":{
                                     "value": "group-xxg-tsgx",
                                     "tag": "device_group"
                                 },
@@ -123,8 +123,8 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": "vip",
-            "expected_metric": "",
-            "expected_log": [{"query_field_key": "sc_rsp_decrypted", "query_value": ""}]
+            "expected_metric": {"hits": 1},
+            "expected_log": [{"query_field_key": "sc_rsp_decrypted_uuid_list", "query_value": ""}]
         }
 
         # 创建

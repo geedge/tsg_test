@@ -49,7 +49,7 @@ class TrafficGenerator:
                 if parse_boolean == False:
                     json_data = {}
                     json_data = response.text
-                result = json_data
+                result = json_data["result"]
         else:
             if traffic_generation["tool"] == "http":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate http traffic.", flush=True)
@@ -96,7 +96,7 @@ class TrafficGenerator:
                 result = player.send_unordered_tcp_traffic(traffic_generation)
             elif traffic_generation["tool"] == "vxlan":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Simulate vxlan traffic by tcpreplay.", flush=True)
-                print("to be added")
+                print("todo")
             elif traffic_generation["tool"] == "trex":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Use trex to replay traffic.", flush=True)
                 pcap_name = traffic_generation.get("pcap_name") + ".pcap"
@@ -133,13 +133,8 @@ class TrafficGenerator:
         try:
             if self.traffic_generation["tool"] == "trex":
                 return True, ""
-            debug = "local"
-            if debug == "local":
-                traffic_result_temp = traffic_result["result"]
-            else:
-                traffic_result_temp = traffic_result
             expected_result_temp = verification["excepted_traffic_result"]
-            result = all(word in traffic_result_temp for word in expected_result_temp)
+            result = all(word in traffic_result for word in expected_result_temp)
             #if not result:
             #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], 'DEBUG:excepted_traffic_result:{};expected_result_temp:{};traffic_result_temp：{}'.format(result, expected_result_temp, traffic_result_temp), flush=True)
             if result == True:

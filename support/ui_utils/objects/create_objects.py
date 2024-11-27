@@ -3,7 +3,7 @@ import sys
 import time
 from traceback import print_tb
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-from support.ui_utils.object.page_jump import PageJump
+from support.ui_utils.objects.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.object_element_position import *
@@ -128,7 +128,7 @@ class CreateObjects:
                             self.driver.find_element(By.XPATH,create_element_position["ObjectPage_sameItem_inputItem_posXpath"]).send_keys(item_value)
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_button_saveItem_posXpath"]).click()
             elif data["object_type"] == "tunnel":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "todo...")
             elif data["object_type"] == "flag":
                 for i in range(len(data["item"])):  #
                     self.driver.find_element(By.XPATH, create_element_position["objectPage_addItem_posXpath"]).click()
@@ -166,13 +166,13 @@ class CreateObjects:
                         elif data["item"][i]["item_value"]["flag"]=="65536":
                             self.driver.find_element(By.XPATH, "//*[@class='flag-object-flag']//span[17]").click()
                     self.driver.find_element(By.XPATH,create_element_position["objectPage_button_saveItem_posXpath"]).click()
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "todo...")
             elif data["object_type"] == "interval":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "todo...")
             elif data["object_type"] == "application":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "todo...")
             elif data["object_type"] == "ip_learning":
-                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "to be added...")
+                print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "todo...")
             else:
                 for i in range(len(data["item"])):
                     if data["object_type"] == "ip":

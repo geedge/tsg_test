@@ -185,7 +185,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        traffic_start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
@@ -214,7 +214,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, traffic_start_time,
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time,
                                                          traffic_result)
         if metric_result == True:
             test_summary["metric"] = "Pass."
@@ -243,7 +243,7 @@ def run(parameter):
                 api_client.delete_profiles(profiles_tuple)
             if objects_tuple:
                 api_client.delete_objects(objects_tuple)
-        # 统计脚本用时
+        # 脚本结束时间和耗时
         script_end_time = time.time()
         duration = script_end_time - script_start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)

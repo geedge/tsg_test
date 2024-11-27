@@ -6,19 +6,19 @@ import support.ui_utils.env
 from support.ui_utils.create_objects_example import CreateObjectsExample
 from support.ui_utils.delete_objects_example import DeleteObjectsExample
 from support.ui_utils.edit_objects_example import EditObjectsExample
-from support.ui_utils.object.create_objects_example import CreateObjects
-from support.ui_utils.policy.create_rules import CreateRules
-from support.ui_utils.policy.search_rules import SearchRules
-from support.ui_utils.policy.edit_rules import EditRules
-from support.ui_utils.policy.delete_rules import DeleteRules
+from support.ui_utils.objects.create_objects_example import CreateObjects
+from support.ui_utils.policies.create_rules import CreateRules
+from support.ui_utils.policies.search_rules import SearchRules
+from support.ui_utils.policies.edit_rules import EditRules
+from support.ui_utils.policies.delete_rules import DeleteRules
 from support.ui_utils.query_rule_metric import QueryRuleMetric
 from support.ui_utils.query_rule_log import QueryRuleLog
 from support.api_utils.log_in import LogIn
 from support.api_utils.delete_objects import DeleteObjects as DeleteObjectsAPI
 from support.api_utils.delete_rules import DeleteRules as DeleteRulesAPI
-from support.ui_utils.object.search_objects_example import SearchObjects
-from support.ui_utils.object.delete_objects_example import DeleteObjects
-from support.ui_utils.object.edit_objects_example import EditObjects
+from support.ui_utils.objects.search_objects_example import SearchObjects
+from support.ui_utils.objects.delete_objects_example import DeleteObjects
+from support.ui_utils.objects.edit_objects_example import EditObjects
 
 class UIClient:
     def __init__(self, parameter):

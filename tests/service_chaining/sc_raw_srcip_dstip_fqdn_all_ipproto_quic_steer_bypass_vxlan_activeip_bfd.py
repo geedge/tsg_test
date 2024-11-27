@@ -25,7 +25,7 @@ def run(parameter):
         # 测试数据
         policy_configuration = {
             "type": "service_chaining",
-            "name": "sc_raw_srcip_dstip_fqdn_all_ipproto_quic_steer_bypass_vxlan_activeip_bfd",
+            "name": "scfqdn_all_ipproto_quic_steer_bypass_vxlan_activeip_bfd",
             "action": "service_chaining",
             "and_conditions": [
                 {
@@ -109,21 +109,21 @@ def run(parameter):
             ],
             "action_parameter": {
                 "targeted_traffic": "raw",   
-                "sff_profiles":
+                                "sff_profiles":
                 [
                     {
-                        "vsys": 1,
+                            "vsys": 1,
                         "return_data": 1,
                         "name": "steer_bypass_vxlan_activeip_bfd", 
                         "type": 1,
-                        "load_balance_method": "hash-innermost-int-ip",
-                        "load_balance_localization": "nearby",
+                            "load_balance_method": "hash-innermost-int-ip",
+                            "load_balance_localization": "nearby",
                         "failure_action": "bypass",
                         "service_func_profiles":[
                             {
                                 "name":"vxlan_activeip_bfd",
                                 "admin_status": 1,
-                                "device_group": {
+                                "device_group":{
                                     "value": "group-xxg-tsgx",
                                     "tag": "device_group"
                                 },
@@ -145,6 +145,7 @@ def run(parameter):
             "is_enabled": 1,
             "log_option": "metadata",
         }
+
         traffic_generation = {
             "tool": "trex",  # or trex/http
             "clients_start_ip": "192.168.64.86",
@@ -159,9 +160,9 @@ def run(parameter):
 
         verification_result = {
             "excepted_traffic_result": "",
-            "expected_metric": "",
+            "expected_metric": {"hits": 1},
             "expected_log": [
-                {"query_field_key": "sc_rsp_raw", "query_value": ""},
+                {"query_field_key": "sc_rsp_raw_uuid_list", "query_value": ""},
                 {"query_field_key": "sent_pkts", "query_value": ""},
                 {"query_field_key": "received_pkts", "query_value": ""},
                 {"query_field_key": "sent_bytes", "query_value": ""},

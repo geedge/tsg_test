@@ -1,21 +1,21 @@
 import os
 import sys
 import time
-from support.ui_utils.profile.page_jump import PageJump
+from support.ui_utils.profiles.page_jump import PageJump
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 import traceback
-from support.ui_utils.profile.create_statistics_template import CreateStatisticsTemplate
+from support.ui_utils.profiles.create_statistics_template import CreateStatisticsTemplate
 from support.ui_utils.element_position.map_element_position_library import get_profile_element_position
-from support.ui_utils.profile.create_hijack_profile import CreateHijackProfile
-from support.ui_utils.profile.create_insert_profile import CreateInsertProfile
-from support.ui_utils.profile.create_run_script_profile import CreateRunScriptProfile
-from support.ui_utils.profile.create_response_page import CreateResponsePage
-from support.ui_utils.profile.create_ssl_decryption_keyring_profile import CreateSSLDecryptionKeyringProfile
-from support.ui_utils.profile.create_ssl_decryption_profile import CreateSSLDecryptionProfile
-from support.ui_utils.profile.create_tcp_proxy_profile import CreateTcpProxyProfile
-from support.ui_utils.profile.create_traffic_mirroring_profile import CreateMonitorProfile
+from support.ui_utils.profiles.create_hijack_profile import CreateHijackProfile
+from support.ui_utils.profiles.create_insert_profile import CreateInsertProfile
+from support.ui_utils.profiles.create_run_script_profile import CreateRunScriptProfile
+from support.ui_utils.profiles.create_response_page import CreateResponsePage
+from support.ui_utils.profiles.create_ssl_decryption_keyring_profile import CreateSSLDecryptionKeyringProfile
+from support.ui_utils.profiles.create_ssl_decryption_profile import CreateSSLDecryptionProfile
+from support.ui_utils.profiles.create_tcp_proxy_profile import CreateTcpProxyProfile
+from support.ui_utils.profiles.create_traffic_mirroring_profile import CreateMonitorProfile
 from datetime import datetime
 
 class CreateProfile:

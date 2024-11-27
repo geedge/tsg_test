@@ -16,9 +16,9 @@ import support.api_utils.policy_verify
 import support.ui_utils.env
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from support.api_utils.log_in import LogIn
-from support.ui_utils.object.create_objects import CreateObject
-from support.ui_utils.object.search_objects import SearchObject
-from support.ui_utils.object.delete_objects import DeleteObject
+from support.ui_utils.objects.create_objects import CreateObject
+from support.ui_utils.objects.search_objects import SearchObject
+from support.ui_utils.objects.delete_objects import DeleteObject
 from support.api_utils.delete_policy import DeletePolicy
 from support.api_utils.create_policy import CreatePolicy
 from support.packet_generator.verify_deprecated import Verify

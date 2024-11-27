@@ -68,7 +68,7 @@ class QueryRuleMetric:
                             elif bool_result == False:
                                 return metric_str
                             else:
-                                flag, metric_result = self.verify_statistics_metric(start_time, end_time, self.traffic_result["result"], statistics_info, metric_str)
+                                flag, metric_result = self.verify_statistics_metric(start_time, end_time, self.traffic_result, statistics_info, metric_str)
                                 #if not flag:
                                 #    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBUG：Case Flag：{}; metric_result:{}".format(flag, metric_result), flush=True)
                                 if flag == True:  # 返回结果不等于333，则退出循环查询

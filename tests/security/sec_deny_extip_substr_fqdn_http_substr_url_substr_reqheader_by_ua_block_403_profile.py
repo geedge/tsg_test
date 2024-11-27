@@ -38,7 +38,7 @@ def run(parameter):
                             "items": [
                                 {
                                     "op": "add",
-                                    "ip": "93.184.215.14",
+                                    "ip": "192.168.40.206",
                                     "interval": "0-65535"
                                 }
                             ]
@@ -112,7 +112,7 @@ def run(parameter):
                 }
             ],
             "action_parameter": {
-                "sub_action": "alert",
+                "sub_action": "block",
                 "code": 403,
                 "html_profile": {
                     "name": "test",

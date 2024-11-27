@@ -1,20 +1,24 @@
-# -*- coding: UTF-8 -*-
-import time
 import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
-import traceback
+import time
+import pytz
 from datetime import datetime
-from support.common_utils.create_policy import CreatePolicy
+from support.ui_utils.workpath import workdir
+from support.ui_utils.ui_client import UIClient
+from support.api_utils.api_client import APIClient
+from support.packet_generator.traffic_generator import *
 from support.report_update import ReportUpdate
 
 def run(parameter):
     try:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Begin to run test case: " + parameter["test_case_name"], flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
+              "Begin to run test case: " + parameter["test_case_name"], flush=True)
+
         # 参数初始化
-        exception_result = ""
-        result = {}
-        
+        result, exception_result = "", ""
+        test_summary = {}
+
         # 脚本启动时间
         script_start_time = time.time()
 
@@ -123,7 +127,7 @@ def run(parameter):
                     ]
                 }
             ],
-            "log_query_param": [{"query_field_key": "sc_rsp_decrypted", "query_value": ""}],
+            "log_query_param": [{"query_field_key": "sc_rsp_decrypted_uuid_list", "query_value": ""}],
             "traffic":{
                 "protocol": "ssl",
                 "type": "curl",
@@ -138,23 +142,13 @@ def run(parameter):
         result = create.create_policy()
         
         # 脚本结束时间和耗时
-        script_end_time = time.time()
-        duration = script_end_time - script_start_time
+        end_time = time.time()
+        duration = end_time - start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
               "Finish test case: " + parameter["test_case_name"], flush=True)
-        return result
-    except Exception as e:
-        exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Error: ", e,
-              flush=True)
-        traceback.print_exc()
-        return "Error: " + str(e)
-    finally:
-        # 清理环境
-        if isinstance(create, CreatePolicy):
-            create.clean_up()
+
         # 生成csv报告
         update = ReportUpdate()
         update.write_result(parameter, result, exception_result)
@@ -166,7 +160,7 @@ if __name__ == '__main__':
         "test_pc_ip": "192.168.50.88",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
-        "script_type": "api",
+        "initiation_method": "api",
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,

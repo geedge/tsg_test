@@ -258,7 +258,7 @@ def run(parameter):
         # 获取当前时间
         utc_tz = pytz.timezone('UTC')
         current_utc_time = datetime.now(utc_tz)
-        traffic_start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
+        start_time = current_utc_time.strftime('%Y-%m-%dT%H:%M:%SZ')
 
         # 触发流量
         traffic_result = generator.run(policy_configuration, traffic_generation)
@@ -272,7 +272,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             log_result = ui_client.query_rule_log(verification_result, rules_tuple, traffic_result)
         elif parameter["initiation_method"] == "api":
-            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, traffic_start_time, traffic_result)
+            log_result = api_client.query_rule_log(traffic_generation, verification_result, rules_tuple, start_time, traffic_result)
         if log_result == True:
             test_summary["log"] = "Pass."
         elif log_result == False:
@@ -286,7 +286,7 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             metric_result = ui_client.query_rule_metric(verification_result, traffic_result)
         elif parameter["initiation_method"] == "api":
-            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, traffic_start_time,
+            metric_result = api_client.query_rule_metric(verification_result, rules_tuple, start_time,
                                                          traffic_result)
         if metric_result == True:
             test_summary["metric"] = "Pass."
@@ -296,8 +296,8 @@ def run(parameter):
             test_summary["metric"] = "The failure reason: the returned metric is empty."
         elif len(metric_result) > 0:
             test_summary["metric"] = metric_result
-        if rules_tuple:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBUG:Case:{},rule:{},log_result:{},excepted_traffic_result:{},metric_result:{}".format(os.path.basename(__file__)[:-3], list(rules_tuple)[0]["uuid"], log_result, excepted_traffic_result, metric_result), flush=True)
+        #if rules_tuple:
+            #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBUG:Case:{},rule:{},log_result:{},excepted_traffic_result:{},metric_result:{}".format(os.path.basename(__file__)[:-3], list(rules_tuple)[0]["uuid"], log_result, excepted_traffic_result, metric_result), flush=True)
         return test_summary
     except Exception as e:
         exception_result = str(e)
@@ -316,7 +316,7 @@ def run(parameter):
                 api_client.delete_objects(objects_tuple)
             if profiles_tuple:
                 api_client.delete_profiles(profiles_tuple)
-        # 统计脚本用时
+        # 脚本结束时间和耗时
         script_end_time = time.time()
         duration = script_end_time - script_start_time
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Duration of running the test case: ", "{:.3f}".format(duration), flush=True)
