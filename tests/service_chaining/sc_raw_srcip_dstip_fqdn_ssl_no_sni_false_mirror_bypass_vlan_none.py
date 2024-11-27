@@ -25,7 +25,7 @@ def run(parameter):
         # 测试数据
         policy_configuration = {
             "type": "service_chaining",
-            "name": "sc_raw_srcip_dstip_fqdn_ssl_no_sni_false_mirror_bypass_vlan_none",
+            "name": os.path.basename(__file__)[:-3],
             "action": "service_chaining",
             "and_conditions": [
                 {
@@ -109,10 +109,10 @@ def run(parameter):
             ],
             "action_parameter": {
                 "targeted_traffic": "raw",   
-                "sff_profiles":
+                                "sff_profiles":
                 [
                     {
-                        "vsys": 1,
+                            "vsys": 1,
                         "return_data": 1,
                         "name": "mirror_bypass_vlan_none", 
                         "type": 2,
@@ -123,7 +123,7 @@ def run(parameter):
                             {
                                 "name":"vlan_none",
                                 "admin_status": 1,
-                                "device_group": {
+                                "device_group":{
                                     "value": "center-xxg-tsgx",
                                     "tag": "data_center"
                                 },

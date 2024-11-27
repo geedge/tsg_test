@@ -56,15 +56,13 @@ class QueryRuleLog:
             rule_uuids_list = list(rule_uuids_tuple)
             rule_uuid = rule_uuids_list[0]["uuid"]
             headers = {'Content-Type': 'application/json', 'Authorization': self.token}
+            dsl_dict = {"dsl": "", "vsys": 1}
             log_condition = {
-                "page_no": 1,
-                "page_size": 20,
-                "source": "security_event",
-                "columns": None,
-                "start_time": "",
-                "end_time": "",
-                "filter": "",
-                "vsys": 1
+                "name": "log-query",
+                "limit": 20,
+                "data_source": "",
+                "fields": "",
+                "intervals": []
             }
             log_condition_dict = json.loads(json.dumps(log_condition))
             if "rule_number" in self.policy_configuration:
@@ -74,39 +72,28 @@ class QueryRuleLog:
             for _ in range(rule_number):
                 if self.rule_type == 'security':
                     schema_type = log_source = 'security_event'
-                    identifier_name = 'security-event-list'
                     log_query_rule_type = 'security_rule_uuid_list'
                 elif self.rule_type == 'proxy_intercept':
                     schema_type = log_source = 'session_record'
-                    identifier_name = 'session-record-list'
                     log_query_rule_type = 'proxy_rule_uuid_list'
                 elif self.rule_type == 'proxy_manipulation':
                     schema_type = log_source = 'proxy_event'
-                    identifier_name = 'proxy-event-manipulation-list'
                     log_query_rule_type = 'proxy_rule_uuid_list'
                 elif self.rule_type == 'monitor':
                     schema_type = log_source = 'monitor_event'
-                    identifier_name = 'monitor-event-list'
                     log_query_rule_type = 'monitor_rule_uuid_list'
                 elif self.rule_type == 'statistics':
                     schema_type = log_source = 'session_record'
-                    identifier_name = 'session-record-list'
                     log_query_rule_type = 'statistics_rule_uuid_list'
                 elif self.rule_type == "dos_protection":
                     schema_type = log_source = "dos_event"
-                    identifier_name = "dos-event-list"
                 fields = self.get_log_schema(self.token, schema_type, self.parameter["api_server"], self.parameter["vsys"])
-                log_condition_dict['columns'] = fields
-                log_condition_dict['source'] = log_source
-                log_condition_dict['identifier_name'] = identifier_name
-
-                log_condition_dict['start_time'] = start_time
-                log_condition_dict['end_time'] = end_time
+                log_condition_dict['fields'] = fields
+                log_condition_dict['data_source'] = log_source
+                log_condition_dict["intervals"].append(start_time + '/' + end_time)
                 log_condition_dict['vsys'] = self.parameter["vsys"]
-                log_condition_dict['execution_mode'] = 'oneshot'
-
                 if self.is_attribute_name_exsit("ATTR_SUBSCRIBER_ID") == True:
-                    log_filter = f"subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, '{rule_uuid}')"
+                    log_filter = f"vsys_id in ({int(self.parameter["vsys"])}) AND subscriber_id='{self.parameter['test_subcriber_id']}' AND has({log_query_rule_type}, '{rule_uuid})'"
                     log_condition_dict['filter'] = log_filter
                 else:
                     if self.traffic_generation["tool"] == "trex":
@@ -114,16 +101,25 @@ class QueryRuleLog:
                             attack_type = "Custom Network Attack"
                             log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='{attack_type}'"
                         else:
-                            log_filter = f"client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
+                            log_filter = f"vsys_id in ({int(self.parameter["vsys"])}) AND client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                             log_condition_dict['filter'] = log_filter
                             log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={traffic_generation['clients_start_ip']}",f"client_ip='{traffic_generation['clients_start_ip']}'")
                     else:
-                        log_filter = f"client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
+                        # log_filter = f"client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
+                        log_filter = f"vsys_id in ({int(self.parameter["vsys"])}) AND client_ip={self.parameter['test_pc_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                         log_condition_dict['filter'] = log_filter
                         log_condition_dict['filter'] = log_condition_dict['filter'].replace(f"client_ip={self.parameter['test_pc_ip']}", f"client_ip='{self.parameter['test_pc_ip']}'")
-
+                dsl_dict["dsl"] = log_condition_dict
+                dsl_dict['vsys'] = int(self.parameter["vsys"])
                 url = self.parameter["api_server"] + "/v1/logs/query"
-                response = requests.post(url, headers=headers, json=log_condition_dict, verify=False)
+                response = requests.post(url, headers=headers, json=dsl_dict, verify=False)
+                job_dict = json.loads(response.text)
+                job_id = job_dict['data']['job']['job_id']
+                query_list_dict = {
+                    "query_jobs":[{"id": job_id,"query_option":"list"}],
+                    "vsys":int(self.parameter["vsys"]),"limit":20,"offset":0
+                }
+                response = requests.post(url, headers=headers, json=query_list_dict, verify=False)
                 assert response.status_code == 200
                 log_list = json.loads(response.text)
                 log_list = log_list['data']['list']
@@ -150,7 +146,7 @@ class QueryRuleLog:
         assert response.status_code == 200
         log_schema = json.loads(response.text)
         log_schema = log_schema['data']['fields']
-        log_schema = ",".join([field['name'] for field in log_schema])
+        log_schema = [field['name'] for field in log_schema]
         return log_schema
 
     def verify_log(self, log_dict, verification_result):
