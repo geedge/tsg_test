@@ -2,6 +2,8 @@
 import os
 import sys
 
+from support.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
 import pytz
@@ -37,7 +39,7 @@ def run(parameter):
                             "attribute_name": "ATTR_SOURCE_IP",
                             "type": "ip",
                             "sub_type": "ip",
-                            "name": "sec_srcip",
+                            "name": "dos_srcip",
                             "items": [
                                 {
                                     "op": "add",
@@ -116,6 +118,9 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
@@ -170,13 +175,12 @@ def run(parameter):
         elif metric_result == None:
             test_summary["metric"] = "The failure reason: the returned metric is empty."
         elif len(metric_result) > 0:
-            test_summary["metric"] = metric_result
+            test_summary["metric"] = metric_resul
 
         return test_summary
     except Exception as e:
         exception_result = str(e)
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],
-              "When running test case, the exception error: ", str(e), flush=True)
+        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
         return "When running test case, the exception error: " + str(e)
     finally:
         # 删除

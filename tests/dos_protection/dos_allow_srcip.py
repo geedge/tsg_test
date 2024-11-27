@@ -1,6 +1,8 @@
 import os
 import sys
 
+from support.organize_config import OrganizeConfig
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import time
 import pytz
@@ -36,7 +38,7 @@ def run(parameter):
                             "attribute_name": "ATTR_SOURCE_IP",
                             "type": "ip",
                             "sub_type": "ip",
-                            "name": "sec_srcip",
+                            "name": "dos_srcip",
                             "items": [
                                 {
                                     "op": "add",
@@ -73,6 +75,12 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:

@@ -16,7 +16,7 @@ class QueryRuleLog:
     def query_rule_log(self, traffic_generation, verification_result, rule_uuids_tuple, start_time):
         try:
             self.rule_type = self.policy_configuration["type"]
-            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" or self.rule_type == "service_chaining":
+            if self.rule_type == "security" or self.rule_type == "proxy_intercept" or self.rule_type == "proxy_manipulation" or self.rule_type == "monitor" or self.rule_type == "statistics" or self.rule_type == "service_chaining" or self.rule_type == "dos_protection":
                 print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the effect of the policy rule by api.", flush=True)
                 log_result = None
                 for _ in range(int(90)):
@@ -104,8 +104,7 @@ class QueryRuleLog:
                 else:
                     if self.traffic_generation["tool"] == "trex":
                         if self.rule_type == "dos_protection":
-                            attack_type = "Custom Network Attack"
-                            log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'AND attack_type='{attack_type}'"
+                            log_condition_dict['filter'] = f"destination_ip='{traffic_generation['servers_start_ip']}'"
                         else:
                             log_filter = f"vsys_id in ({int(self.parameter['vsys'])}) AND client_ip={traffic_generation['clients_start_ip']} AND has({log_query_rule_type}, '{rule_uuid}')"
                             log_condition_dict['filter'] = log_filter
@@ -370,8 +369,8 @@ class QueryRuleLog:
                                 else:
                                     temp_log_result_list.append(False)
                     elif query_field_key in {"sc_rsp_raw_uuid_list", "sc_rsp_decrypted_uuid_list"}:
-                        query_value = self.policy_configuration["action_parameter"]["sff_profiles"]
-                        if query_value == log_dict[query_field_key]:
+                        query_value = self.policy_configuration["action_parameter"]["sff_profiles"][0]["service_func_profiles"]
+                        if query_value == log[query_field_key]:
                             temp_log_result_list.append(True)
                         else:
                             temp_log_result_list.append(False)
@@ -384,7 +383,7 @@ class QueryRuleLog:
                             query_value = self.traffic_result["total_bytes_sent"]
                         elif query_field_key == "received_bytes":
                             query_value = self.traffic_result["total_bytes_received"]
-                        if query_value == log_dict[query_field_key]:
+                        if query_value == log[query_field_key]:
                             temp_log_result_list.append(True)
                         else:
                             temp_log_result_list.append(False)
