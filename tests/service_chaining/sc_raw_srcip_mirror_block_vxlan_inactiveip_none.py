@@ -49,7 +49,7 @@ def run(parameter):
                     ]
                 }
             ],
-            "log_query_param": [{"query_field_key": "sc_rsp_raw", "query_value": ""},
+            "log_query_param": [{"query_field_key": "sc_rsp_raw_uuid_list", "query_value": ""},
                                 {"query_field_key": "sent_pkts", "query_value": ""},
                                 {"query_field_key": "received_pkts", "query_value": ""},
                                 {"query_field_key": "sent_bytes", "query_value": ""},
@@ -131,7 +131,7 @@ def run(parameter):
             "excepted_traffic_result": "",
             "expected_metric": {"hits": 1},
             "expected_log": [
-                {"query_field_key": "sc_rsp_raw", "query_value": ""},
+                {"query_field_key": "sc_rsp_raw_uuid_list", "query_value": ""},
                 {"query_field_key": "sent_pkts", "query_value": ""},
                 {"query_field_key": "received_pkts", "query_value": ""},
                 {"query_field_key": "sent_bytes", "query_value": ""},
