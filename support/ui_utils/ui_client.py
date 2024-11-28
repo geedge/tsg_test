@@ -36,9 +36,9 @@ class UIClient:
         error = objects.search_objects(name, policy_configuration)
         return error
     
-    def get_objects_uuid(self, policy_configuration):
+    def get_object_uuids(self, policy_configuration):
         objects = SearchObjects(self.driver)
-        objects_tuple, error = objects.get_objects_uuid(policy_configuration)
+        objects_tuple, error = objects.get_object_uuids(policy_configuration)
         # self.objects_tuple = objects_tuple
         return objects_tuple, error
 
@@ -61,9 +61,9 @@ class UIClient:
         error = profiles.search_profiles(policy_configuration)
         return error
     
-    def get_profiles_uuid(self, policy_configuration):
+    def get_profile_uuids(self, policy_configuration):
         profiles = SearchProfiles(self.driver)
-        profiles_tuple, error = profiles.get_profiles_uuid(policy_configuration)
+        profiles_tuple, error = profiles.get_profile_uuids(policy_configuration)
         # self.profiles_tuple = profiles_tuple
         return profiles_tuple, error
 
@@ -78,9 +78,9 @@ class UIClient:
         error = rules.search_rules(policy_configuration)
         return error
     
-    def get_rules_uuid(self, policy_configuration):
+    def get_rule_uuids(self, policy_configuration):
         rules = SearchRules(self.driver)
-        rules_tuple, error = rules.get_rules_uuid(policy_configuration)
+        rules_tuple, error = rules.get_rule_uuids(policy_configuration)
         # self.rules_tuple = rules_tuple
         return rules_tuple, error
 
