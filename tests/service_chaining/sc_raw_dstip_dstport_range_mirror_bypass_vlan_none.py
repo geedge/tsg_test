@@ -8,6 +8,7 @@ from support.ui_utils.workpath import workdir
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
+from support.organize_config import OrganizeConfig
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -126,7 +127,7 @@ def run(parameter):
                 {"query_field_key": "received_bytes", "query_value": ""},
                 {"query_field_key": "server_port", "query_value": "443"}
             ]
-        }
+        }              
 
         # 创建
         if parameter["initiation_method"] == "ui":
@@ -136,6 +137,10 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+            
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error

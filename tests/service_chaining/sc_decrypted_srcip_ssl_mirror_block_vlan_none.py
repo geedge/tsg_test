@@ -97,8 +97,8 @@ def run(parameter):
         }
         
         traffic_generation = {
-            "tool": "ssl",  # or trex/http
-            "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.baidu.com"
+            "tool": "ssl", 
+            "command": "curl -kv --connect-timeout 20 -m 20 https://www.baidu.com"
         }
 
         verification_result = {
@@ -211,10 +211,10 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys": 5,
         "is_log": 1,
-        "root_path": "C:/automation_project/tsg_test",
-        "path": "C:/automation_project/tsg_test/tests/ui",
+        "root_path": workdir,
+        "path": workdir + "/tests",
         "module_name": "service_chaining",
         "test_case_name": "scblock_vlan_none"
     }

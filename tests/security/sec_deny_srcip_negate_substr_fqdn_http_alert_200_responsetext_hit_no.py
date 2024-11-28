@@ -93,7 +93,7 @@ def run(parameter):
         
         verification_result = {
             "excepted_traffic_result": "POST",
-            "expected_metric": {},
+            "expected_metric": {"hits": 0},
             "expected_log": []
         }
         

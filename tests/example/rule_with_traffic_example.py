@@ -100,7 +100,6 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
-            # {uuid, type}, i.e., {"12341-232-a21", "ip"}
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
@@ -167,7 +166,7 @@ def run(parameter):
                 ui_client.delete_rules(rules_tuple)
             if objects_tuple:
                 ui_client.delete_objects(objects_tuple)
-            ui_client.cleanup(policy_configuration)
+            ui_client.cleanup(policy_configuration, True, True, False)
         elif parameter["initiation_method"] == "api":
             if rules_tuple:
                 api_client.delete_rules(rules_tuple)

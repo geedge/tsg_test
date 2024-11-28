@@ -39,12 +39,11 @@ class UIClient:
     def get_objects_uuid(self, policy_configuration):
         objects = SearchObjects(self.driver)
         objects_tuple, error = objects.get_objects_uuid(policy_configuration)
-        # self.objects_tuple = objects_tuple
         return objects_tuple, error
 
-    def edit_objects(self, objects_tuple, src_item,new_item):
+    def edit_objects(self, objects_tuple, src_item, new_item):
         objects = EditObjects(self.driver)
-        error = objects.edit_objects(objects_tuple, src_item,new_item)
+        error = objects.edit_objects(objects_tuple, src_item, new_item)
         return error
     
     def delete_objects(self, objects_tuple):
@@ -89,7 +88,6 @@ class UIClient:
     def get_rules_uuid(self, policy_configuration):
         rules = SearchRules(self.driver)
         rules_tuple, error = rules.get_rules_uuid(policy_configuration)
-        # self.rules_tuple = rules_tuple
         return rules_tuple, error
 
     def edit_rules(self, policy_configuration):
@@ -111,7 +109,7 @@ class UIClient:
         log_result = query.query_rule_log()
         return log_result
 
-    def cleanup(self, policy_configuration):
+    def cleanup(self, policy_configuration, rule_flag, object_flag, profile_flag):
         # 清理环境
         support.ui_utils.env.teardown()
         # 按name进行强制删除
@@ -119,7 +117,12 @@ class UIClient:
         pwd = log_in.encryptPwd(self.parameter["password"], self.parameter["api_server"])
         token = log_in.login(self.parameter["username"], pwd, self.parameter["api_server"])
         headers = {"Content-Type": "application/json", "Authorization": token}
-        rules = DeleteRules(self.parameter, headers)
-        rules.delete_rules_by_name(policy_configuration)
-        objects = DeleteObjects(self.parameter, headers)
-        objects.delete_objects_by_name(policy_configuration)
+        if rule_flag:
+            rules = DeleteRules(self.driver)
+            rules.delete_rules_by_name(self.parameter, policy_configuration, headers)
+        if object_flag:
+            objects = DeleteObjects(self.driver)
+            objects.delete_objects_by_name(self.parameter, policy_configuration, headers)
+        if profile_flag:
+            rules = DeleteProfiles(self.driver)
+            rules.delete_profiles_by_name(self.parameter, policy_configuration, headers)

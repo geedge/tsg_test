@@ -17,6 +17,7 @@ class SearchRules:
         
     def search_rules(self, policy_configuration, search_type):
         try:
+            # ？？
             name = policy_configuration["name"]
             element_position_library = get_element_position(policy_configuration["type"])
             search_element_position = element_position_library["search"]

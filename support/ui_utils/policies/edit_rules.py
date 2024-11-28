@@ -14,8 +14,9 @@ class EditRules:
     def __init__(self, driver):
         self.driver = driver
         
-    def edit_rules(self, policy_configuration, vsys_name=""):
+    def edit_rules(self, policy_configuration):
         try:
+            # ？？
             type = policy_configuration["type"]
             name = policy_configuration["name"]
             element_position_library = get_element_position(policy_configuration["type"])
@@ -67,3 +68,7 @@ class EditRules:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When editing rule, the exception error: ", str(e), flush=True)
             # raise
             return "When editing rule, the exception error: " + str(e)
+
+    def goto_detail_page(self):
+        # ？？
+        print("todo")

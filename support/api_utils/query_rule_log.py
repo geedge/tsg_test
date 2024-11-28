@@ -3,6 +3,10 @@ import json
 import time
 import pytz
 import requests
+import os
+import configparser
+from support.organize_config import *
+from support.packet_generator.workpath import workdir
 from datetime import datetime
 from support.ui_utils.element_position.policy_element_position import *
 
@@ -368,7 +372,18 @@ class QueryRuleLog:
                                     temp_log_result_list.append(False)
                     elif query_field_key in {"sc_rsp_raw_uuid_list", "sc_rsp_decrypted_uuid_list"}:
                         query_value = self.policy_configuration["action_parameter"]["sff_profiles"][0]["service_func_profiles"]
-                        if query_value == log[query_field_key]:
+                        conf_path = os.path.join(workdir, "configuration_file.ini")
+                        conf = configparser.ConfigParser()
+                        conf.read(conf_path, encoding="utf-8")
+                        active_dst_ip_list = conf.get("sc_active_dst_ip", "ip_list")
+                        effective_device_tag_list = ["group-xxg-tsgx", "center-xxg-tsgx"]
+                        if log[query_field_key] == [] and self.policy_configuration["action_parameter"]["sf_configuration"][0]["connectivity"]["method"] == "vxlan_g" and self.policy_configuration["action_parameter"]["sf_configuration"][0]["connectivity"]["dest_ip"] not in active_dst_ip_list:
+                            temp_log_result_list.append(True)
+                        elif log[query_field_key] == [] and self.policy_configuration["action_parameter"]["sf_configuration"][0]["device_group"]["value"] not in effective_device_tag_list:
+                            temp_log_result_list.append(True)
+                        elif log[query_field_key] == [] and self.policy_configuration["action_parameter"]["sf_configuration"][0]["admin_status"] == 0:
+                            temp_log_result_list.append(True)
+                        elif query_value == log[query_field_key]:
                             temp_log_result_list.append(True)
                         else:
                             temp_log_result_list.append(False)

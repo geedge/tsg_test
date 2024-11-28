@@ -147,7 +147,7 @@ def run(parameter):
             "excepted_traffic_result": "",
             "expected_metric": {"hits": 0},
             "expected_log": []
-        } 
+        }       
 
         # 创建
         if parameter["initiation_method"] == "ui":
@@ -255,10 +255,10 @@ if __name__ == '__main__':
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
-        "root_path": "C:/automation_project/tsg_test",
-        "path": "C:/automation_project/tsg_test/tests/ui",
+        "root_path": workdir,
+        "path": workdir + "/tests",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_negate_subid_fqdn_http_url_mirror_bypass_vlan_none"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)
     """

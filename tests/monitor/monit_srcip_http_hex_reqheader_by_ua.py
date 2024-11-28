@@ -67,7 +67,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "expression": "6375726C&User-Agent"
+                                    "expression": "|6375726C|"
                                 }
                             ]
                         }

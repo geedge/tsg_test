@@ -25,7 +25,7 @@ def run(parameter):
         # 测试数据
         policy_configuration = {
             "type": "service_chaining",
-            "name": "sc_decrypted_scrip_fqdnblock_disabled_vxlan_activeip_bfd",
+            "name": os.path.basename(__file__)[:-3],
             "action": "service_chaining",
             "and_conditions": [
                 {
@@ -145,8 +145,8 @@ def run(parameter):
         }
         
         traffic_generation = {
-            "tool": "ssl",  # or trex/http
-            "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.example.com/"
+            "tool": "ssl", 
+            "command": "curl -kv --connect-timeout 20 -m 20 https://www.example.com/"
         }
 
         verification_result = {

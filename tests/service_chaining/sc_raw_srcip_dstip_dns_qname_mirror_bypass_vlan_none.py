@@ -8,6 +8,7 @@ from support.ui_utils.workpath import workdir
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
+from support.organize_config import OrganizeConfig
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -158,7 +159,7 @@ def run(parameter):
                 {"query_field_key": "sent_bytes", "query_value": ""},
                 {"query_field_key": "received_bytes", "query_value": ""}
             ]
-        }
+        }              
 
         # 创建
         if parameter["initiation_method"] == "ui":
@@ -168,6 +169,10 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+            
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
@@ -264,12 +269,12 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
         "env": "tsgx",
-        "vsys_id": 5,
+        "vsys": 5,
         "is_log": 1,
-        "root_path": "C:/automation_project/tsg_test",
-        "path": "C:/automation_project/tsg_test/tests/ui",
+        "root_path": workdir,
+        "path": workdir + "/tests",
         "module_name": "service_chaining",
-        "test_case_name": "scdns_qname_mirror_bypass_vlan_none"
+        "test_case_name": "scdns_qname"
     }
     run(parameter)
     """

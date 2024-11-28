@@ -38,7 +38,7 @@ def run(parameter):
                             "items": [
                                 {
                                     "op": "add",
-                                    "ip": "10.64.224.7",
+                                    "ip": "10.64.224.3",
                                     "interval": "0-65535"
                                 }
                             ]
@@ -67,7 +67,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "expression": "54526578"
+                                    "expression": "|54526578|"
                                 }
                             ]
                         }
