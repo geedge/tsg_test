@@ -29,8 +29,6 @@ class QueryRuleLog:
                         #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "DEBGU:start_time:{},end_time:{};log_dict:{}, error:{}".format(start_time, end_time, log_dict, error), flush=True)
                         if len(error) != 0:
                             return error
-                        elif len(log_dict) == 0:
-                            continue
                         if self.rule_type == "dos_protection":
                             log_result = self.verify_dos_log(log_dict, verification_result, start_time, end_time)
                         else:
