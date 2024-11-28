@@ -971,7 +971,7 @@ def re_name(case_directory_path='C:/zcw/tsg_test/tests/目录名', file_startwit
     # 获取目录下所有文件的名称
     # for filename in os.listdir(case_directory_path):
     #     if filename.endswith(file_endswith) and filename.startswith(file_startwith):
-    #         # 去掉.py后缀并添加到列表中
+            # 去掉.py后缀并添加到列表中
     #         pass
             # if "run_script" in filename:
             #     tmp = filename.replace("run_script", "execute")
@@ -993,11 +993,8 @@ def re_name(case_directory_path='C:/zcw/tsg_test/tests/目录名', file_startwit
             #     old_path = os.path.join(case_directory_path, filename)
             #     new_path = os.path.join(case_directory_path, tmp)
             #     os.rename(old_path, new_path)
-            # elif "insert" in filename:
-            #     if "css" in filename:
-            #         tmp = filename.replace("insert", "modify_injectjs")
-            #     else:
-            #         tmp = filename.replace("insert", "modify_injectcss")
+            # if "injectcss" in filename:
+            #     tmp = filename.replace("injectcss", "injectjs")
             #     old_path = os.path.join(case_directory_path, filename)
             #     new_path = os.path.join(case_directory_path, tmp)
             #     os.rename(old_path, new_path)
@@ -1014,7 +1011,7 @@ def re_name(case_directory_path='C:/zcw/tsg_test/tests/目录名', file_startwit
 
 if __name__ == '__main__':
     # 定义目录和目标文件  需要调整的变量
-    ms_json_path = 'C:/Users/root/Downloads/Metersphere_Api_TSG (29).json'
+    ms_json_path = 'C:/Users/root/Downloads/Metersphere_Api_TSG (32).json'
     case_directory_path = 'C:/zcw/tsg_test/tests/manipulation'
     file_startwith = "man_"
     file_endswith = ".py"
@@ -1023,7 +1020,7 @@ if __name__ == '__main__':
     # local_run()
 
     # 对比MS工具
-    # diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
+    diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
     # 生成excle使用数据工具
     #get_excel_formate_from_case(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
@@ -1032,7 +1029,7 @@ if __name__ == '__main__':
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
     # 重命名
-    re_name(case_directory_path=case_directory_path, file_startwith=file_startwith)
+    #re_name(case_directory_path=case_directory_path, file_startwith=file_startwith)
 
 
 
