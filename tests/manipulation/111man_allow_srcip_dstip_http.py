@@ -10,6 +10,7 @@ from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
 from support.report_update import ReportUpdate
+import traceback
 
 
 def run(parameter):
@@ -75,6 +76,16 @@ def run(parameter):
             }],
             "is_enabled": 1,
             "log_option": "metadata",
+            "action_parameter": {
+                "sub_action": "block",
+                "manipulation_block": "warning_page",
+                "code": 403,
+                "html_profile": {
+                    "name": "test",
+                    "format": "html",
+                    "file_path": "Response-Pages_1.html"
+                }
+        }
         }
 
         traffic_generation = {
@@ -96,26 +107,26 @@ def run(parameter):
         if parameter["initiation_method"] == "ui":
             ui_client = UIClient(parameter)
             """
-            created_object_code = ui_client.create_objects(policy_configuration)
-            if created_object_code != 200:
-                return "Fail to create object."
-            objects_tuple, searched_object_code = ui_client.search_objects(policy_configuration, "name")
-            if searched_object_code != 200:
-                return "Fail to search object."
+            ui_error = ui_client.create_objects(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
+            objects_tuple, ui_error = ui_client.get_objects_uuid(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
             """
-            created_profile_code = ui_client.create_profiles(policy_configuration)
-            if created_profile_code != 200:
-                return "Fail to create profile."
-            profiles_tuple, searched_profile_code = ui_client.search_profiles(policy_configuration)
-            if searched_profile_code != 200:
-                return "Fail to search profile."
+            ui_error = ui_client.create_profiles(policy_configuration)
+            if len(ui_error )> 0:
+                return ui_error
+            profiles_tuple, ui_error = ui_client.get_profiles_uuid(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
             """
-            created_rule_code = ui_client.create_rules(policy_configuration)
-            if created_rule_code != 200:
-                return "Fail to create rule."
-            rules_tuple, searched_rule_code = ui_client.search_rules(policy_configuration, "name")
-            if searched_rule_code != 200:
-                return "Fail to search rule."
+            ui_error = ui_client.create_rules(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
+            rules_tuple, ui_error = ui_client.get_rules_uuid(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
             """
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
@@ -135,7 +146,8 @@ def run(parameter):
 
         # 等待下发配置生效
         time.sleep(3)
-
+        return 0
+        """
         # 类实例化
         generator = TrafficGenerator()
 
@@ -188,15 +200,17 @@ def run(parameter):
             test_summary["metric"] = metric_result
 
         return test_summary
+        """
     except Exception as e:
         exception_result = str(e)
         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When running test case, the exception error: ", str(e), flush=True)
+        raise
         return "When running test case, the exception error: " + str(e)
     finally:
         # 删除
         if parameter["initiation_method"] == "ui":
             if rules_tuple:
-                ui_client.delete_rules(parameter, policy_configuration)
+                ui_client.delete_rules(rules_tuple)
             if objects_tuple:
                 ui_client.delete_objects(objects_tuple)
             if profiles_tuple:

@@ -5,11 +5,11 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 from datetime import datetime 
 
-class CreateTcpProxyProfile:
+class CreateTcpOptionProfile:
     def __init__(self, driver):
         self.driver = driver
 
-    def create_tcp_proxy_profile(self, data):
+    def create_tcp_option_profile(self, data):
         profile_name = data["name"]
         self.driver.find_element(By.ID, tcpProxyProfiles_input_Name_posId).send_keys(profile_name)
         #页面其它选项操作

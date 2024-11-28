@@ -5,11 +5,11 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 from datetime import datetime 
 
-class CreateInsertProfile:
+class CreateCSSFile:
     def __init__(self, driver):
         self.driver = driver
 
-    def create_hijack_file(self, data):
+    def create_css_file(self, data):
         profile_name = data["name"]
         if "css" in data["script_type"]:
             temp_insertScripts_input_Name_posXpath = insertScripts_input_Name_posXpath

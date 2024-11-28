@@ -5,11 +5,11 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 from datetime import datetime 
 
-class CreateHijackProfile:
+class CreateReplacementFile:
     def __init__(self, driver):
         self.driver = driver
 
-    def create_hijack_file(self, data):
+    def create_Replacement_file(self, data):
         try:
             profile_name = data["name"]
             self.driver.find_element(By.XPATH, hijackFiles_input_Name_posXpath).clear()

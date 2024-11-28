@@ -18,13 +18,14 @@ import copy
 from support.ui_utils.random_name import RandomName
 from datetime import datetime 
 
-class CreateDnsProfile():
-    def __init__(self, driver, secy_dnsRecords_profile_element_position):
+class CreateDnsResourceReccord():
+    def __init__(self, driver):
         self.driver = driver
+        secy_dnsRecords_profile_element_position = {}
         self.page_jump_element_position = secy_dnsRecords_profile_element_position["page_jump"]
         self.create_element_position = secy_dnsRecords_profile_element_position["create"]
 
-    def create_dns_records_profile(self, data, secy_dnsRecords_profile_element_position,source_name):
+    def create_dns_resource_record(self, data, secy_dnsRecords_profile_element_position,source_name):
         page_jump_element_position = secy_dnsRecords_profile_element_position["page_jump"]
         create_element_position = secy_dnsRecords_profile_element_position["create"]
         try:

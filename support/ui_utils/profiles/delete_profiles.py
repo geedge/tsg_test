@@ -9,7 +9,10 @@ class DeleteProfiles:
     def __init__(self, driver):
         self.driver = driver
         
-    def delete(self, profile_element_position, first_row_checkbox_element, is_del_all=False):
+    def delete_profiles(self, profiles_tuple):
+        profile_element_position = {}
+        first_row_checkbox_element = {}
+        is_del_all = False
         delete_element_position = profile_element_position["delete"]
         try:
             if is_del_all == True:

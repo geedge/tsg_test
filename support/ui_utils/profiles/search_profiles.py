@@ -41,3 +41,6 @@ class SearchProfiles:
         else:
             return 400, ""
 
+    def get_profiles_uuid(self, policy_configuration):
+        if "action_parameter" not in policy_configuration.keys():
+            return [], ""

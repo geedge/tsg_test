@@ -5,11 +5,11 @@ from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.profile_element_position import *
 from datetime import datetime 
 
-class CreateRunScriptProfile:
+class CreateLuaScript:
     def __init__(self, driver):
         self.driver = driver
 
-    def create_run_script_file(self, data):
+    def create_lua_script(self, data):
         profile_name = data["name"]
         self.driver.find_element(By.XPATH, tsgProxyScripts_input_Name_posXpath).clear()
         self.driver.find_element(By.XPATH, tsgProxyScripts_input_Name_posXpath).send_keys(profile_name)
