@@ -109,7 +109,7 @@ def run(parameter):
 
         traffic_generation = {
             "tool": "ftp",  # or trex/http
-            "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english.txt -u ftpuser:111111"
+            "command": "curl -m 20 ftp://192.168.40.206/autoFtp/english_big.txt -u ftpuser:111111"
         }
 
         verification_result = {

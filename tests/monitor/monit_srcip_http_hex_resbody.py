@@ -67,7 +67,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "expression": "746573745F726573626F6479"
+                                    "expression": "|746573745F726573626F6479|"
                                 }
                             ]
                         }
