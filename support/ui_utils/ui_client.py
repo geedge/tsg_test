@@ -52,7 +52,7 @@ class UIClient:
 
     def create_profiles(self, policy_configuration):
         profiles = CreateProfiles(self.driver)
-        error = profiles.create_profiles(policy_configuration)
+        error = profiles.create_profiles(self.parameter, policy_configuration)
         return error
 
     def search_profiles(self, policy_configuration, search_type):
@@ -64,6 +64,15 @@ class UIClient:
         profiles = SearchProfiles(self.driver)
         profiles_tuple, error = profiles.get_profiles_uuid(policy_configuration)
         return profiles_tuple, error
+
+    def edit_profiles(self, policy_configuration):
+        profiles = EditProfiles(self.driver)
+        error = profiles.edit_profiles(policy_configuration)
+        return error
+
+    def delete_profiles(self, profiles_tuple):
+        profiles = DeleteProfiles(self.driver)
+        profiles.delete_profiles(profiles_tuple)
 
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration

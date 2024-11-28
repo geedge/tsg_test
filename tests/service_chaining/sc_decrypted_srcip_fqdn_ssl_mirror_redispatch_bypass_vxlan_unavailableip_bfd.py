@@ -99,7 +99,10 @@ def run(parameter):
                                     "value": "group-xxg-tsgx",
                                     "tag": "device_group"
                                 },
-                            "connectivity": "VXLAN-G:3.3.3.46",
+                                "connectivity": {
+                                    "method": "vxlan_g",
+                                    "dest_ip" : "3.3.3.48"
+                                },
                                 "health_check": {
                                     "method": "bfd",
                                     "interval_ms": 10,
@@ -229,10 +232,10 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
         "env": "tsgx",
-        "vsys_id": 11,
+        "vsys": 5,
         "is_log": 1,
-        "root_path": "C:/automation_project/tsg_test",
-        "path": "C:/automation_project/tsg_test/tests/ui",
+        "root_path": workdir,
+        "path": workdir + "/tests",
         "module_name": "service_chaining",
         "test_case_name": "sc_fqdnredispatch_bypass_vxlan_unavailableip_bfd"
     }

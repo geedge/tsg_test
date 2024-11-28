@@ -26,7 +26,7 @@ def run(parameter):
         # 测试数据
         policy_configuration = {
             "type": "service_chaining",
-            "name": "scfqdn_all_ipproto_quic_steer_bypass_vxlan_activeip_bfd",
+            "name": "scfqdn_all_ipproto_quic",
             "action": "service_chaining",
             "and_conditions": [
                 {
@@ -170,11 +170,7 @@ def run(parameter):
                 {"query_field_key": "received_bytes", "query_value": ""},
                 {"query_field_key": "ip_protocol", "query_value": "udp"}
             ]
-        }
-
-        # 替换condition中的ip为随机ip
-        organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
-        organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)              
+        }              
 
         # 创建
         if parameter["initiation_method"] == "ui":
@@ -184,6 +180,14 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+            
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+            
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:

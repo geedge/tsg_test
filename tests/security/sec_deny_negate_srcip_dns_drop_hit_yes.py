@@ -34,7 +34,7 @@ def run(parameter):
                             "attribute_name": "ATTR_SOURCE_IP",
                             "type": "ip",
                             "sub_type": "ip",
-                            "name": "sec_extip",
+                            "name": "sec_sec_ip",
                             "items": [
                                 {
                                     "op": "add",

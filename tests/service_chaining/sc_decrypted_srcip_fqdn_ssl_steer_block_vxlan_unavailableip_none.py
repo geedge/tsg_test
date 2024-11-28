@@ -229,10 +229,10 @@ if __name__ == '__main__':
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
-        "root_path": "C:/automation_project/tsg_test",
-        "path": "C:/automation_project/tsg_test/tests/ui",
+        "root_path": workdir,
+        "path": workdir + "/tests",
         "module_name": "service_chaining",
-        "test_case_name": "sc_fqdn_ssl_steer_block_vxlan_unavailableip_none"
+        "test_case_name": "_steer_block_vxlan_unavailableip_none"
     }
     run(parameter)
     """

@@ -11,7 +11,10 @@ class DeleteProfiles:
     def __init__(self, driver):
         self.driver = driver
         
-    def delete_profiles(self, profile_element_position, first_row_checkbox_element, is_del_all=False):
+    def delete_profiles(self, profiles_tuple):
+        profile_element_position = {}
+        first_row_checkbox_element = {}
+        is_del_all = False
         delete_element_position = profile_element_position["delete"]
         try:
             if is_del_all == True:
@@ -56,7 +59,7 @@ class DeleteProfiles:
             return return_code
         except Exception as e:
             raise
-        
+
     def delete_profiles_by_name(self, parameter, policy_configuration, headers):
         try:
             api_server = parameter["api_server"]
@@ -107,7 +110,7 @@ class DeleteProfiles:
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When deleting profile by name, the exception error: ", str(e), flush=True)
             return "When deleting profile by name, the exception error: " + str(e)
-    
+
     def get_profiles_info(policy_configuration):
         object_info_list = []
         object_info_dict = {}
@@ -121,7 +124,7 @@ class DeleteProfiles:
                     object_info_dict["name"] = or_conditions[j]["name"]
                     object_info_list.append(object_info_dict)
         return object_info_list
-    
+
     def combine_profiles_uuid(self, template, data_list):
         uuid_list = []
         for _, json_obj in enumerate(data_list):

@@ -20,7 +20,9 @@ class CreateStatisticsTemplate():
         self.driver = driver
         self.actions = ActionChains(self.driver)
 
-    def create(self, data, template_element_position):
+    def create_statistics_template(self, policy_configuration):
+        data = policy_configuration
+        template_element_position = {}
         page_jump_element_position = template_element_position["page_jump"]
         create_element_position = template_element_position["create"]
         try:

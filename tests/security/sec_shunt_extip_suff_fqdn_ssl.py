@@ -22,7 +22,7 @@ def run(parameter):
             "is_multi_priority": False,
             "rule_num": 1,
             "policy_type": "security",
-            "rule_name": "sec_shunt_extip_suff_serverfqdn_ssl",
+            "rule_name": "sec_shunt_sec_ip_suff_serverfqdn_ssl",
             "rule_action": "shunt",
             "rule_type": "create",
             "condition": {

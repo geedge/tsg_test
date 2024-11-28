@@ -70,7 +70,7 @@ def run(parameter):
                                 {
                                     "op": "add",
                                     "expr_type": "and",
-                                    "expression": "baidu.com",
+                                    "expression": "baidu",
                                 }
                             ]
                         }
@@ -143,7 +143,7 @@ def run(parameter):
                 return api_error
 
         # 等待下发配置生效
-        time.sleep(20)
+        time.sleep(30)
 
         # 类实例化
         generator = TrafficGenerator()

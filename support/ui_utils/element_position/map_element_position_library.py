@@ -1538,7 +1538,6 @@ object_apn_object_element_position = {
         "objectListPage_deleteButton_warningYes_posXpath": apnObjectListPage_deleteButton_warningYes_posXpath
     }
 }
-
 object_application_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
@@ -1600,7 +1599,6 @@ object_application_object_element_position = {
     }
 
 }
-
 object_application_group_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
@@ -1768,7 +1766,6 @@ object_tunnel_object_element_position = {
     }
 
 }
-
 object_interval_object_element_position = {
     "page_jump": {
         "mainPage_navigationBar_logo_posXpath": mainPage_navigationBar_logo_posXpath,
@@ -2165,15 +2162,15 @@ log_session_log_element_position = {
 }
 
 
-def get_profile_element_position(key_name):
-    if key_name == "statistics_template":
-        element_position_map = profile_statistics_template_element_position
-    elif key_name == "monitor_profile":
-        element_position_map = profile_monitor_profile_element_position
-    else:
-        print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} no element position map".format(key_name))
-        element_position_map = {}
-    return element_position_map
+# def get_profile_element_position(key_name):
+#     if key_name == "statistics_template":
+#         element_position_map = profile_statistics_template_element_position
+#     elif key_name == "monitor_profile":
+#         element_position_map = profile_monitor_profile_element_position
+#     else:
+#         print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "{} no element position map".format(key_name))
+#         element_position_map = {}
+#     return element_position_map
 
 
 def get_name_list(test_data):
@@ -2219,7 +2216,7 @@ def get_name_list(test_data):
                         tmp_name_dict["name"] = value[i]["profile_file"]["name"]
                     else:
                         tmp_name_dict["name"] = value[i]["profile_file"]["name"]
-                     
+
                     name_list.append(copy.deepcopy(tmp_name_dict))
     #print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], name_list)
     #"""
@@ -2409,21 +2406,22 @@ def get_element_position(key_name):
         element_position_map = profile_ssl_decryption_keyring_element_position
     elif key_name == "ssl_decryption_profile":
         element_position_map = profile_ssl_decryption_profile_element_position
-    elif key_name == "tcp_proxy_profile":
+    elif key_name == "tcp_option_profile":
         element_position_map = profile_tcp_proxy_profile_element_position
     elif key_name == "traffic_mirroring_profile":
         element_position_map = profile_traffic_mirroring_profile_element_position
-    elif key_name == "hijack_file":
+    elif key_name == "replacement_file":
         element_position_map = profile_hijack_file_element_position
-    elif "insert_script" in key_name:
-        if "css" in key_name:
-            element_position_map = profile_insert_script_css_element_position
-        else:
-            element_position_map = profile_insert_script_js_element_position
+    elif key_name == "js_file":
+        element_position_map = profile_insert_script_js_element_position
+    elif key_name == "css_file":
+        element_position_map = profile_insert_script_css_element_position
     elif key_name =="statistics_template":
         element_position_map = profile_statistics_template_element_position
     elif key_name == "run_script":
         element_position_map = profile_run_script_element_position
+    elif key_name == "statistics_template":
+        element_position_map = profile_statistics_template_element_position
     # policy
     elif key_name == "proxy_manipulation":
         element_position_map = policy_manipulation_rule_element_position

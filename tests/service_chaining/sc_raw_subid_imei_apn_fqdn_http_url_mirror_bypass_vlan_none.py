@@ -196,15 +196,7 @@ def run(parameter):
                 {"query_field_key": "apn", "query_value": "www.lyrawautotest.com"},
                 {"query_field_key": "phone_number", "query_value": "12345678902"}
             ]
-        } 
-
-        # 替换condition中的ip为随机ip
-        organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
-        organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)        
-
-        # 替换condition中的ip为随机ip
-        organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
-        organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)              
+        }                   
 
         # 创建
         if parameter["initiation_method"] == "ui":

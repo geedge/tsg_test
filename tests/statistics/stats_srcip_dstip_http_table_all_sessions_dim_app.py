@@ -94,7 +94,7 @@ def run(parameter):
                                     "table_type": "regular"
                                 },
                                 "uuid": "",
-                                "name": "SUM(Packets Sent, Packets Received), SUM(Packets Sent) and SUM(Packets Received) Distributed by Application",
+                                "name": "SUM(New Sessions) Distributed by Application",
                                 "threshold": {
                                     "in_bytes": 0,
                                     "out_bytes": 0
@@ -120,8 +120,7 @@ def run(parameter):
                                     "metrics": [
                                         {
                                             "source_fields": [
-                                                "sent_pkts",
-                                                "received_pkts"
+                                                "new_sessions_for_this_rule"
                                             ],
                                             "function": {
                                                 "name": "SUM",
@@ -132,43 +131,11 @@ def run(parameter):
                                             },
                                             "metric_type": "count",
                                             "metric_name": "count_1",
-                                            "label": "SUM(Packets Sent, Packets Received)",
-                                            "unit": "packets"
-                                        },
-                                        {
-                                            "source_fields": [
-                                                "sent_pkts"
-                                            ],
-                                            "function": {
-                                                "name": "SUM",
-                                                "expression": "",
-                                                "variables": [
-
-                                                ]
-                                            },
-                                            "metric_type": "count",
-                                            "metric_name": "count_2",
-                                            "label": "SUM(Packets Sent)",
-                                            "unit": "packets"
-                                        },
-                                        {
-                                            "source_fields": [
-                                                "received_pkts"
-                                            ],
-                                            "function": {
-                                                "name": "SUM",
-                                                "expression": "",
-                                                "variables": [
-
-                                                ]
-                                            },
-                                            "metric_type": "count",
-                                            "metric_name": "count_3",
-                                            "label": "SUM(Packets Received)",
-                                            "unit": "packets"
+                                            "label": "SUM(New Sessions)",
+                                            "unit": "sessions"
                                         }
                                     ],
-                                    "order_by": "SUM(Packets Sent, Packets Received)",
+                                    "order_by": "SUM(New Sessions)",
                                     "source": "statistics_rule",
                                     "series_limit": ""
                                 }
@@ -184,7 +151,7 @@ def run(parameter):
                                     "table_type": "regular"
                                 },
                                 "uuid": "",
-                                "name": "RATE(Packets Sent, Packets Received), RATE(Packets Sent) and RATE(Packets Received) Distributed by Application",
+                                "name": "RATE(New Sessions) Distributed by Application",
                                 "threshold": {
                                     "in_bytes": 0,
                                     "out_bytes": 0
@@ -206,12 +173,11 @@ def run(parameter):
                                             "is_drill_down": 0
                                         }
                                     ],
-                                    "limit": "20",
+                                    "limit": "1000",
                                     "metrics": [
                                         {
                                             "source_fields": [
-                                                "sent_pkts",
-                                                "received_pkts"
+                                                "new_sessions_for_this_rule"
                                             ],
                                             "function": {
                                                 "name": "RATE",
@@ -222,43 +188,11 @@ def run(parameter):
                                             },
                                             "metric_type": "count",
                                             "metric_name": "count_1",
-                                            "label": "RATE(Packets Sent, Packets Received)",
-                                            "unit": "pps"
-                                        },
-                                        {
-                                            "source_fields": [
-                                                "sent_pkts"
-                                            ],
-                                            "function": {
-                                                "name": "RATE",
-                                                "expression": "",
-                                                "variables": [
-
-                                                ]
-                                            },
-                                            "metric_type": "count",
-                                            "metric_name": "count_2",
-                                            "label": "RATE(Packets Sent)",
-                                            "unit": "pps"
-                                        },
-                                        {
-                                            "source_fields": [
-                                                "received_pkts"
-                                            ],
-                                            "function": {
-                                                "name": "RATE",
-                                                "expression": "",
-                                                "variables": [
-
-                                                ]
-                                            },
-                                            "metric_type": "count",
-                                            "metric_name": "count_3",
-                                            "label": "RATE(Packets Received)",
-                                            "unit": "pps"
+                                            "label": "RATE(New Sessions)",
+                                            "unit": "sps"
                                         }
                                     ],
-                                    "order_by": "RATE(Packets Sent, Packets Received)",
+                                    "order_by": "RATE(New Sessions)",
                                     "source": "statistics_rule",
                                     "series_limit": ""
                                 }

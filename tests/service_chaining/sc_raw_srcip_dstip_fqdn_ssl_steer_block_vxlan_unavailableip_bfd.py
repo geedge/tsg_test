@@ -115,8 +115,15 @@ def run(parameter):
                                     "value": "group-xxg-tsgx",
                                     "tag": "device_group"
                                 },
-                            "connectivity": "VXLAN-G:183.183.183.183",
-                            "health_check": "BFD:200:5",
+                                "connectivity": {
+                                    "method": "vxlan_g",
+                                    "dest_ip" : "3.3.3.48"
+                                },
+                                "health_check": {
+                                    "method": "bfd",
+                                    "interval_ms": 200,
+                                    "retires": 5
+                                }
                             }
                         ]
                     }
@@ -148,11 +155,7 @@ def run(parameter):
                 {"query_field_key": "sent_bytes", "query_value": ""},
                 {"query_field_key": "received_bytes", "query_value": ""}
             ]
-        }
-
-        # 替换condition中的ip为随机ip
-        organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
-        organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)        
+        }        
 
         # 创建
         if parameter["initiation_method"] == "ui":
@@ -162,6 +165,14 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+            
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+            
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error
@@ -258,10 +269,9 @@ if __name__ == '__main__':
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
         "env": "tsgx",
-        "vsys_id": 11,
-        "is_log": 1,
-        "root_path": "C:/automation_project/tsg_test",
-        "path": "C:/automation_project/tsg_test/tests/ui",
+        "vsys": 5,
+        "root_path": workdir,
+        "path": workdir + "/tests",
         "module_name": "service_chaining",
         "test_case_name": os.path.basename(__file__)[:-3]
     }
