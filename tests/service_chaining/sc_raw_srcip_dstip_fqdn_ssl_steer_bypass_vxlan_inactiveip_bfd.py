@@ -119,7 +119,11 @@ def run(parameter):
                                     "method": "vxlan_g",
                                     "dest_ip" : "2.2.2.55"
                                 },
-                            "health_check": "BFD:200:5",
+                                "health_check": {
+                                    "method": "bfd",
+                                    "interval_ms": 200,
+                                    "retires": 5
+                                }
                             }
                         ]
                     }

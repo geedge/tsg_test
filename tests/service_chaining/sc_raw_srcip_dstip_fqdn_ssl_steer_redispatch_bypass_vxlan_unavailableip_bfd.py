@@ -120,7 +120,10 @@ def run(parameter):
                                     "value": "group-xxg-tsgx",
                                     "tag": "device_group"
                                 },
-                            "connectivity": "VXLAN-G:6.6.6.8",
+                                "connectivity": {
+                                    "method": "vxlan_g",
+                                    "dest_ip" : "3.3.3.48"
+                                },
                                 "health_check": {
                                     "method": "bfd",
                                     "interval_ms": 60000,
