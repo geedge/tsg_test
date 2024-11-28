@@ -163,7 +163,7 @@ class QueryRuleMetric:
                     dataset_identifier_name = "dos-protection-rule-statistics"
                 hit_query_condition = {
                     "identifier_name": dataset_identifier_name, 
-                    "rule_uuid": "", 
+                    "filter": "", 
                     "start_time": "",
                     "end_time": "", 
                     "vsys": 1, 
@@ -173,7 +173,7 @@ class QueryRuleMetric:
                 }
                 rule_uuids_list = list(rule_uuids_tuple)
                 # hit_query_condition['rule_uuid'] = rule_uuids_list["uuid"]
-                hit_query_condition['rule_uuid'] = rule_uuids_list[0]["uuid"]
+                hit_query_condition['filter'] = "rule_uuid in ('{}')".format(rule_uuids_list[0]["uuid"])
                 hit_query_condition['start_time'] = start_time
                 hit_query_condition['end_time'] = end_time
                 hit_query_condition['vsys'] = int(self.parameter["vsys"])
