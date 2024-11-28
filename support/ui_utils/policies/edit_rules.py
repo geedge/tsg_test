@@ -3,22 +3,24 @@
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # from selenium.webdriver.common.keys import Keys
 import time
+import traceback
+from datetime import datetime
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.policies.page_jump import PageJump
-import traceback
-from datetime import datetime 
+from support.ui_utils.element_position.map_element_position_library import *
 
 class EditRules:
     def __init__(self, driver):
         self.driver = driver
         
-    def edit_rules(self, policy_configuration, element_position, vsys_name=""):
+    def edit_rules(self, policy_configuration, vsys_name=""):
         try:
             type = policy_configuration["type"]
             name = policy_configuration["name"]
-            search_element_position = element_position["search"]
-            page_jump_element_position = element_position["page_jump"]
+            element_position_library = get_element_position(policy_configuration["type"])
+            search_element_position = element_position_library["search"]
+            page_jump_element_position = element_position_library["page_jump"]
             # 打开该列表
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_policy_page(page_jump_element_position)

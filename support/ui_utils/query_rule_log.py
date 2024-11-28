@@ -16,7 +16,6 @@ class QueryRuleLog:
         rule_uuids_list = list(rule_uuids_tuple)
         self.rule_uuid = rule_uuids_list["uuid"]
         self.driver = driver
-        self.element_position = element_position
         self.traffic_result = traffic_result
     
     def query_rule_log(self):
@@ -25,8 +24,8 @@ class QueryRuleLog:
             rule_action = self.policy_configuration["action"]
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the policy rule log by ui.", flush=True)
             # 进入edit页面目的是为了找到hit count
-            edit_rule = EditRules(self.driver)
-            edit_rule_code, _ = edit_rule.edit(rule_type, rule_action, self.element_position)
+            rules = EditRules(self.driver)
+            edit_rule_code, _ = rules.edit_rules(rule_type, rule_action)
             if edit_rule_code != 200:
                 return "Fail to edit rule when ui verification."
             if rule_type == "security"  or rule_type == "proxy_intercept" or rule_type == "proxy_manipulation" or rule_type == "monitor" or rule_type == "statistics":

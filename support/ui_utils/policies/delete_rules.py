@@ -50,4 +50,5 @@ class DeleteRules:
         except Exception as e:
             raise
         
-    def delete_rules_by_api(self):
+    def delete_rules_by_name(self):
+        print("todo")

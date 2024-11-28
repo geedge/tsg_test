@@ -167,7 +167,7 @@ def run(parameter):
                 ui_client.delete_rules(rules_tuple)
             if objects_tuple:
                 ui_client.delete_objects(objects_tuple)
-            ui_client.cleanup()
+            ui_client.cleanup(policy_configuration)
         elif parameter["initiation_method"] == "api":
             if rules_tuple:
                 api_client.delete_rules(rules_tuple)

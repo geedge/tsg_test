@@ -9,16 +9,18 @@ from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
 from support.ui_utils.policies.page_jump import PageJump
+from support.ui_utils.element_position.map_element_position_library import *
 
 class SearchRules:
     def __init__(self, driver):
         self.driver = driver
         
-    def search_rules(self, policy_configuration, element_position, vsys_name=""):
+    def search_rules(self, policy_configuration, search_type):
         try:
             name = policy_configuration["name"]
-            search_element_position = element_position["search"]
-            page_jump_element_position = element_position["page_jump"]
+            element_position_library = get_element_position(policy_configuration["type"])
+            search_element_position = element_position_library["search"]
+            page_jump_element_position = element_position_library["page_jump"]
             # 打开该列表
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_policy_page(page_jump_element_position)
@@ -53,12 +55,13 @@ class SearchRules:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When searching rule, the exception error: ", str(e), flush=True)
             raise
 
-    def get_rules_uuid(self, policy_configuration, element_position, vsys_name=""):
+    def get_rules_uuid(self, policy_configuration):
         try:
             type = policy_configuration["type"]
             name = policy_configuration["name"]
-            search_element_position = element_position["search"]
-            page_jump_element_position = element_position["page_jump"]
+            element_position_library = get_element_position(policy_configuration["type"])
+            search_element_position = element_position_library["search"]
+            page_jump_element_position = element_position_library["page_jump"]
             # 打开该列表
             page_jump = PageJump(self.driver)
             page_jump.jump_sub_policy_page(page_jump_element_position)
