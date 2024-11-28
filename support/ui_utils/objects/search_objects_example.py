@@ -19,7 +19,7 @@ class SearchObjects:
 
     def search(self,name,policy_configuration,search_type):
         if "name" != "":
-            self.get_objects_uuid(name,policy_configuration)
+            self.get_object_uuids(name,policy_configuration)
         else:
             self.search_objects(policy_configuration,search_type)
 
@@ -112,7 +112,7 @@ class SearchObjects:
 
         return search_value
 
-    def get_objects_uuid(self,name,object_configuration):
+    def get_object_uuids(self,name,object_configuration):
         try:
             object_uuids_list = []
             object_uuids_temp_dict = {}
