@@ -46,9 +46,9 @@ class SearchRules:
             if len(row) != 0:
                 first_row = row[0]
                 first_row_checkBox_element = first_row.find_element(By.XPATH, '//*[@inputprops="[object Object]"]')
-                return 200, first_row_checkBox_element
+                return first_row_checkBox_element, ""
             else:
-                return 400, ""
+                return "", "When searching rule, the exception error: ", str(e)
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When searching rule, the exception error: ", str(e), flush=True)
             raise
@@ -103,7 +103,7 @@ class SearchRules:
             rule_uuids_temp_dict["attribute_name"] = policy_configuration["type"].upper() + "_" + "RULE"
             rule_uuids_list.append(rule_uuids_temp_dict)
             rule_uuids_tuple = tuple(rule_uuids_list)
-            return rule_uuids_tuple, 200
+            return rule_uuids_tuple, ""
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When getting rule uuid, the exception error: ", str(e), flush=True)
-            return "", 400
+            return "", "When getting rule uuid, the exception error: " + str(e)

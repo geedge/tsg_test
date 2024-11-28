@@ -60,8 +60,8 @@ class EditRules:
             all_selectBox_position = "//table//*[@class='el-checkbox']//span//span"
             self.driver.find_elements(By.XPATH, all_selectBox_position)[0].click()
             self.driver.find_element(By.ID, edit_button_position).click()
-            return 200
+            return ""
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When editing rule, the exception error: ", str(e), flush=True)
             # raise
-            return 400
+            return "When editing rule, the exception error: " + str(e)

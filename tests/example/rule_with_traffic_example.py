@@ -89,13 +89,13 @@ def run(parameter):
             ui_error = ui_client.create_objects(policy_configuration)
             if len(ui_error) > 0:
                 return ui_error
-            objects_tuple, ui_error = ui_client.search_objects(policy_configuration, "name")
+            objects_tuple, ui_error = ui_client.get_objects_uuid(policy_configuration)
             if len(ui_error) > 0:
                 return ui_error
             ui_error = ui_client.create_rules(policy_configuration)
             if len(ui_error) > 0:
                 return ui_error
-            rules_tuple, ui_error = ui_client.search_rules(policy_configuration, "name")
+            rules_tuple, ui_error = ui_client.get_rules_uuid(policy_configuration)
             if len(ui_error) > 0:
                 return ui_error
         elif parameter["initiation_method"] == "api":

@@ -35,13 +35,12 @@ class UIClient:
 
     def search_objects(self, name, policy_configuration, search_type):
         objects = SearchObjects(self.driver)
-        objects_tuple, error = objects.search_objects(name, policy_configuration)
-        self.objects_tuple = objects_tuple
-        return objects_tuple, error
+        error = objects.search_objects(name, policy_configuration)
+        return error
     
-    def get_objects_uuid(self, name, policy_configuration, search_type):
+    def get_objects_uuid(self, policy_configuration):
         objects = SearchObjects(self.driver)
-        objects_tuple, error = objects.get_objects_uuid(name, policy_configuration)
+        objects_tuple, error = objects.get_objects_uuid(policy_configuration)
         self.objects_tuple = objects_tuple
         return objects_tuple, error
 
@@ -61,7 +60,12 @@ class UIClient:
 
     def search_profiles(self, policy_configuration):
         profiles = SearchProfiles(self.driver)
-        profiles_tuple, error = profiles.search_profiles(policy_configuration)
+        error = profiles.search_profiles(policy_configuration)
+        return error
+    
+    def get_profiles_uuid(self, policy_configuration):
+        profiles = SearchProfiles(self.driver)
+        profiles_tuple, error = profiles.get_profiles_uuid(policy_configuration)
         self.profiles_tuple = profiles_tuple
         return profiles_tuple, error
 
@@ -74,9 +78,8 @@ class UIClient:
 
     def search_rules(self, policy_configuration):
         rules = SearchRules(self.driver)
-        rules_tuple, error = rules.search_rules(policy_configuration, self.element_position)
-        self.rules_tuple = rules_tuple
-        return rules_tuple, error
+        error = rules.search_rules(policy_configuration, self.element_position)
+        return error
     
     def get_rules_uuid(self, policy_configuration):
         rules = SearchRules(self.driver)
@@ -106,7 +109,7 @@ class UIClient:
     def cleanup(self):
         # 清理环境
         support.ui_utils.env.teardown()
-        # 按uuid还是按name进行强制删除？？
+        # 按name进行强制删除
         log_in = LogIn()
         pwd = log_in.encryptPwd(self.parameter["password"], self.parameter["api_server"])
         token = log_in.login(self.parameter["username"], pwd, self.parameter["api_server"])

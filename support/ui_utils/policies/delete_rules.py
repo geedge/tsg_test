@@ -43,8 +43,11 @@ class DeleteRules:
                     self.driver.find_element(By.XPATH, deletion_element_position["policyRuleListPage_deleteButton_posXpath"]).click()
                     self.driver.find_element(By.XPATH, deletion_element_position["policyRuleListPage_okButton_warningYes_posXpath"]).click()
                     time.sleep(2)
-            return 200
+                    return ""
+                else:
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When deleting rule, the exception error: ", str(e), flush=True)
+                    return "When deleting rule, the exception error: " + str(e)
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When deleting rule, the exception error: ", str(e), flush=True)
-            # raise
-            return 400
+            raise
+        
+    def delete_rules_by_api(self):
