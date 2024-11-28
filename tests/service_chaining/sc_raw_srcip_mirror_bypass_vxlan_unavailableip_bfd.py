@@ -8,6 +8,7 @@ from support.ui_utils.workpath import workdir
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
+from support.organize_config import OrganizeConfig
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -108,6 +109,10 @@ def run(parameter):
                 {"query_field_key": "received_bytes", "query_value": ""}
             ]
         } 
+
+        # 替换condition中的ip为随机ip
+        organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+        organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)              
 
         # 创建
         if parameter["initiation_method"] == "ui":

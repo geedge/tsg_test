@@ -143,7 +143,7 @@ def run(parameter):
                 return api_error
 
         # 等待下发配置生效
-        time.sleep(3)
+        time.sleep(20)
 
         # 类实例化
         generator = TrafficGenerator()
