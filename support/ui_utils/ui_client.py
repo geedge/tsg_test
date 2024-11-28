@@ -36,15 +36,14 @@ class UIClient:
         error = objects.search_objects(name, policy_configuration)
         return error
     
-    def get_object_uuids(self, policy_configuration):
+    def get_objects_uuid(self, policy_configuration):
         objects = SearchObjects(self.driver)
-        objects_tuple, error = objects.get_object_uuids(policy_configuration)
-        # self.objects_tuple = objects_tuple
+        objects_tuple, error = objects.get_objects_uuid(policy_configuration)
         return objects_tuple, error
 
-    def edit_objects(self, objects_tuple, src_item,new_item):
+    def edit_objects(self, objects_tuple, src_item, new_item):
         objects = EditObjects(self.driver)
-        error = objects.edit_objects(objects_tuple, src_item,new_item)
+        error = objects.edit_objects(objects_tuple, src_item, new_item)
         return error
     
     def delete_objects(self, objects_tuple):
@@ -61,10 +60,9 @@ class UIClient:
         error = profiles.search_profiles(policy_configuration)
         return error
     
-    def get_profile_uuids(self, policy_configuration):
+    def get_profiles_uuid(self, policy_configuration):
         profiles = SearchProfiles(self.driver)
-        profiles_tuple, error = profiles.get_profile_uuids(policy_configuration)
-        # self.profiles_tuple = profiles_tuple
+        profiles_tuple, error = profiles.get_profiles_uuid(policy_configuration)
         return profiles_tuple, error
 
     def create_rules(self, policy_configuration):
@@ -78,10 +76,9 @@ class UIClient:
         error = rules.search_rules(policy_configuration)
         return error
     
-    def get_rule_uuids(self, policy_configuration):
+    def get_rules_uuid(self, policy_configuration):
         rules = SearchRules(self.driver)
-        rules_tuple, error = rules.get_rule_uuids(policy_configuration)
-        # self.rules_tuple = rules_tuple
+        rules_tuple, error = rules.get_rules_uuid(policy_configuration)
         return rules_tuple, error
 
     def edit_rules(self, policy_configuration):

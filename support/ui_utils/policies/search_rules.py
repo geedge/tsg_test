@@ -55,7 +55,7 @@ class SearchRules:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When searching rule, the exception error: ", str(e), flush=True)
             raise
 
-    def get_rule_uuids(self, policy_configuration):
+    def get_rules_uuid(self, policy_configuration):
         try:
             type = policy_configuration["type"]
             name = policy_configuration["name"]

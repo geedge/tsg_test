@@ -14,7 +14,7 @@ class EditRules:
     def __init__(self, driver):
         self.driver = driver
         
-    def edit_rules(self, policy_configuration, vsys_name=""):
+    def edit_rules(self, policy_configuration):
         try:
             type = policy_configuration["type"]
             name = policy_configuration["name"]
