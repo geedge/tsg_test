@@ -101,14 +101,14 @@ class DeleteObjects:
                 template["type"] = object_info_list[i]["type"]
                 response = requests.get(url, headers=headers, params=template, verify=False)
                 if response.status_code != 200:
-                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Search {} object failed.".format(policy_configuration["type"]))
-                    return "Search {} object failed.".format(policy_configuration["type"])
+                    print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Search {} object failed.".format(object_info_list[i]["type"]))
+                    return "Search {} object failed.".format(object_info_list[i]["type"])
                 return_json_data = json.loads(response.text)
                 if "/objects" in url:
                     data_list = return_json_data["data"]["list"]
                     deletion_object_type = template["type"].title() + " " + "object"
                 if len(data_list) > 0:
-                    deletion_uuids_list = self.combine_object_uuids(template, data_list)
+                    deletion_uuids_list = self.combine_objects_uuid(template, data_list)
                     for i in range(len(deletion_uuids_list)):
                         deletion_template = {"uuids": "", "vsys": parameter["vsys"]}
                         deletion_template["uuids"] = deletion_uuids_list[i]
@@ -138,11 +138,9 @@ class DeleteObjects:
                     object_info_list.append(object_info_dict)
         return object_info_list
     
-    def combine_object_uuids(self, template, data_list):
+    def combine_objects_uuid(self, template, data_list):
         uuid_list = []
-        # 遍历列表中的每个 JSON 对象
-        for i, json_obj in enumerate(data_list):
-            # 提取 uuid 键的值
+        for _, json_obj in enumerate(data_list):
             if template["name"] == json_obj["name"]:
                 uuid = json_obj["uuid"]
                 uuid_list.append(uuid)

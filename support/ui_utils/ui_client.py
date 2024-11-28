@@ -100,7 +100,7 @@ class UIClient:
         log_result = query.query_rule_log()
         return log_result
 
-    def cleanup(self, policy_configuration):
+    def cleanup(self, policy_configuration, rule_flag, object_flag, profile_flag):
         # 清理环境
         support.ui_utils.env.teardown()
         # 按name进行强制删除
@@ -108,7 +108,12 @@ class UIClient:
         pwd = log_in.encryptPwd(self.parameter["password"], self.parameter["api_server"])
         token = log_in.login(self.parameter["username"], pwd, self.parameter["api_server"])
         headers = {"Content-Type": "application/json", "Authorization": token}
-        rules = DeleteRules(self.driver)
-        rules.delete_rules_by_name(self.parameter, policy_configuration, headers)
-        objects = DeleteObjects(self.driver)
-        objects.delete_objects_by_name(self.parameter, policy_configuration, headers)
+        if rule_flag:
+            rules = DeleteRules(self.driver)
+            rules.delete_rules_by_name(self.parameter, policy_configuration, headers)
+        if object_flag:
+            objects = DeleteObjects(self.driver)
+            objects.delete_objects_by_name(self.parameter, policy_configuration, headers)
+        if profile_flag:
+            rules = DeleteProfiles(self.driver)
+            rules.delete_profiles_by_name(self.parameter, policy_configuration, headers)

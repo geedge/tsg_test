@@ -82,7 +82,7 @@ class DeleteRules:
                 data_list = return_json_data["data"]["list"]
                 deletion_rule_type = template["type"].title() + " " + "rule"
             if len(data_list) > 0:
-                deletion_uuids_list = self.combine_rule_uuids(template, data_list)
+                deletion_uuids_list = self.combine_rules_uuid(template, data_list)
                 for i in range(len(deletion_uuids_list)):
                     deletion_template = {"uuids": "", "vsys": parameter["vsys"]}
                     deletion_template["uuids"] = deletion_uuids_list[i]
@@ -98,11 +98,9 @@ class DeleteRules:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When deleting rule by name, the exception error: ", str(e), flush=True)
             return "When deleting rule by name, the exception error: " + str(e)
         
-    def combine_rule_uuids(self, template, data_list):
+    def combine_rules_uuid(self, template, data_list):
         uuid_list = []
-        # 遍历列表中的每个 JSON 对象
-        for i, json_obj in enumerate(data_list):
-            # 提取 uuid 键的值
+        for _, json_obj in enumerate(data_list):
             if template["name"] == json_obj["name"]:
                 uuid = json_obj["uuid"]
                 uuid_list.append(uuid)
