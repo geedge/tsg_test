@@ -28,7 +28,7 @@ def run(parameter):
             "action": "allow",
             "and_conditions": [
                 {
-                    "negate_option": False,
+                    "negate_option": True,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_SOURCE_IP",
@@ -38,7 +38,7 @@ def run(parameter):
                             "items": [
                                 {
                                     "op": "add",
-                                    "ip": parameter["test_pc_ip"],
+                                    "ip": "0.0.0.1-255.255.255.255",
                                     "interval": "0-65535"
                                 }
                             ]
@@ -163,14 +163,14 @@ def run(parameter):
 if __name__ == '__main__':
 
     parameter = {
-        "username": "zhaokun",
-        "password": "zhaokun1",
+        "username": "hebingning",
+        "password": "hbn66AAA",
         "test_pc_ip": "192.168.64.87",
         "test_subcriber_id": "test6776",
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
         "env": "tsgx",
-        "vsys": 5,
+        "vsys": 1,
         "root_path": workdir,
         "path": workdir + "/tests",
         "module_name": "security",
