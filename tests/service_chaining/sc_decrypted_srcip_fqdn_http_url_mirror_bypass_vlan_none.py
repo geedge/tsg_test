@@ -135,8 +135,8 @@ def run(parameter):
         }
 
         traffic_generation = {
-            "tool": "http",  # or trex/http
-            "command": "curl --connect-timeout 10 --max-time 30 -kv http://www.ct.cn"
+            "tool": "http", 
+            "command": "curl -kv --connect-timeout 20 -m 20 http://www.ct.cn"
         }
         
         verification_result = {

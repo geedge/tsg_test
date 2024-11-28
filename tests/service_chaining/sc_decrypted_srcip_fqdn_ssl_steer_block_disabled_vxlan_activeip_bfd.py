@@ -113,8 +113,8 @@ def run(parameter):
         }
         
         traffic_generation = {
-            "tool": "ssl",  # or trex/http
-            "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.vip.com"
+            "tool": "ssl", 
+            "command": "curl -kv --connect-timeout 20 -m 20 https://www.vip.com"
         }
 
         verification_result = {
