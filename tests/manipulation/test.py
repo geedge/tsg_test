@@ -380,6 +380,7 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
     faile_path = os.path.join(case_directory_path, name)
     print(faile_path)
     resource_text = ""
+    parameter = []
     parameter = {"test_pc_ip":'2.2.2.2',
                  "test_case_name":parameter["test_case_name"]}
     tmp_resource_text = copy.deepcopy(resource_text)
@@ -963,6 +964,54 @@ def replace_test_data_from_py_2(case_directory_path='C:/zcw/tsg_test/tests/目�
     # 输出匹配的内容
     #print(match_text)
     result_text = tmp_resource_text.replace("        replace_text", match_text)
+
+def re_name(case_directory_path='C:/zcw/tsg_test/tests/目录名', file_startwith = "man_"):
+    # 存储文件名（去掉.py后缀）
+    file_names = []
+    # 获取目录下所有文件的名称
+    # for filename in os.listdir(case_directory_path):
+    #     if filename.endswith(file_endswith) and filename.startswith(file_startwith):
+    #         # 去掉.py后缀并添加到列表中
+    #         pass
+            # if "run_script" in filename:
+            #     tmp = filename.replace("run_script", "execute")
+            #     old_path = os.path.join(case_directory_path, filename)
+            #     new_path = os.path.join(case_directory_path, tmp)
+            #     os.rename(old_path, new_path)
+            # elif "man_replace_" in filename:
+            #     tmp = filename.replace("replace", "modify_replacetext")
+            #     old_path = os.path.join(case_directory_path, filename)
+            #     new_path = os.path.join(case_directory_path, tmp)
+            #     os.rename(old_path, new_path)
+            # elif "man_hijack" in filename:
+            #     tmp = filename.replace("hijack", "modify_replacefile")
+            #     old_path = os.path.join(case_directory_path, filename)
+            #     new_path = os.path.join(case_directory_path, tmp)
+            #     os.rename(old_path, new_path)
+            # elif "edit_element" in filename:
+            #     tmp = filename.replace("edit_element", "modify_editelement")
+            #     old_path = os.path.join(case_directory_path, filename)
+            #     new_path = os.path.join(case_directory_path, tmp)
+            #     os.rename(old_path, new_path)
+            # elif "insert" in filename:
+            #     if "css" in filename:
+            #         tmp = filename.replace("insert", "modify_injectjs")
+            #     else:
+            #         tmp = filename.replace("insert", "modify_injectcss")
+            #     old_path = os.path.join(case_directory_path, filename)
+            #     new_path = os.path.join(case_directory_path, tmp)
+            #     os.rename(old_path, new_path)
+    n = 0
+    for filename in os.listdir(case_directory_path):
+        if filename.endswith(file_endswith) and filename.startswith(file_startwith):
+            # 去掉.py后缀并添加到列表中
+            if len(filename) - 3 > 100:
+                print(filename,  "  =======  " ,(len(filename)-3))
+                n = n + 1
+    print(n)
+
+
+
 if __name__ == '__main__':
     # 定义目录和目标文件  需要调整的变量
     ms_json_path = 'C:/Users/root/Downloads/Metersphere_Api_TSG (29).json'
@@ -971,7 +1020,7 @@ if __name__ == '__main__':
     file_endswith = ".py"
 
     # 本地运行所有用例
-    local_run()
+    # local_run()
 
     # 对比MS工具
     # diff_ms(ms_json_path=ms_json_path, case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
@@ -982,7 +1031,8 @@ if __name__ == '__main__':
     # 替换test_data
     #replace_test_data_from_py(case_directory_path=case_directory_path, file_startwith=file_startwith, file_endswith=file_endswith)
 
-
+    # 重命名
+    re_name(case_directory_path=case_directory_path, file_startwith=file_startwith)
 
 
 
