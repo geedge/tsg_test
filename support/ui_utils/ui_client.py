@@ -111,7 +111,7 @@ class UIClient:
         pwd = log_in.encryptPwd(self.parameter["password"], self.parameter["api_server"])
         token = log_in.login(self.parameter["username"], pwd, self.parameter["api_server"])
         headers = {"Content-Type": "application/json", "Authorization": token}
-        rules = DeleteRules(self.parameter, headers)
-        rules.delete_rules_by_name(policy_configuration)
-        objects = DeleteObjects(self.parameter, headers)
-        objects.delete_objects_by_name(policy_configuration)
+        rules = DeleteRules(self.driver)
+        rules.delete_rules_by_name(self.parameter, policy_configuration, headers)
+        objects = DeleteObjects(self.driver)
+        objects.delete_objects_by_name(self.parameter, policy_configuration, headers)
