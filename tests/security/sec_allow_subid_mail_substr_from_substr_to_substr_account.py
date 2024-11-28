@@ -55,7 +55,7 @@ def run(parameter):
                     ],
                 },
                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_MAIL_FROM",
@@ -73,7 +73,7 @@ def run(parameter):
                     ]
                 },
                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_MAIL_TO",
@@ -91,7 +91,7 @@ def run(parameter):
                     ]
                 },
                 {
-                    "negate_option": 0,
+                    "negate_option": False,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_MAIL_ACCOUNT",

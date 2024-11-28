@@ -3,9 +3,6 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 import support.ui_utils.env
-from support.ui_utils.create_objects_example import CreateObjectsExample
-from support.ui_utils.delete_objects_example import DeleteObjectsExample
-from support.ui_utils.edit_objects_example import EditObjectsExample
 from support.ui_utils.objects.create_objects_example import CreateObjects
 from support.ui_utils.policies.create_rules import CreateRules
 from support.ui_utils.policies.search_rules import SearchRules

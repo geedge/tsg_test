@@ -33,6 +33,24 @@ class DeleteObjects:
                 self.driver.find_element(By.XPATH, deletion_element_position["objectListPage_deleteButton_posXpath"]).click()
                 self.driver.find_element(By.XPATH,deletion_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
                 time.sleep(3)
+                if object["type"] == "tunnel":
+                    element_position_library = get_element_position("ip")
+                    page_jump_element_position = element_position_library["page_jump"]
+                    search_element_position = element_position_library["search"]
+                    page_jump = PageJump(self.driver)
+                    time.sleep(0.5)
+                    page_jump.jump_sub_object_page(page_jump_element_position)
+                    time.sleep(3)
+                    self.driver.find_element(By.XPATH,search_element_position["objectListPage_searchLabel_posXpath"]).click()
+                    self.driver.find_element(By.XPATH,search_element_position["objectListPage_searchLabel_posXpath"]).send_keys("tunnel")
+                    self.driver.find_element(By.XPATH, search_element_position["objectListPage_searchLabel_selectName_posXpath"]).click()
+                    self.driver.find_element(By.XPATH,search_element_position["objectListPage_search_button_posXpath"]).click()
+                    time.sleep(2)
+                    objects_list_elements = self.driver.find_elements(By.XPATH,"//div[@class='MuiDataGrid-virtualScrollerContent css-0']/div/div")
+                    if len(objects_list_elements) != 0:
+                        self.driver.find_element(By.XPATH,"//input[@class='MuiCheckbox-input css-1jj0cvj']").click()
+                        self.driver.find_element(By.XPATH,deletion_element_position["objectListPage_deleteButton_posXpath"]).click()
+                        self.driver.find_element(By.XPATH, deletion_element_position["objectListPage_deleteButton_warningYes_posXpath"]).click()
                 return 200
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}",flush=True)

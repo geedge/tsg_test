@@ -75,7 +75,7 @@ def run(parameter):
             ],
             "action_parameter": {
                 "sub_action": "block",
-                "code": 404,
+                "code": 403,
                 "html_profile": {
                     "name": "test",
                     "format": "html",

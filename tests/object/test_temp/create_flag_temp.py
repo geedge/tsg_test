@@ -18,7 +18,7 @@ def run(parameter):
         #测试数据
         object_configuration =  [
                 {
-                    "name": "test",
+                    "name": "create_flag_object",
                     "type": "flag",
                     "member_type": "item",
                     "statistics_option": "",  # random
@@ -49,7 +49,7 @@ def run(parameter):
         }
 
         # 查询
-        objects_tuple, code = ui_client.search_objects("create_apn_object", object_configuration, search_type)
+        objects_tuple, code = ui_client.search_objects("create_flag_object", object_configuration, search_type)
         objects_list = list(objects_tuple)
         if len(objects_list) == 0:
             return "Fail to get object uuid."
@@ -59,14 +59,26 @@ def run(parameter):
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Search Object successful ")
 
         # 编辑
-        # 如果src_item是空，则表示该item是新加
-        code = ui_client.edit_objects(objects_tuple, src_item="", new_item="testapn$")
+        src_flag = {
+            "Client is Local": True,
+            "Server is Local": True
+        }
+
+        new_flag = {
+            "Pseudo Unidirectional":True
+        }
+
+        code = ui_client.edit_objects(objects_tuple, src_item=src_flag, new_item=new_flag)
         if code != 200:
             return "Fail to edit object."
         else:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3],"Edit Object successful ")
-        # 如果src_item是不是空，在item输入框，输入src_item，找到item，点击item的编辑按钮，删除src_item，输入new_item，点击保存按钮
-        code = ui_client.edit_objects(objects_tuple, src_item="acdcd$", new_item="^xrwom.fu$")
+        # 如果src_item是空，则表示该item是新加
+
+        new_flag = {
+            "Outbound":True
+        }
+        code = ui_client.edit_objects(objects_tuple, src_item="", new_item=new_flag)
         if code != 200:
             return "Fail to edit object."
         else:

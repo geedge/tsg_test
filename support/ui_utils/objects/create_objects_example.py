@@ -220,47 +220,50 @@ class CreateObjects:
                     self.driver.find_element(By.XPATH,creation_element_position["objectPage_inputItem_upBoundary_posXpath"]).send_keys(eval(str(data_int))[1])  # 于item 下up_boundary value输入框键入item_value
                     self.driver.find_element(By.XPATH, creation_element_position["objectPage_button_saveItem_posXpath"]).click()  # 点击保存按钮
             elif object_type == "application":
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_inputLongName_posXpath"]).send_keys(object["application"]["app_longname"])  # input long name
-                # self.driver.find_element(By.XPATH, creation_element_position[""]).send_keys("Your description")  # input description
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_select_category_dropwmn_posXpath"]).click()  # category
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_category_xpath"].format(replaceValue=object["application"]["app_properties"]["category"])).click()  #
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_select_subcategory_dropwmn_posXpath"]).click()  # subcategory
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_sub_category_xpath"].format(replaceValue=object["application"]["app_properties"]["subcategory"])).click()  #
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_select_content_dropwmn_posXpath"]).click()  # content
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_content_xpath"].format(replaceValue=object["application"]["app_properties"]["content"])).click()  #
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_select_risk_dropwmn_posXpath"]).click()  # risk 0
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_risi_xpath"].format(replaceValue=object["application"]["app_properties"]["risk"])).click()
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_characteristics_xpath"].format(replaceValue=object["application"]["app_properties"]["characteristics"])).click()
-                #添加signature
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_addItem_posXpath"]).click()
-                self.driver.find_element(By.XPATH, creation_element_position["objectPage_create_signature_posXpath"]).click()
-                for m in range(len(object["app_surrogates"])):
-                    app_surrogates= object["app_surrogates"][m]
-                    for i in range(len(app_surrogates["signature_sequence"])):
-                        app_signature= app_surrogates["signature_sequence"][i]
-                        self.driver.find_element(By.XPATH,creation_element_position["signature_inputName_posXpath"]).send_keys(app_signature["signature"]["name"])
-                        self.driver.find_element(By.XPATH, creation_element_position["signature_add_artibutem_posXpath"]).click()
-                        for j in range(len(app_signature["signature"]["and_conditions"])):
-                            app_and_condition= app_signature["signature"]["and_conditions"][j]
-                            self.driver.find_element(By.XPATH, creation_element_position["signature_condition_select_up_posXpath"]).click()
-                            if app_and_condition["negate_option"] == False:
-                                self.driver.find_element(By.XPATH, creation_element_position["signature_new_condition__posXpath"]).click()
-                            else:self.driver.find_element(By.XPATH, creation_element_position["signature_new_not_condition__posXpath"]).click()
-                            self.driver.find_element(By.XPATH, creation_element_position["signature_add_artibute_button_posXpath"]).click()
-                            for n in range(len(app_and_condition["or_conditions"])):
-                                app_or_condition= app_and_condition["or_conditions"][n]
-                                self.driver.find_element(By.XPATH,"//li[@class = 'MuiTreeItem-root css-105mfs8']//div[text()='common']").click()
-                                self.driver.find_element(By.XPATH,creation_element_position["signature_artibute_protocols"].format(replaceValue=app_or_condition["attribute_name"])).click()
-                                self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[4]//button[text()='Cancel']").click()
-                                self.driver.find_element(By.XPATH,creation_element_position["attribute_add_object_posXpath"]).click()
-                                self.driver.find_element(By.XPATH,creation_element_position["objectPage_create_signature_posXpath"]+"[2]").click()
-                                common_object_element_position = get_element_position(app_or_condition["type"])
-                                self.create_common_objects(app_or_condition,common_object_element_position)
-                                self.driver.find_element(By.XPATH,creation_element_position["objectPage_okButton_posXpath"]+"[4]").click()
-                                self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[4]//button[text()='Cancel']").click()
-                        self.driver.find_element(By.XPATH,creation_element_position["objectPage_okButton_posXpath"]+"[3]").click()
-                self.driver.find_element(By.XPATH,creation_element_position["objectPage_okButton_posXpath"]+"[2]").click()
-                self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[1]//button[text()='Cancel']").click()
+                if "items" in object.keys():
+                    return 200
+                elif "application" in object.keys():
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_inputLongName_posXpath"]).send_keys(object["application"]["app_longname"])  # input long name
+                    # self.driver.find_element(By.XPATH, creation_element_position[""]).send_keys("Your description")  # input description
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_select_category_dropwmn_posXpath"]).click()  # category
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_category_xpath"].format(replaceValue=object["application"]["app_properties"]["category"])).click()  #
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_select_subcategory_dropwmn_posXpath"]).click()  # subcategory
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_sub_category_xpath"].format(replaceValue=object["application"]["app_properties"]["subcategory"])).click()  #
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_select_content_dropwmn_posXpath"]).click()  # content
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_content_xpath"].format(replaceValue=object["application"]["app_properties"]["content"])).click()  #
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_select_risk_dropwmn_posXpath"]).click()  # risk 0
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_risi_xpath"].format(replaceValue=object["application"]["app_properties"]["risk"])).click()
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_characteristics_xpath"].format(replaceValue=object["application"]["app_properties"]["characteristics"])).click()
+                    #添加signature
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_addItem_posXpath"]).click()
+                    self.driver.find_element(By.XPATH, creation_element_position["objectPage_create_signature_posXpath"]).click()
+                    for m in range(len(object["app_surrogates"])):
+                        app_surrogates= object["app_surrogates"][m]
+                        for i in range(len(app_surrogates["signature_sequence"])):
+                            app_signature= app_surrogates["signature_sequence"][i]
+                            self.driver.find_element(By.XPATH,creation_element_position["signature_inputName_posXpath"]).send_keys(app_signature["signature"]["name"])
+                            self.driver.find_element(By.XPATH, creation_element_position["signature_add_artibutem_posXpath"]).click()
+                            for j in range(len(app_signature["signature"]["and_conditions"])):
+                                app_and_condition= app_signature["signature"]["and_conditions"][j]
+                                self.driver.find_element(By.XPATH, creation_element_position["signature_condition_select_up_posXpath"]).click()
+                                if app_and_condition["negate_option"] == False:
+                                    self.driver.find_element(By.XPATH, creation_element_position["signature_new_condition__posXpath"]).click()
+                                else:self.driver.find_element(By.XPATH, creation_element_position["signature_new_not_condition__posXpath"]).click()
+                                self.driver.find_element(By.XPATH, creation_element_position["signature_add_artibute_button_posXpath"]).click()
+                                for n in range(len(app_and_condition["or_conditions"])):
+                                    app_or_condition= app_and_condition["or_conditions"][n]
+                                    self.driver.find_element(By.XPATH,"//li[@class = 'MuiTreeItem-root css-105mfs8']//div[text()='common']").click()
+                                    self.driver.find_element(By.XPATH,creation_element_position["signature_artibute_protocols"].format(replaceValue=app_or_condition["attribute_name"])).click()
+                                    self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[4]//button[text()='Cancel']").click()
+                                    self.driver.find_element(By.XPATH,creation_element_position["attribute_add_object_posXpath"]).click()
+                                    self.driver.find_element(By.XPATH,creation_element_position["objectPage_create_signature_posXpath"]+"[2]").click()
+                                    common_object_element_position = get_element_position(app_or_condition["type"])
+                                    self.create_objects_by_side_slide(app_or_condition,common_object_element_position)
+                                    self.driver.find_element(By.XPATH,creation_element_position["objectPage_okButton_posXpath"]+"[4]").click()
+                                    self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[4]//button[text()='Cancel']").click()
+                            self.driver.find_element(By.XPATH,creation_element_position["objectPage_okButton_posXpath"]+"[3]").click()
+                    self.driver.find_element(By.XPATH,creation_element_position["objectPage_okButton_posXpath"]+"[2]").click()
+                    self.driver.find_element(By.XPATH,"(//div[@class='MuiDrawer-content css-10lcz44'])[1]//button[text()='Cancel']").click()
             elif object_type == "tunnel":
                 if len(object["tunnel"]["and_conditions"]) == 1:
                     tunnel_endition_a = object["tunnel"]["and_conditions"][0]
@@ -277,8 +280,9 @@ class CreateObjects:
                 for i in range(len(tunnel_endition_a["or_conditions"])):
                     self.driver.find_element(By.XPATH,creation_element_position["objectPage_endition_a_addItem_posXpath"]).click()
                     self.driver.find_element(By.XPATH, creation_element_position["objectPage_side_slic_create_button_posXpath"]).click()
+                    time.sleep(1)
                     common_object_element_position = get_element_position(tunnel_endition_a["or_conditions"][i]["type"])
-                    self.create_common_objects(tunnel_endition_a["or_conditions"][i],common_object_element_position)
+                    self.create_objects_by_side_slide(tunnel_endition_a["or_conditions"][i],common_object_element_position)
                     self.driver.find_element(By.XPATH,creation_element_position["objectPage_okButton_posXpath"]+"[2]").click()
                     self.driver.find_element(By.XPATH,creation_element_position["ObjectPage_side_slic_Cancel_posXpath"]).click()
                 if len(object["tunnel"]["and_conditions"]) == 2:
@@ -287,12 +291,9 @@ class CreateObjects:
                     self.driver.find_element(By.XPATH, creation_element_position["objectPage_side_slic_create_button_posXpath"]).click()
 
                     for i in range(len(tunnel_endition_b["or_conditions"])):
-                        self.create_common_objects(tunnel_endition_b["or_conditions"][i], common_object_element_position)
+                        self.create_objects_by_side_slide(tunnel_endition_b["or_conditions"][i], common_object_element_position)
                         self.driver.find_element(By.XPATH,creation_element_position["objectPage_okButton_posXpath"] + "[2]").click()
                         self.driver.find_element(By.XPATH,creation_element_position["ObjectPage_side_slic_Cancel_posXpath"]).click()
-
-
-
             elif object_type == "port":
                 for i in range(len(object["items"])):
                     if object["items"][i]["op"] == "add":
