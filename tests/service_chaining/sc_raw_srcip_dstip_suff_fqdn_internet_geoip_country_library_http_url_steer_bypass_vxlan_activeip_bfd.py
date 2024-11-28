@@ -186,11 +186,7 @@ def run(parameter):
                 {"query_field_key": "sent_bytes", "query_value": ""},
                 {"query_field_key": "received_bytes", "query_value": ""}
             ]
-        }
-
-        # 替换condition中的ip为随机ip
-        organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
-        organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)              
+        }              
 
         # 创建
         if parameter["initiation_method"] == "ui":
@@ -200,6 +196,14 @@ def run(parameter):
                 return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+            
+
+            organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
+            organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)
+            
             objects_tuple, api_error = api_client.create_objects(policy_configuration)
             if len(api_error) > 0:
                 return api_error

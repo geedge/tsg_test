@@ -8,7 +8,6 @@ from support.ui_utils.workpath import workdir
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
-from support.organize_config import OrganizeConfig
 from support.report_update import ReportUpdate
 
 def run(parameter):
@@ -149,11 +148,7 @@ def run(parameter):
             "excepted_traffic_result": "",
             "expected_metric": {"hits": 0},
             "expected_log": []
-        } 
-
-        # 替换condition中的ip为随机ip
-        organize_config = OrganizeConfig(parameter, policy_configuration, api_client.token, ())
-        organize_config.generate_random_ip(parameter, policy_configuration, traffic_generation)              
+        }              
 
         # 创建
         if parameter["initiation_method"] == "ui":
@@ -261,10 +256,10 @@ if __name__ == '__main__':
         "env": "tsgx",
         "vsys_id": 1,
         "is_log": 1,
-        "root_path": "C:/automation_project/tsg_test",
-        "path": "C:/automation_project/tsg_test/tests/ui",
+        "root_path": workdir,
+        "path": workdir + "/tests",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_negate_imsi_fqdn_http_url_steer_bypass_vxlan_activeip_bfd"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)
     """
