@@ -33,19 +33,25 @@ class UIClient:
     
     def create_objects(self, policy_configuration):
         objects = CreateObjects(self.driver)
-        code = objects.create_objects(policy_configuration)
-        return code
+        error = objects.create_objects(policy_configuration)
+        return error
 
     def search_objects(self, name, policy_configuration, search_type):
         objects = SearchObjects(self.driver)
-        objects_tuple, code = objects.get_object_uuid(name, policy_configuration)
+        objects_tuple, error = objects.search_objects(name, policy_configuration)
         self.objects_tuple = objects_tuple
-        return objects_tuple, code
+        return objects_tuple, error
+    
+    def get_objects_uuid(self, name, policy_configuration, search_type):
+        objects = SearchObjects(self.driver)
+        objects_tuple, error = objects.get_objects_uuid(name, policy_configuration)
+        self.objects_tuple = objects_tuple
+        return objects_tuple, error
 
     def edit_objects(self, objects_tuple, src_item,new_item):
         objects = EditObjects(self.driver)
-        code = objects.edit(objects_tuple, src_item,new_item)
-        return code
+        error = objects.edit(objects_tuple, src_item,new_item)
+        return error
     
     def delete_objects(self, objects_tuple):
         objects = DeleteObjects(self.driver)
@@ -53,44 +59,50 @@ class UIClient:
 
     def create_profiles(self, policy_configuration):
         profiles = CreateProfiles(self.driver)
-        code = profiles.create_profiles(policy_configuration)
-        return code
+        error = profiles.create_profiles(policy_configuration)
+        return error
 
     def search_profiles(self, policy_configuration):
         profiles = SearchProfiles(self.driver)
-        profile_tuple, code = profiles.search_profiles(policy_configuration)
-        self.profile_tuple = profile_tuple
-        return profile_tuple, code
+        profiles_tuple, error = profiles.search_profiles(policy_configuration)
+        self.profiles_tuple = profiles_tuple
+        return profiles_tuple, error
 
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration
         rules = CreateRules(self.driver)
-        element_position, code = rules.create_rules(policy_configuration)
+        element_position, error = rules.create_rules(policy_configuration)
         self.element_position = element_position
-        return code
+        return error
 
     def search_rules(self, policy_configuration):
         rules = SearchRules(self.driver)
-        rule_tuple, code = rules.get_rule_uuid(policy_configuration, self.element_position)
-        self.rule_tuple = rule_tuple
-        return rule_tuple, code
+        rules_tuple, error = rules.search_rules(policy_configuration, self.element_position)
+        self.rules_tuple = rules_tuple
+        return rules_tuple, error
+    
+    def get_rules_uuid(self, policy_configuration):
+        rules = SearchRules(self.driver)
+        rules_tuple, error = rules.get_rules_uuid(policy_configuration, self.element_position)
+        self.rules_tuple = rules_tuple
+        return rules_tuple, error
 
     def edit_rules(self, policy_configuration):
         rules = EditRules(self.driver)
-        code = rules.edit_rules(policy_configuration, self.element_position)
-        return code
+        error = rules.edit_rules(policy_configuration, self.element_position)
+        return error
     
-    def delete_rules(self, rule_tuple):
+    def delete_rules(self, rules_tuple):
         rules = DeleteRules(self.driver)
-        rules.delete_rules(self.element_position, rule_tuple)
+        rules.delete_rules(rules_tuple)
 
     def query_rule_metric(self, verification_result, traffic_result):
         query = QueryRuleMetric(self.policy_configuration, verification_result, self.driver, self.element_position, traffic_result)
         metric_result = query.query_rule_metric()
         return metric_result
     
-    def query_rule_log(self, verification_result, rule_tuple, traffic_result):
-        query = QueryRuleLog(self.policy_configuration, verification_result, rule_tuple, self.driver, self.element_position, traffic_result)
+    def query_rule_log(self, verification_result, rules_tuple, traffic_result):
+        query = QueryRuleLog(self.policy_configuration, verification_result, rules_tuple, self.driver, self.element_position, traffic_result)
         log_result = query.query_rule_log()
         return log_result
 
@@ -103,6 +115,6 @@ class UIClient:
         token = log_in.login(self.parameter["username"], pwd, self.parameter["api_server"])
         headers = {"Content-Type": "application/json", "Authorization": token}
         rules = DeleteRulesAPI(self.parameter, headers)
-        rules.delete_rules(self.rule_tuple)
+        rules.delete_rules(self.rules_tuple)
         objects = DeleteObjectsAPI(self.parameter, headers)
         objects.delete_objects(self.objects_tuple)

@@ -102,7 +102,7 @@ class SearchObjects:
 
         return search_value
 
-    def get_object_uuid(self,name,object_element_position):
+    def get_objects_uuid(self,name,object_element_position):
         try:
             page_jump_element_position = object_element_position["page_jump"]
             # 打开该列表

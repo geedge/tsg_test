@@ -62,6 +62,6 @@ class EditRules:
             self.driver.find_element(By.ID, edit_button_position).click()
             return 200
         except Exception as e:
-            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}", flush=True)
-            raise
-            #return 400, None
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When editing rule, the exception error: ", str(e), flush=True)
+            # raise
+            return 400

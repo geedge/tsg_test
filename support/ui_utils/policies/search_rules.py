@@ -1,9 +1,10 @@
+# -*- coding: UTF-8 -*-
 # import os
 # import sys
 # sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # from selenium.webdriver.common.keys import Keys
 import time
-
+from datetime import datetime 
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from support.ui_utils.element_position.policy_element_position import *
@@ -49,9 +50,10 @@ class SearchRules:
             else:
                 return 400, ""
         except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When searching rule, the exception error: ", str(e), flush=True)
             raise
 
-    def get_rule_uuid(self, policy_configuration, element_position, vsys_name=""):
+    def get_rules_uuid(self, policy_configuration, element_position, vsys_name=""):
         try:
             type = policy_configuration["type"]
             name = policy_configuration["name"]
@@ -103,4 +105,5 @@ class SearchRules:
             rule_uuids_tuple = tuple(rule_uuids_list)
             return rule_uuids_tuple, 200
         except Exception as e:
+            print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When getting rule uuid, the exception error: ", str(e), flush=True)
             return "", 400

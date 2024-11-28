@@ -34,7 +34,7 @@ class CreateObjectsExample:
 
                 search_objects = SearchObjects(driver)
                 element_position_library = get_element_position(object_type)
-                searched_object_code, object_uuid, object_description = search_objects.get_object_uuid(object["name"], element_position_library)
+                searched_object_code, object_uuid, object_description = search_objects.get_objects_uuid(object["name"], element_position_library)
                 if searched_object_code == 200:
                     print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Search {} object successfully.".format(object["type"], flush=True))
                 elif searched_object_code == 200:
