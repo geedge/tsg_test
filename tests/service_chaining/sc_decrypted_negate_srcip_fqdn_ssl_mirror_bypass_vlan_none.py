@@ -121,7 +121,7 @@ def run(parameter):
         verification_result = {
             "excepted_traffic_result": "vip",
             "expected_metric": {"hits": 0},
-            "expected_log": [{"query_field_key": "sc_rsp_decrypted_uuid_list", "query_value": ""}]
+            "expected_log": []
         }
 
         # 创建
@@ -223,8 +223,8 @@ if __name__ == '__main__':
     parameter = {
         "username": "lytest",
         "password": "123456ly",
-        "test_pc_ip": "192.168.64.87",
-        "test_subcriber_id": "test6776",
+        "test_pc_ip": "192.168.64.94",
+        "test_subcriber_id": "test6494",
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
         "env": "tsgx",

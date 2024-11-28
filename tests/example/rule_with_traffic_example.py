@@ -86,18 +86,18 @@ def run(parameter):
         # 创建
         if parameter["initiation_method"] == "ui":
             ui_client = UIClient(parameter)
-            created_object_code = ui_client.create_objects(policy_configuration)
-            if created_object_code != 200:
-                return "Fail to create object."
-            objects_tuple, searched_object_code = ui_client.search_objects(policy_configuration, "name")
-            if searched_object_code != 200:
-                return "Fail to search object."
-            created_rule_code = ui_client.create_rules(policy_configuration)
-            if created_rule_code != 200:
-                return "Fail to create rule."
-            rules_tuple, searched_rule_code = ui_client.search_rules(policy_configuration, "name")
-            if searched_rule_code != 200:
-                return "Fail to search rule."
+            ui_error = ui_client.create_objects(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
+            objects_tuple, ui_error = ui_client.get_objects_uuid(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
+            ui_error = ui_client.create_rules(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
+            rules_tuple, ui_error = ui_client.get_rules_uuid(policy_configuration)
+            if len(ui_error) > 0:
+                return ui_error
         elif parameter["initiation_method"] == "api":
             api_client = APIClient(parameter)
             # {uuid, type}, i.e., {"12341-232-a21", "ip"}
@@ -167,7 +167,7 @@ def run(parameter):
                 ui_client.delete_rules(rules_tuple)
             if objects_tuple:
                 ui_client.delete_objects(objects_tuple)
-            ui_client.cleanup()
+            ui_client.cleanup(policy_configuration)
         elif parameter["initiation_method"] == "api":
             if rules_tuple:
                 api_client.delete_rules(rules_tuple)

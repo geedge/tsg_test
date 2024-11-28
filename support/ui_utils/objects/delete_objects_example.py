@@ -12,7 +12,7 @@ class DeleteObjects:
         self.driver = driver
         self.driver.implicitly_wait(5)
 
-    def delete(self,parmameter,objects_tuple):
+    def delete_objects(self,parmameter,objects_tuple):
         try:
             for object in objects_tuple:
                 element_position_library = get_element_position(object["type"])
@@ -56,7 +56,7 @@ class DeleteObjects:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}",flush=True)
             return 400
 
-    def delete_sub_object(self,object_element_position,first_row_checkbox_element):
+    def delete_sub_objects(self,object_element_position,first_row_checkbox_element):
         deletion_element_position = object_element_position["delete"]
         try:
             first_row_checkbox_element.click()
@@ -68,3 +68,6 @@ class DeleteObjects:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}",
                   flush=True)
             return 400
+        
+    def delete_objects_by_name(self):
+        print("todo")

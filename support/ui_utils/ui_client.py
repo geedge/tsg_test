@@ -11,8 +11,6 @@ from support.ui_utils.policies.delete_rules import DeleteRules
 from support.ui_utils.query_rule_metric import QueryRuleMetric
 from support.ui_utils.query_rule_log import QueryRuleLog
 from support.api_utils.log_in import LogIn
-from support.api_utils.delete_objects import DeleteObjects as DeleteObjectsAPI
-from support.api_utils.delete_rules import DeleteRules as DeleteRulesAPI
 from support.ui_utils.objects.search_objects_example import SearchObjects
 from support.ui_utils.objects.delete_objects_example import DeleteObjects
 from support.ui_utils.objects.edit_objects_example import EditObjects
@@ -30,76 +28,90 @@ class UIClient:
     
     def create_objects(self, policy_configuration):
         objects = CreateObjects(self.driver)
-        code = objects.create_objects(policy_configuration)
-        return code
+        error = objects.create_objects(policy_configuration)
+        return error
 
     def search_objects(self, name, policy_configuration, search_type):
         objects = SearchObjects(self.driver)
-        objects_tuple, code = objects.get_object_uuid(name, policy_configuration)
-        self.objects_tuple = objects_tuple
-        return objects_tuple, code
+        error = objects.search_objects(name, policy_configuration)
+        return error
+    
+    def get_objects_uuid(self, policy_configuration):
+        objects = SearchObjects(self.driver)
+        objects_tuple, error = objects.get_objects_uuid(policy_configuration)
+        # self.objects_tuple = objects_tuple
+        return objects_tuple, error
 
     def edit_objects(self, objects_tuple, src_item,new_item):
         objects = EditObjects(self.driver)
-        code = objects.edit(objects_tuple, src_item,new_item)
-        return code
+        error = objects.edit_objects(objects_tuple, src_item,new_item)
+        return error
     
     def delete_objects(self, objects_tuple):
         objects = DeleteObjects(self.driver)
-        objects.delete(self.parameter, objects_tuple)
+        objects.delete_objects(self.parameter, objects_tuple)
 
     def create_profiles(self, policy_configuration):
         profiles = CreateProfiles(self.driver)
-        code = profiles.create_profiles(policy_configuration)
-        return code
+        error = profiles.create_profiles(policy_configuration)
+        return error
 
-    def search_profiles(self, policy_configuration):
+    def search_profiles(self, policy_configuration, search_type):
         profiles = SearchProfiles(self.driver)
-        profile_tuple, code = profiles.search_profiles(policy_configuration)
-        self.profile_tuple = profile_tuple
-        return profile_tuple, code
+        error = profiles.search_profiles(policy_configuration)
+        return error
+    
+    def get_profiles_uuid(self, policy_configuration):
+        profiles = SearchProfiles(self.driver)
+        profiles_tuple, error = profiles.get_profiles_uuid(policy_configuration)
+        # self.profiles_tuple = profiles_tuple
+        return profiles_tuple, error
 
     def create_rules(self, policy_configuration):
         self.policy_configuration = policy_configuration
         rules = CreateRules(self.driver)
-        element_position, code = rules.create_rules(policy_configuration)
-        self.element_position = element_position
-        return code
+        error = rules.create_rules(policy_configuration)
+        return error
 
-    def search_rules(self, policy_configuration):
+    def search_rules(self, policy_configuration, search_type):
         rules = SearchRules(self.driver)
-        rule_tuple, code = rules.get_rule_uuid(policy_configuration, self.element_position)
-        self.rule_tuple = rule_tuple
-        return rule_tuple, code
+        error = rules.search_rules(policy_configuration)
+        return error
+    
+    def get_rules_uuid(self, policy_configuration):
+        rules = SearchRules(self.driver)
+        rules_tuple, error = rules.get_rules_uuid(policy_configuration)
+        # self.rules_tuple = rules_tuple
+        return rules_tuple, error
 
     def edit_rules(self, policy_configuration):
         rules = EditRules(self.driver)
-        code = rules.edit_rules(policy_configuration, self.element_position)
-        return code
+        error = rules.edit_rules(policy_configuration)
+        return error
     
-    def delete_rules(self, rule_tuple):
+    def delete_rules(self, rules_tuple):
         rules = DeleteRules(self.driver)
-        rules.delete_rules(self.element_position, rule_tuple)
+        rules.delete_rules(rules_tuple)
 
     def query_rule_metric(self, verification_result, traffic_result):
-        query = QueryRuleMetric(self.policy_configuration, verification_result, self.driver, self.element_position, traffic_result)
+        query = QueryRuleMetric(self.policy_configuration, verification_result, self.driver, traffic_result)
         metric_result = query.query_rule_metric()
         return metric_result
     
-    def query_rule_log(self, verification_result, rule_tuple, traffic_result):
-        query = QueryRuleLog(self.policy_configuration, verification_result, rule_tuple, self.driver, self.element_position, traffic_result)
+    def query_rule_log(self, verification_result, rules_tuple, traffic_result):
+        query = QueryRuleLog(self.policy_configuration, verification_result, rules_tuple, self.driver, traffic_result)
         log_result = query.query_rule_log()
         return log_result
 
-    def cleanup(self):
+    def cleanup(self, policy_configuration):
         # 清理环境
         support.ui_utils.env.teardown()
-        # 按uuid还是按name进行强制删除？？
+        # 按name进行强制删除
         log_in = LogIn()
         pwd = log_in.encryptPwd(self.parameter["password"], self.parameter["api_server"])
         token = log_in.login(self.parameter["username"], pwd, self.parameter["api_server"])
         headers = {"Content-Type": "application/json", "Authorization": token}
-        rules = DeleteRulesAPI(self.parameter, headers)
-        rules.delete_rules(self.rule_tuple)
-        objects = DeleteObjectsAPI(self.parameter, headers)
-        objects.delete_objects(self.objects_tuple)
+        rules = DeleteRules(self.parameter, headers)
+        rules.delete_rules_by_name(policy_configuration)
+        objects = DeleteObjects(self.parameter, headers)
+        objects.delete_objects_by_name(policy_configuration)

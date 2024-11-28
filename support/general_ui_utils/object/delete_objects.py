@@ -22,7 +22,7 @@ class DeleteObjects:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}",flush=True)
             return 400
 
-    def delete_sub_object(self,object_element_position,first_row_checkbox_element):
+    def delete_sub_objects(self,object_element_position,first_row_checkbox_element):
         delete_element_position = object_element_position["delete"]
         try:
             first_row_checkbox_element.click()

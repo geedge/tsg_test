@@ -9,11 +9,10 @@ from support.ui_utils.policies.edit_rules import EditRules
 from support.packet_generator.workpath import workdir
 
 class QueryRuleMetric:
-    def __init__(self, policy_configuration, verification_result, driver, element_position, traffic_result):
+    def __init__(self, policy_configuration, verification_result, driver, traffic_result):
         self.policy_configuration = policy_configuration
         self.verification_result = verification_result
         self.driver = driver
-        self.element_position = element_position
         self.traffic_result = traffic_result
         
     def query_rule_metric(self):
@@ -21,8 +20,8 @@ class QueryRuleMetric:
             rule_type = self.policy_configuration["type"]
             rule_action = self.policy_configuration["action"]
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "Start to verify the policy rule metric by ui.", flush=True)
-            edit_rule = EditRules(self.driver)
-            edit_rule_code, _ = edit_rule.edit(rule_type, rule_action, self.element_position)
+            rules = EditRules(self.driver)
+            edit_rule_code, _ = rules.edit_rules(rule_type, rule_action)
             if edit_rule_code != 200:
                 return "Fail to edit rule when ui verification."
             if rule_type == "security"  or rule_type == "proxy_intercept" or rule_type == "proxy_manipulation" or rule_type == "monitor" or rule_type == "statistics":

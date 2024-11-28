@@ -51,7 +51,7 @@ class CreateProfiles:
             elif policy_configuration["profile_type"] == "traffic_mirror":  # traffic mirror 创建
                 self._create_traffic_mirroring_profile(policy_configuration["profile_file"])
             # 其它 profile创建
-            return 200
+            return ""
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], f"Exception: {e}")
             raise

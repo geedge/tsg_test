@@ -14,7 +14,7 @@ class EditObjects:
     def __init__(self, driver):
         self.driver = driver
 
-    def edit(self, objects_tuple,src_item, new_item):
+    def edit_objects(self, objects_tuple,src_item, new_item):
         try:
             for object in objects_tuple:
                 element_position_library = get_element_position(object["type"])

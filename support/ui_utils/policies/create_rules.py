@@ -776,10 +776,10 @@ class CreateRules:
             # 确认创建
             self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_okButton_posXpath"]).click()
             #self.driver.find_element(By.XPATH, creation_element_position["policyRulePage_okButton_warningYes_posXpath"]).click()
-            return element_position_library, 200
+            return ""
         except Exception as e:
             print(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), str(datetime.now().microsecond)[:3], "When creating rule, the exception error: ", str(e), flush=True)
-            return "", 400
+            return "When creating rule, the exception error: " + str(e)
         
     def add_ip(self, ip_data, ip_condition_type, creation_element_position, negate_option):
         try:
