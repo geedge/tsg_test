@@ -8,6 +8,7 @@ from support.ui_utils.workpath import workdir
 from support.ui_utils.ui_client import UIClient
 from support.api_utils.api_client import APIClient
 from support.packet_generator.traffic_generator import *
+from support.organize_config import OrganizeConfig
 from support.report_update import ReportUpdate
 
 def run(parameter):

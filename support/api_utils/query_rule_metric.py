@@ -114,9 +114,9 @@ class QueryRuleMetric:
                 negate_option = self.get_negate_option_from_configration()
                 if metric_result == 333:
                     if sf_configuration[0]["connectivity"]["method"] == "vxlan_g":
-                        if sf_configuration[0]["connectivity"]["sf_dest_ip"] not in active_dst_ip_list:
+                        if sf_configuration[0]["connectivity"]["dest_ip"] not in active_dst_ip_list:
                             metric_result = True
-                        elif sf_configuration[0]["connectivity"]["sf_dest_ip"] in active_dst_ip_list and sf_configuration[0]["admin_status"] == 0:
+                        elif sf_configuration[0]["connectivity"]["dest_ip"] in active_dst_ip_list and sf_configuration[0]["admin_status"] == 0:
                             metric_result = True
                         elif sf_configuration[0]["device_group"]["tag"] not in effective_device_tag_list and sff_configuration[0]["load_balance_localization"] == "nearby":
                             metric_result = True
@@ -817,7 +817,7 @@ class QueryRuleMetric:
         if self.policy_configuration["action_parameter"]["targeted_traffic"] == "raw":
             byte_value = traffic_result["total_bytes"]
             pkt_value = traffic_result["total_packets"]
-            if sf_configuration[0]["connectivity"]["method"] == "vxlan_g" and sf_configuration[0]["connectivity"]["sf_dest_ip"] in active_dst_ip_list:
+            if sf_configuration[0]["connectivity"]["method"] == "vxlan_g" and sf_configuration[0]["connectivity"]["dest_ip"] in active_dst_ip_list:
                 if len(application) > 0 :
                     if application[0] == "http" or application[0] == "ssl" or application[0] == "rdp" or application[0] == "OPENVPN":
                         lost_pkt = 3
@@ -873,7 +873,7 @@ class QueryRuleMetric:
                 else:
                     metric_result = False
         elif self.policy_configuration["action_parameter"]["targeted_traffic"] == "decrypted":
-            if sf_configuration[0]["connectivity"]["method"] == "vxlan_g" and sf_configuration[0]["connectivity"]["sf_dest_ip"] in active_dst_ip_list:
+            if sf_configuration[0]["connectivity"]["method"] == "vxlan_g" and sf_configuration[0]["connectivity"]["dest_ip"] in active_dst_ip_list:
                 if sff_configuration[0]["type"] == 1:
                     if metric_dict["sent_bytes"] == metric_dict["received_bytes"] and metric_dict["sent_packets"] == metric_dict["received_packets"]:
                         metric_result = True
