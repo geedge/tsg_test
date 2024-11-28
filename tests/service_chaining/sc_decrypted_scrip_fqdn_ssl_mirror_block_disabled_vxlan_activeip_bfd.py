@@ -25,7 +25,7 @@ def run(parameter):
         # 测试数据
         policy_configuration = {
             "type": "service_chaining",
-            "name": "sc_decrypted_scrip_fqdnblock_disabled_vxlan_activeip_bfd",
+            "name": os.path.basename(__file__)[:-3],
             "action": "service_chaining",
             "and_conditions": [
                 {
@@ -223,8 +223,8 @@ if __name__ == '__main__':
     parameter = {
         "username": "lytest",
         "password": "123456ly",
-        "test_pc_ip": "192.168.50.88",
-        "test_subcriber_id": "test6776",
+        "test_pc_ip": "192.168.64.94",
+        "test_subcriber_id": "test6494",
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
         "env": "tsgx",
@@ -233,7 +233,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_decrypted_scrip_fqdnblock_disabled_vxlan_activeip_bfd"
+        "test_case_name": os.path.basename(__file__)[:-3]
     }
     run(parameter)
     """

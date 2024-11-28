@@ -244,8 +244,8 @@ if __name__ == '__main__':
     parameter = {
         "username": "lytest",
         "password": "123456ly",
-        "test_pc_ip": "192.168.64.91",
-        "test_subcriber_id": "test6776",
+        "test_pc_ip": "192.168.64.94",
+        "test_subcriber_id": "test6494",
         "test_phone_number": "12345678901",
         "api_server": "http://192.168.44.72",
         "initiation_method": "api",
