@@ -263,7 +263,7 @@ if __name__ == '__main__':
         "root_path": "C:/automation_project/tsg_test",
         "path": "C:/automation_project/tsg_test/tests/ui",
         "module_name": "service_chaining",
-        "test_case_name": "sc_raw_negate_srcip_dstip_fqdnbypass_vlan_none"
+        "test_case_name": "sc_raw_negate_srcip_dstip_"
     }
     run(parameter)
     """

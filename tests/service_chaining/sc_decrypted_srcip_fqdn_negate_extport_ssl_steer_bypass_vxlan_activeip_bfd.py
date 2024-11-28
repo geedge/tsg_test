@@ -49,7 +49,7 @@ def run(parameter):
                     ]
                 },
                 {
-                    "negate_option": False,
+                    "negate_option": True,
                     "or_conditions": [
                         {
                             "attribute_name": "ATTR_EXTERNAL_PORT",
@@ -133,12 +133,12 @@ def run(parameter):
         }
         
         traffic_generation = {
-            "tool": "ssl",  # or trex/http
-            "command": "curl --connect-timeout 10 --max-time 30 -kv https://www.baidu.com"
+            "tool": "ssl", 
+            "command": "curl -kv --connect-timeout 20 -m 20 https://www.baidu.com"
         }
         verification_result = {
             "excepted_traffic_result": "baidu",
-            "expected_metric": {"hits": 1},
+            "expected_metric": {"hits": 0},
             "expected_log": []
         }
 

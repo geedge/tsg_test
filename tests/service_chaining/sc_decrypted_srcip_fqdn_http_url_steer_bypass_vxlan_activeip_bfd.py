@@ -136,8 +136,8 @@ def run(parameter):
         }
         
         traffic_generation = {
-            "tool": "http",  # or trex/http
-            "command": "curl --connect-timeout 10 --max-time 30 -kv http://www.yumi.com"
+            "tool": "http", 
+            "command": "curl -kv --connect-timeout 20 -m 20 http://www.yumi.com"
         }
         verification_result = {
             "excepted_traffic_result": "yumi",

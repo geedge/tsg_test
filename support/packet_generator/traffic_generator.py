@@ -103,7 +103,7 @@ class TrafficGenerator:
                 yaml_name = traffic_generation.get("yaml_name") + ".yaml"
                 m = traffic_generation.get("m",0)
                 d = traffic_generation.get("d",0)
-                if policy_configuration.get("type") == "dos_protection" and policy_configuration["action_parameter"]["type"] == "concurrency":
+                if policy_configuration.get("type") == "dos_protection" and policy_configuration["action_parameter"]["threshold"]["type"] == "concurrency":
                     active_flows = policy_configuration.get("active_flows")
                 else:
                     active_flows = 0
